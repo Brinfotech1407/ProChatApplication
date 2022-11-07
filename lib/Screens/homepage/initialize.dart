@@ -776,27 +776,11 @@ class _InitializeState extends State<Initialize> {
                                                   elevation: 0.0,
                                                   primary: Colors.green),
                                               onPressed: () {
-
-
                                                 unawaited(Navigator.pushReplacement(
-                                                    context,
-                                                    new MaterialPageRoute(
-                                                        builder: (context) => new LoginScreen(
-                                                          prefs: widget.prefs,
-                                                          accountApprovalMessage: "Test",
-                                                          isaccountapprovalbyadminneeded:
-                                                          false,
-                                                          isblocknewlogins: false,
-                                                          title: getTranslated(context, 'signin'),
-                                                          doc: doc! ,
-                                                        ))));
-
-
-                                             /*   unawaited(Navigator.pushReplacement(
                                                     this.context,
                                                     MaterialPageRoute(
                                                         builder: (newContext) =>
-                                                            FiberchatWrapper())));*/
+                                                            FiberchatWrapper())));
                                               },
                                             ),
                                           ]
