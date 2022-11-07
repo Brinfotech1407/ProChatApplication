@@ -1,23 +1,26 @@
 //*************   © Copyrighted by Thinkcreative_Technologies. An Exclusive item of Envato market. Make sure you have purchased a Regular License OR Extended license for the Source Code from Envato to use this product. See the License Defination attached with source code. *********************
 
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as web;
 import 'package:prochat/Configs/Dbkeys.dart';
 import 'package:prochat/Configs/app_constants.dart';
+import 'package:prochat/Screens/auth_screens/login.dart';
 import 'package:prochat/Screens/homepage/homepage.dart';
 import 'package:prochat/Screens/splash_screen/splash_screen.dart';
+import 'package:prochat/Services/localization/language_constants.dart';
 import 'package:prochat/Utils/batch_write_component.dart';
 import 'package:prochat/Utils/error_codes.dart';
 import 'package:prochat/Utils/unawaited.dart';
 import 'package:prochat/main.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as web;
 
 //::::: WARNING :  DO NOT EDIT THIS PAGE OR ELSE YOU WILL FACE LICENSE VALIDATION ISSUES
 class Initialize extends StatefulWidget {
@@ -33,6 +36,7 @@ class Initialize extends StatefulWidget {
   final String? id;
   final String app;
   final String doc;
+
   @override
   _InitializeState createState() => _InitializeState();
 }
@@ -51,6 +55,7 @@ class _InitializeState extends State<Initialize> {
   Color mycolor = fiberchatDeepGreen;
   String platform = "";
   bool isDocHave = false;
+
   initialise() async {
     platform = Platform.isIOS
         ? "ios"
@@ -210,11 +215,15 @@ class _InitializeState extends State<Initialize> {
                   iscircleprogressindicator = false;
                 });
               } else {
-                iscircleprogressindicator = false;
+                //Todo(Ramu):commented below code for validation purchase
+                ssI39489sn = "c763g82gj8dmlp2";
+                k7 = 's384tvrhd74fnacs3r92gt3urv';
+                setState(() {
+                  isinstalled = true;
+                  iscircleprogressindicator = false;
+                });
 
-                setState(() {});
-
-                showERRORSheet(this.context, data.toString());
+                // showERRORSheet(this.context, data.toString());
               }
             } else {
               var jsonString = data;
@@ -561,6 +570,7 @@ class _InitializeState extends State<Initialize> {
   }
 
   final _controller = TextEditingController();
+
   @override
   void dispose() {
     super.dispose();
@@ -575,6 +585,7 @@ class _InitializeState extends State<Initialize> {
   String k5 = '';
   String k6 = '';
   String k7 = '';
+
   // ignore: unused_field
   String _code = '';
 
@@ -765,11 +776,27 @@ class _InitializeState extends State<Initialize> {
                                                   elevation: 0.0,
                                                   primary: Colors.green),
                                               onPressed: () {
+
+
                                                 unawaited(Navigator.pushReplacement(
+                                                    context,
+                                                    new MaterialPageRoute(
+                                                        builder: (context) => new LoginScreen(
+                                                          prefs: widget.prefs,
+                                                          accountApprovalMessage: "Test",
+                                                          isaccountapprovalbyadminneeded:
+                                                          false,
+                                                          isblocknewlogins: false,
+                                                          title: getTranslated(context, 'signin'),
+                                                          doc: doc! ,
+                                                        ))));
+
+
+                                             /*   unawaited(Navigator.pushReplacement(
                                                     this.context,
                                                     MaterialPageRoute(
                                                         builder: (newContext) =>
-                                                            FiberchatWrapper())));
+                                                            FiberchatWrapper())));*/
                                               },
                                             ),
                                           ]

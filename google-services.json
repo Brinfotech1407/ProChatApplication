@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "190014338866",
-    "project_id": "prochat-569c7",
-    "storage_bucket": "prochat-569c7.appspot.com"
+    "project_number": "526291528651",
+    "project_id": "prochat-680de",
+    "storage_bucket": "prochat-680de.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:190014338866:android:e049f5cac7eae80b84492b",
+        "mobilesdk_app_id": "1:526291528651:android:0ec67b90e32a29f63d244e",
         "android_client_info": {
           "package_name": "com.softcaliber.prochat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "190014338866-gah0j2inh5csmjale3p4ncruapl4ckrp.apps.googleusercontent.com",
+          "client_id": "526291528651-iejootj91ci55l1snjqah3r4ga8dj8bo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softcaliber.prochat",
+            "certificate_hash": "04adaa21878d9b12e0c81124bdf41ccb5d7fdd20"
+          }
+        },
+        {
+          "client_id": "526291528651-nts800cqfnjp7ko65hsaqf93jqsu1e3g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC83f0vh2Yp_Ucw7Tz3OD0O7cB-b7mOzbw"
+          "current_key": "AIzaSyDPI_jJFANSNR4BqFhdD0gUqDY2uIiT4ec"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "190014338866-gah0j2inh5csmjale3p4ncruapl4ckrp.apps.googleusercontent.com",
+              "client_id": "526291528651-nts800cqfnjp7ko65hsaqf93jqsu1e3g.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
