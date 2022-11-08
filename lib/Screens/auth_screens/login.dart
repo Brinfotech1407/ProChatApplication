@@ -39,18 +39,18 @@ class LoginScreen extends StatefulWidget {
       this.title,
       required this.isaccountapprovalbyadminneeded,
       required this.accountApprovalMessage,
-      required this.prefs,
-      required this.doc,
+       this.prefs,
+       this.doc,
       required this.isblocknewlogins})
       : super(key: key);
 
   final String? title;
 
   final bool? isblocknewlogins;
-  final DocumentSnapshot<Map<String, dynamic>> doc;
+  final DocumentSnapshot<Map<String, dynamic>>? doc;
   final bool? isaccountapprovalbyadminneeded;
   final String? accountApprovalMessage;
-  final SharedPreferences prefs;
+  final SharedPreferences? prefs;
   @override
   LoginScreenState createState() => new LoginScreenState();
 }
@@ -364,20 +364,20 @@ class LoginScreenState extends State<LoginScreen>
 
             // Write data to local
 
-            await widget.prefs.setString(Dbkeys.id, currentUser!.uid);
-            await widget.prefs.setString(Dbkeys.nickname, _name.text.trim());
+            await widget.prefs?.setString(Dbkeys.id, currentUser!.uid);
+            await widget.prefs?.setString(Dbkeys.nickname, _name.text.trim());
             await widget.prefs
-                .setString(Dbkeys.photoUrl, currentUser!.photoURL ?? '');
-            await widget.prefs.setString(Dbkeys.phone, phoneNo);
-            await widget.prefs.setString(Dbkeys.countryCode, phoneCode!);
+                ?.setString(Dbkeys.photoUrl, currentUser!.photoURL ?? '');
+            await widget.prefs?.setString(Dbkeys.phone, phoneNo);
+            await widget.prefs?.setString(Dbkeys.countryCode, phoneCode!);
             await FirebaseFirestore.instance
                 .collection(DbPaths.collectionusers)
                 .doc(phoneNo)
                 .set({
               Dbkeys.notificationTokens: [fcmTokenn]
             }, SetOptions(merge: true));
-            unawaited(widget.prefs.setBool(Dbkeys.isTokenGenerated, true));
-            await widget.prefs.setString(Dbkeys.isSecuritySetupDone, phoneNo);
+            unawaited(widget.prefs!.setBool(Dbkeys.isTokenGenerated, true));
+            await widget.prefs?.setString(Dbkeys.isSecuritySetupDone, phoneNo);
             await subscribeToNotification(phoneNo, true);
             unawaited(Navigator.pushReplacement(
                 this.context,
@@ -455,14 +455,14 @@ class LoginScreenState extends State<LoginScreen>
                         },
                 );
             // Write data to local
-            await widget.prefs.setString(Dbkeys.id, documents[0][Dbkeys.id]);
-            await widget.prefs.setString(Dbkeys.nickname, _name.text.trim());
-            await widget.prefs.setString(
+            await widget.prefs?.setString(Dbkeys.id, documents[0][Dbkeys.id]);
+            await widget.prefs?.setString(Dbkeys.nickname, _name.text.trim());
+            await widget.prefs?.setString(
                 Dbkeys.photoUrl, documents[0][Dbkeys.photoUrl] ?? '');
             await widget.prefs
-                .setString(Dbkeys.aboutMe, documents[0][Dbkeys.aboutMe] ?? '');
+                ?.setString(Dbkeys.aboutMe, documents[0][Dbkeys.aboutMe] ?? '');
             await widget.prefs
-                .setString(Dbkeys.phone, documents[0][Dbkeys.phone]);
+                ?.setString(Dbkeys.phone, documents[0][Dbkeys.phone]);
 
             await subscribeToNotification(documents[0][Dbkeys.phone], false);
             unawaited(Navigator.pushReplacement(
@@ -509,7 +509,7 @@ class LoginScreenState extends State<LoginScreen>
       seletedlanguage = language;
     });
 
-    await widget.prefs.setBool('islanguageselected', true);
+    await widget.prefs?.setBool('islanguageselected', true);
   }
 
   Language? seletedlanguage;
@@ -834,7 +834,7 @@ class LoginScreenState extends State<LoginScreen>
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PDFViewerCachedFromUrl(
-                                            prefs: widget.prefs,
+                                            prefs: widget.prefs!,
                                             title: getTranslated(
                                                 this.context, 'tnc'),
                                             url: observer.tnc,
@@ -881,7 +881,7 @@ class LoginScreenState extends State<LoginScreen>
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PDFViewerCachedFromUrl(
-                                            prefs: widget.prefs,
+                                            prefs: widget.prefs!,
                                             title: getTranslated(
                                                 this.context, 'pp'),
                                             url: observer.privacypolicy,

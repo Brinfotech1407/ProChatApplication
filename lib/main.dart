@@ -30,6 +30,9 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Screens/auth_screens/login.dart';
+import 'Screens/homepage/homepage.dart';
+
 List<CameraDescription> cameras = <CameraDescription>[];
 
 void main() async {

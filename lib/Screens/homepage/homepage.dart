@@ -56,15 +56,15 @@ import 'package:prochat/Utils/unawaited.dart';
 class Homepage extends StatefulWidget {
   Homepage(
       {required this.currentUserNo,
-      required this.prefs,
-      required this.doc,
+       this.prefs,
+       this.doc,
       this.isShowOnlyCircularSpin = false,
       key})
       : super(key: key);
   final String? currentUserNo;
-  final DocumentSnapshot<Map<String, dynamic>> doc;
+  final DocumentSnapshot<Map<String, dynamic>>? doc;
   final bool? isShowOnlyCircularSpin;
-  final SharedPreferences prefs;
+  final SharedPreferences? prefs;
   @override
   State createState() => new HomepageState(doc: this.doc);
 }
@@ -251,7 +251,7 @@ class HomepageState extends State<Homepage>
         true);
     if (OnlyPeerWhoAreSavedInmyContactCanMessageOrCallMe == false) {
       await contactsProvider.fetchContacts(
-          context, _cachedModel, myphone, widget.prefs,
+          context, _cachedModel, myphone, widget.prefs!,
           currentuserphoneNumberVariants: phoneNumberVariants);
     }
 
@@ -271,7 +271,7 @@ class HomepageState extends State<Homepage>
           context,
           new MaterialPageRoute(
               builder: (context) => new SelectContactToShare(
-                  prefs: widget.prefs,
+                  prefs: widget.prefs!,
                   model: _cachedModel!,
                   currentUserNo: widget.currentUserNo,
                   sharedFiles: _sharedFiles!,
@@ -286,7 +286,7 @@ class HomepageState extends State<Homepage>
             context,
             new MaterialPageRoute(
                 builder: (context) => new SelectContactToShare(
-                    prefs: widget.prefs,
+                    prefs: widget.prefs!,
                     model: _cachedModel!,
                     currentUserNo: widget.currentUserNo,
                     sharedFiles: _sharedFiles!,
@@ -406,7 +406,7 @@ class HomepageState extends State<Homepage>
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth.signOut();
 
-    await widget.prefs.clear();
+    await widget.prefs?.clear();
 
     FlutterSecureStorage storage = new FlutterSecureStorage();
     // ignore: await_only_futures
@@ -420,7 +420,7 @@ class HomepageState extends State<Homepage>
       });
     }
 
-    await widget.prefs.setBool(Dbkeys.isTokenGenerated, false);
+    await widget.prefs?.setBool(Dbkeys.isTokenGenerated, false);
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (BuildContext context) => FiberchatWrapper(),
@@ -603,7 +603,7 @@ class HomepageState extends State<Homepage>
               context,
               new MaterialPageRoute(
                   builder: (context) => AllNotifications(
-                        prefs: widget.prefs,
+                        prefs: widget.prefs!,
                       )));
         } else {
           flutterLocalNotificationsPlugin..cancelAll();
@@ -627,7 +627,7 @@ class HomepageState extends State<Homepage>
               context,
               new MaterialPageRoute(
                   builder: (context) => AllNotifications(
-                        prefs: widget.prefs,
+                        prefs: widget.prefs!,
                       )));
         }
       }
@@ -645,25 +645,25 @@ class HomepageState extends State<Homepage>
   getSignedInUserOrRedirect() async {
     try {
       setState(() {
-        isblockNewlogins = widget.doc.data()![Dbkeys.isblocknewlogins];
+        isblockNewlogins = widget.doc?.data()![Dbkeys.isblocknewlogins];
         isApprovalNeededbyAdminForNewUser =
-            widget.doc[Dbkeys.isaccountapprovalbyadminneeded];
-        accountApprovalMessage = widget.doc[Dbkeys.accountapprovalmessage];
+            widget.doc![Dbkeys.isaccountapprovalbyadminneeded];
+        accountApprovalMessage = widget.doc![Dbkeys.accountapprovalmessage];
       });
-      if (widget.doc.data()![Dbkeys.isemulatorallowed] == false &&
+      if (widget.doc?.data()![Dbkeys.isemulatorallowed] == false &&
           mapDeviceInfo[Dbkeys.deviceInfoISPHYSICAL] == false) {
         setState(() {
           isNotAllowEmulator = true;
         });
       } else {
-        if (widget.doc[Platform.isAndroid
+        if (widget.doc![Platform.isAndroid
                 ? Dbkeys.isappunderconstructionandroid
                 : Platform.isIOS
                     ? Dbkeys.isappunderconstructionios
                     : Dbkeys.isappunderconstructionweb] ==
             true) {
           await unsubscribeToNotification(widget.currentUserNo);
-          maintainanceMessage = widget.doc[Dbkeys.maintainancemessage];
+          maintainanceMessage = widget.doc![Dbkeys.maintainancemessage];
           setState(() {});
         } else {
           final PackageInfo info = await PackageInfo.fromPlatform();
@@ -681,7 +681,7 @@ class HomepageState extends State<Homepage>
                       .padLeft(3, '0')) ??
               0;
           int currentNewAppVersionInServer =
-              int.tryParse(widget.doc[Platform.isAndroid
+              int.tryParse(widget.doc![Platform.isAndroid
                               ? Dbkeys.latestappversionandroid
                               : Platform.isIOS
                                   ? Dbkeys.latestappversionios
@@ -690,7 +690,7 @@ class HomepageState extends State<Homepage>
                           .split(".")[0]
                           .toString()
                           .padLeft(3, '0') +
-                      widget.doc[Platform.isAndroid
+                      widget.doc![Platform.isAndroid
                               ? Dbkeys.latestappversionandroid
                               : Platform.isIOS
                                   ? Dbkeys.latestappversionios
@@ -699,7 +699,7 @@ class HomepageState extends State<Homepage>
                           .split(".")[1]
                           .toString()
                           .padLeft(3, '0') +
-                      widget.doc[Platform.isAndroid
+                      widget.doc![Platform.isAndroid
                               ? Dbkeys.latestappversionandroid
                               : Platform.isIOS
                                   ? Dbkeys.latestappversionios
@@ -734,7 +734,7 @@ class HomepageState extends State<Homepage>
                               style: TextStyle(color: fiberchatLightGreen),
                             ),
                             onPressed: () => custom_url_launcher(
-                                widget.doc[Platform.isAndroid
+                                widget.doc![Platform.isAndroid
                                     ? Dbkeys.newapplinkandroid
                                     : Platform.isIOS
                                         ? Dbkeys.newapplinkios
@@ -748,48 +748,48 @@ class HomepageState extends State<Homepage>
 
             observer.setObserver(
               getuserAppSettingsDoc: widget.doc,
-              getandroidapplink: widget.doc[Dbkeys.newapplinkandroid],
-              getiosapplink: widget.doc[Dbkeys.newapplinkios],
-              getisadmobshow: widget.doc[Dbkeys.isadmobshow],
+              getandroidapplink: widget.doc![Dbkeys.newapplinkandroid],
+              getiosapplink: widget.doc![Dbkeys.newapplinkios],
+              getisadmobshow: widget.doc![Dbkeys.isadmobshow],
               getismediamessagingallowed:
-                  widget.doc[Dbkeys.ismediamessageallowed],
+                  widget.doc![Dbkeys.ismediamessageallowed],
               getistextmessagingallowed:
-                  widget.doc[Dbkeys.istextmessageallowed],
-              getiscallsallowed: widget.doc[Dbkeys.iscallsallowed],
-              gettnc: widget.doc[Dbkeys.tnc],
-              gettncType: widget.doc[Dbkeys.tncTYPE],
-              getprivacypolicy: widget.doc[Dbkeys.privacypolicy],
-              getprivacypolicyType: widget.doc[Dbkeys.privacypolicyTYPE],
-              getis24hrsTimeformat: widget.doc[Dbkeys.is24hrsTimeformat],
+                  widget.doc![Dbkeys.istextmessageallowed],
+              getiscallsallowed: widget.doc![Dbkeys.iscallsallowed],
+              gettnc: widget.doc![Dbkeys.tnc],
+              gettncType: widget.doc![Dbkeys.tncTYPE],
+              getprivacypolicy: widget.doc![Dbkeys.privacypolicy],
+              getprivacypolicyType: widget.doc![Dbkeys.privacypolicyTYPE],
+              getis24hrsTimeformat: widget.doc![Dbkeys.is24hrsTimeformat],
               getmaxFileSizeAllowedInMB:
-                  widget.doc[Dbkeys.maxFileSizeAllowedInMB],
+                  widget.doc![Dbkeys.maxFileSizeAllowedInMB],
               getisPercentProgressShowWhileUploading:
-                  widget.doc[Dbkeys.isPercentProgressShowWhileUploading],
+                  widget.doc![Dbkeys.isPercentProgressShowWhileUploading],
               getisCallFeatureTotallyHide:
-                  widget.doc[Dbkeys.isCallFeatureTotallyHide],
-              getgroupMemberslimit: widget.doc[Dbkeys.groupMemberslimit],
+                  widget.doc![Dbkeys.isCallFeatureTotallyHide],
+              getgroupMemberslimit: widget.doc![Dbkeys.groupMemberslimit],
               getbroadcastMemberslimit:
-                  widget.doc[Dbkeys.broadcastMemberslimit],
+                  widget.doc![Dbkeys.broadcastMemberslimit],
               getstatusDeleteAfterInHours:
-                  widget.doc[Dbkeys.statusDeleteAfterInHours],
-              getfeedbackEmail: widget.doc[Dbkeys.feedbackEmail],
+                  widget.doc![Dbkeys.statusDeleteAfterInHours],
+              getfeedbackEmail: widget.doc![Dbkeys.feedbackEmail],
               getisLogoutButtonShowInSettingsPage:
-                  widget.doc[Dbkeys.isLogoutButtonShowInSettingsPage],
+                  widget.doc![Dbkeys.isLogoutButtonShowInSettingsPage],
               getisAllowCreatingGroups:
-                  widget.doc[Dbkeys.isAllowCreatingGroups],
+                  widget.doc![Dbkeys.isAllowCreatingGroups],
               getisAllowCreatingBroadcasts:
-                  widget.doc[Dbkeys.isAllowCreatingBroadcasts],
+                  widget.doc![Dbkeys.isAllowCreatingBroadcasts],
               getisAllowCreatingStatus:
-                  widget.doc[Dbkeys.isAllowCreatingStatus],
+                  widget.doc![Dbkeys.isAllowCreatingStatus],
               getmaxNoOfFilesInMultiSharing:
-                  widget.doc[Dbkeys.maxNoOfFilesInMultiSharing],
+                  widget.doc![Dbkeys.maxNoOfFilesInMultiSharing],
               getmaxNoOfContactsSelectForForward:
-                  widget.doc[Dbkeys.maxNoOfContactsSelectForForward],
+                  widget.doc![Dbkeys.maxNoOfContactsSelectForForward],
               getappShareMessageStringAndroid:
-                  widget.doc[Dbkeys.appShareMessageStringAndroid],
+                  widget.doc![Dbkeys.appShareMessageStringAndroid],
               getappShareMessageStringiOS:
-                  widget.doc[Dbkeys.appShareMessageStringiOS],
-              getisCustomAppShareLink: widget.doc[Dbkeys.isCustomAppShareLink],
+                  widget.doc![Dbkeys.appShareMessageStringiOS],
+              getisCustomAppShareLink: widget.doc![Dbkeys.isCustomAppShareLink],
             );
 
             if (widget.currentUserNo == null || widget.currentUserNo!.isEmpty) {
@@ -799,13 +799,13 @@ class HomepageState extends State<Homepage>
                   context,
                   new MaterialPageRoute(
                       builder: (context) => new LoginScreen(
-                            prefs: widget.prefs,
+                            prefs: widget.prefs!,
                             accountApprovalMessage: accountApprovalMessage,
                             isaccountapprovalbyadminneeded:
                                 isApprovalNeededbyAdminForNewUser,
                             isblocknewlogins: isblockNewlogins,
                             title: getTranslated(context, 'signin'),
-                            doc: widget.doc,
+                            doc: widget.doc!,
                           ))));
             } else {
               await FirebaseFirestore.instance
@@ -1121,7 +1121,7 @@ class HomepageState extends State<Homepage>
       // seletedlanguage = language;
     });
 
-    await widget.prefs.setBool('islanguageselected', true);
+    await widget.prefs?.setBool('islanguageselected', true);
   }
 
   DateTime? currentBackPressTime = DateTime.now();
@@ -1154,7 +1154,7 @@ class HomepageState extends State<Homepage>
                         isShowOnlySpinner: widget.isShowOnlyCircularSpin,
                       )
                     : PickupLayout(
-                        prefs: widget.prefs,
+                        prefs: widget.prefs!,
                         scaffold: Fiberchat.getNTPWrappedWidget(WillPopScope(
                           onWillPop: onWillPop,
                           child: Scaffold(
@@ -1333,7 +1333,7 @@ class HomepageState extends State<Homepage>
                                                   new MaterialPageRoute(
                                                       builder: (context) =>
                                                           AllNotifications(
-                                                            prefs: widget.prefs,
+                                                            prefs: widget.prefs!,
                                                           )));
 
                                               break;
@@ -1349,7 +1349,7 @@ class HomepageState extends State<Homepage>
                                                           (context) =>
                                                               SettingsOption(
                                                                 prefs: widget
-                                                                    .prefs,
+                                                                    .prefs!,
                                                                 onTapLogout:
                                                                     () async {
                                                                   await logout(
@@ -1361,7 +1361,7 @@ class HomepageState extends State<Homepage>
                                                                       context,
                                                                       new MaterialPageRoute(
                                                                           builder: (context) => ProfileSetting(
-                                                                                prefs: widget.prefs,
+                                                                                prefs: widget.prefs!,
                                                                                 biometricEnabled: biometricEnabled,
                                                                                 type: Fiberchat.getAuthenticationType(biometricEnabled, _cachedModel),
                                                                               )));
@@ -1397,7 +1397,7 @@ class HomepageState extends State<Homepage>
                                                         context,
                                                         _cachedModel,
                                                         widget.currentUserNo!,
-                                                        widget.prefs);
+                                                        widget.prefs!);
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -1410,7 +1410,7 @@ class HomepageState extends State<Homepage>
                                                               biometricEnabled:
                                                                   false,
                                                               prefs:
-                                                                  widget.prefs,
+                                                                  widget.prefs!,
                                                               isAddingWhileCreatingGroup:
                                                                   true,
                                                             )));
@@ -1436,7 +1436,7 @@ class HomepageState extends State<Homepage>
                                                         context,
                                                         _cachedModel,
                                                         widget.currentUserNo!,
-                                                        widget.prefs);
+                                                        widget.prefs!);
                                                 await Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -1449,7 +1449,7 @@ class HomepageState extends State<Homepage>
                                                               biometricEnabled:
                                                                   false,
                                                               prefs:
-                                                                  widget.prefs,
+                                                                  widget.prefs!,
                                                               isAddingWhileCreatingBroadcast:
                                                                   true,
                                                             )));
@@ -1490,51 +1490,51 @@ class HomepageState extends State<Homepage>
                                     isScrollable: IsAdaptiveWidthTab == true
                                         ? true
                                         : DEFAULT_LANGUAGE_FILE_CODE == "en" &&
-                                                (widget.prefs.getString(
+                                                (widget.prefs?.getString(
                                                             LAGUAGE_CODE) ==
                                                         null ||
                                                     widget.prefs
-                                                            .getString(
+                                                            ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         "en")
                                             ? false
                                             : widget
                                                             .prefs
-                                                            .getString(
+                                                            ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'pt' ||
                                                     widget
                                                             .prefs
-                                                            .getString(
+                                                            ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'my' ||
                                                     widget
                                                             .prefs
-                                                            .getString(
+                                                            ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'nl' ||
                                                     widget
                                                             .prefs
-                                                            .getString(
+                                                            ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'vi' ||
                                                     widget
                                                             .prefs
-                                                            .getString(
+                                                            ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'tr' ||
                                                     widget
                                                             .prefs
-                                                            .getString(
+                                                            ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'id' ||
-                                                    widget.prefs.getString(
+                                                    widget.prefs?.getString(
                                                             LAGUAGE_CODE) ==
                                                         'ka' ||
-                                                    widget.prefs.getString(
+                                                    widget.prefs?.getString(
                                                             LAGUAGE_CODE) ==
                                                         'fr' ||
-                                                    widget.prefs.getString(
+                                                    widget.prefs?.getString(
                                                             LAGUAGE_CODE) ==
                                                         'es'
                                                 ? true
@@ -1630,12 +1630,12 @@ class HomepageState extends State<Homepage>
                                         IsShowLastMessageInChatTileWithTime ==
                                                 false
                                             ? RecentChatsWithoutLastMessage(
-                                                prefs: widget.prefs,
+                                                prefs: widget.prefs!,
                                                 currentUserNo:
                                                     widget.currentUserNo,
                                                 isSecuritySetupDone: false)
                                             : RecentChats(
-                                                prefs: widget.prefs,
+                                                prefs: widget.prefs!,
                                                 currentUserNo:
                                                     widget.currentUserNo,
                                                 isSecuritySetupDone: false),
@@ -1647,23 +1647,23 @@ class HomepageState extends State<Homepage>
                                             currentUserNo: widget.currentUserNo,
                                             model: _cachedModel,
                                             biometricEnabled: biometricEnabled,
-                                            prefs: widget.prefs),
+                                            prefs: widget.prefs!),
                                         CallHistory(
                                           model: _cachedModel,
                                           userphone: widget.currentUserNo,
-                                          prefs: widget.prefs,
+                                          prefs: widget.prefs!,
                                         ),
                                       ]
                                     : <Widget>[
                                         IsShowLastMessageInChatTileWithTime ==
                                                 false
                                             ? RecentChatsWithoutLastMessage(
-                                                prefs: widget.prefs,
+                                                prefs: widget.prefs!,
                                                 currentUserNo:
                                                     widget.currentUserNo,
                                                 isSecuritySetupDone: false)
                                             : RecentChats(
-                                                prefs: widget.prefs,
+                                                prefs: widget.prefs!,
                                                 currentUserNo:
                                                     widget.currentUserNo,
                                                 isSecuritySetupDone: false),
@@ -1675,7 +1675,7 @@ class HomepageState extends State<Homepage>
                                             currentUserNo: widget.currentUserNo,
                                             model: _cachedModel,
                                             biometricEnabled: biometricEnabled,
-                                            prefs: widget.prefs),
+                                            prefs: widget.prefs!),
                                       ],
                               )),
                         )));

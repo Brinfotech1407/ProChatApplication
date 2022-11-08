@@ -780,7 +780,13 @@ class _InitializeState extends State<Initialize> {
                                                     this.context,
                                                     MaterialPageRoute(
                                                         builder: (newContext) =>
-                                                            FiberchatWrapper())));
+                                                            LoginScreen(
+                                                              prefs: widget.prefs,
+                                                              accountApprovalMessage:'' ,
+                                                              isaccountapprovalbyadminneeded: true,
+                                                              isblocknewlogins: true,
+                                                              title: getTranslated(context, 'signin'),
+                                                            ))));
                                               },
                                             ),
                                           ]
@@ -975,8 +981,7 @@ class _InitializeState extends State<Initialize> {
                           ),
                         ),
                       )
-                : Homepage(
-                    doc: doc!, currentUserNo: widget.id, prefs: widget.prefs);
+              :   Homepage(currentUserNo: widget.id, prefs: widget.prefs);
   }
 
   String reverse(String string) {
