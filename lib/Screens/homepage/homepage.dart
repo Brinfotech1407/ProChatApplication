@@ -3,17 +3,36 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'
+    as local;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:package_info/package_info.dart';
 import 'package:prochat/Configs/Dbkeys.dart';
 import 'package:prochat/Configs/Dbpaths.dart';
+import 'package:prochat/Configs/Enum.dart';
+import 'package:prochat/Configs/app_constants.dart';
 import 'package:prochat/Configs/optional_constants.dart';
+import 'package:prochat/Models/DataModel.dart';
 import 'package:prochat/Screens/Broadcast/AddContactsToBroadcast.dart';
 import 'package:prochat/Screens/Groups/AddContactsToGroup.dart';
 import 'package:prochat/Screens/SettingsOption/settingsOption.dart';
+import 'package:prochat/Screens/auth_screens/login.dart';
+import 'package:prochat/Screens/call_history/callhistory.dart';
+import 'package:prochat/Screens/calling_screen/pickup_layout.dart';
 import 'package:prochat/Screens/homepage/Setupdata.dart';
 import 'package:prochat/Screens/notifications/AllNotifications.dart';
+import 'package:prochat/Screens/profile_settings/profileSettings.dart';
 import 'package:prochat/Screens/recent_chats/RecentChatsWithoutLastMessage.dart';
+import 'package:prochat/Screens/recent_chats/RecentsChats.dart';
 import 'package:prochat/Screens/sharing_intent/SelectContactToShare.dart';
 import 'package:prochat/Screens/splash_screen/splash_screen.dart';
 import 'package:prochat/Screens/status/status.dart';
@@ -21,43 +40,25 @@ import 'package:prochat/Services/Providers/AvailableContactsProvider.dart';
 import 'package:prochat/Services/Providers/Observer.dart';
 import 'package:prochat/Services/Providers/StatusProvider.dart';
 import 'package:prochat/Services/Providers/call_history_provider.dart';
+import 'package:prochat/Services/Providers/currentchat_peer.dart';
+import 'package:prochat/Services/Providers/user_provider.dart';
 import 'package:prochat/Services/localization/language.dart';
+import 'package:prochat/Services/localization/language_constants.dart';
 import 'package:prochat/Utils/custom_url_launcher.dart';
 import 'package:prochat/Utils/error_codes.dart';
 import 'package:prochat/Utils/phonenumberVariantsGenerator.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart'
-    as local;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:prochat/Configs/app_constants.dart';
-import 'package:prochat/Screens/auth_screens/login.dart';
-import 'package:prochat/Services/Providers/currentchat_peer.dart';
-import 'package:prochat/Services/localization/language_constants.dart';
-import 'package:prochat/Screens/profile_settings/profileSettings.dart';
-import 'package:prochat/main.dart';
-import 'package:prochat/Screens/recent_chats/RecentsChats.dart';
-import 'package:prochat/Screens/call_history/callhistory.dart';
-import 'package:prochat/Models/DataModel.dart';
-import 'package:prochat/Services/Providers/user_provider.dart';
-import 'package:prochat/Screens/calling_screen/pickup_layout.dart';
+import 'package:prochat/Utils/unawaited.dart';
 import 'package:prochat/Utils/utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:package_info/package_info.dart';
+import 'package:prochat/main.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:prochat/Configs/Enum.dart';
-import 'package:prochat/Utils/unawaited.dart';
 
 class Homepage extends StatefulWidget {
   Homepage(
       {required this.currentUserNo,
-       this.prefs,
-       this.doc,
+      this.prefs,
+      this.doc,
       this.isShowOnlyCircularSpin = false,
       key})
       : super(key: key);
@@ -65,6 +66,7 @@ class Homepage extends StatefulWidget {
   final DocumentSnapshot<Map<String, dynamic>>? doc;
   final bool? isShowOnlyCircularSpin;
   final SharedPreferences? prefs;
+
   @override
   State createState() => new HomepageState(doc: this.doc);
 }
@@ -79,16 +81,19 @@ class HomepageState extends State<Homepage>
       _userQuery.add(_filter.text.isEmpty ? '' : _filter.text);
     });
   }
+
   TabController? controllerIfcallallowed;
   TabController? controllerIfcallNotallowed;
   late StreamSubscription _intentDataStreamSubscription;
   List<SharedMediaFile>? _sharedFiles = [];
   String? _sharedText;
+
   @override
   bool get wantKeepAlive => true;
 
   bool isFetching = true;
   List phoneNumberVariants = [];
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed)
@@ -147,7 +152,7 @@ class HomepageState extends State<Homepage>
     listenToSharingintent();
     listenToNotification();
     super.initState();
-    getSignedInUserOrRedirect();
+    // getSignedInUserOrRedirect();
     setdeviceinfo();
     registerNotification();
 
@@ -645,10 +650,9 @@ class HomepageState extends State<Homepage>
   getSignedInUserOrRedirect() async {
     try {
       setState(() {
-        isblockNewlogins = widget.doc?.data()![Dbkeys.isblocknewlogins];
-        isApprovalNeededbyAdminForNewUser =
-            widget.doc![Dbkeys.isaccountapprovalbyadminneeded];
-        accountApprovalMessage = widget.doc![Dbkeys.accountapprovalmessage];
+        isblockNewlogins = false;
+        isApprovalNeededbyAdminForNewUser = false;
+        accountApprovalMessage = '';
       });
       if (widget.doc?.data()![Dbkeys.isemulatorallowed] == false &&
           mapDeviceInfo[Dbkeys.deviceInfoISPHYSICAL] == false) {
@@ -1103,6 +1107,7 @@ class HomepageState extends State<Homepage>
 
   StreamController<String> _userQuery =
       new StreamController<String>.broadcast();
+
   void _changeLanguage(Language language) async {
     Locale _locale = await setLocale(language.languageCode);
     FiberchatWrapper.setLocale(context, _locale);
@@ -1125,6 +1130,7 @@ class HomepageState extends State<Homepage>
   }
 
   DateTime? currentBackPressTime = DateTime.now();
+
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
     if (now.difference(currentBackPressTime!) > Duration(seconds: 3)) {
@@ -1333,7 +1339,8 @@ class HomepageState extends State<Homepage>
                                                   new MaterialPageRoute(
                                                       builder: (context) =>
                                                           AllNotifications(
-                                                            prefs: widget.prefs!,
+                                                            prefs:
+                                                                widget.prefs!,
                                                           )));
 
                                               break;
@@ -1493,18 +1500,14 @@ class HomepageState extends State<Homepage>
                                                 (widget.prefs?.getString(
                                                             LAGUAGE_CODE) ==
                                                         null ||
-                                                    widget.prefs
-                                                            ?.getString(
-                                                                LAGUAGE_CODE) ==
+                                                    widget.prefs?.getString(
+                                                            LAGUAGE_CODE) ==
                                                         "en")
                                             ? false
-                                            : widget
-                                                            .prefs
-                                                            ?.getString(
-                                                                LAGUAGE_CODE) ==
+                                            : widget.prefs?.getString(
+                                                            LAGUAGE_CODE) ==
                                                         'pt' ||
-                                                    widget
-                                                            .prefs
+                                                    widget.prefs
                                                             ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'my' ||
@@ -1523,10 +1526,8 @@ class HomepageState extends State<Homepage>
                                                             ?.getString(
                                                                 LAGUAGE_CODE) ==
                                                         'tr' ||
-                                                    widget
-                                                            .prefs
-                                                            ?.getString(
-                                                                LAGUAGE_CODE) ==
+                                                    widget.prefs?.getString(
+                                                            LAGUAGE_CODE) ==
                                                         'id' ||
                                                     widget.prefs?.getString(
                                                             LAGUAGE_CODE) ==
@@ -1743,6 +1744,7 @@ Future<dynamic> myBackgroundMessageHandlerAndroid(RemoteMessage message) async {
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
 Future _showNotificationWithDefaultSound(String? title, String? message,
     String? titleMultilang, String? bodyMultilang) async {
   if (Platform.isAndroid) {

@@ -467,8 +467,12 @@ class LoginScreenState extends State<LoginScreen>
             await subscribeToNotification(documents[0][Dbkeys.phone], false);
             unawaited(Navigator.pushReplacement(
                 this.context,
-                new MaterialPageRoute(
-                    builder: (context) => Homepage(currentUserNo: '123456789', prefs: widget.prefs))));
+                MaterialPageRoute(
+                    builder: (newContext) => Homepage(
+                      doc: widget.doc,
+                      currentUserNo: phoneNo,
+                      prefs: widget.prefs,
+                    ))));
             Fiberchat.toast(getTranslated(this.context, 'welcomeback'));
           } else {
             unawaited(Navigator.pushReplacement(
