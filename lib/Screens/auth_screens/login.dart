@@ -468,7 +468,7 @@ class LoginScreenState extends State<LoginScreen>
             unawaited(Navigator.pushReplacement(
                 this.context,
                 new MaterialPageRoute(
-                    builder: (context) => FiberchatWrapper())));
+                    builder: (context) => Homepage(currentUserNo: '123456789', prefs: widget.prefs))));
             Fiberchat.toast(getTranslated(this.context, 'welcomeback'));
           } else {
             unawaited(Navigator.pushReplacement(
