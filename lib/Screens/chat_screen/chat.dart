@@ -865,7 +865,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         final encrypted = AESEncryptData.encryptAES(content, sharedSecret);
 
         // final encrypted = encryptWithCRC(content);
-        if (encrypted is String) {
+        //if (encrypted is String) {
           Future messaging = FirebaseFirestore.instance
               .collection(DbPaths.collectionmessages)
               .doc(chatId)
@@ -876,7 +876,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             Dbkeys.from: currentUserNo,
             Dbkeys.to: peerNo,
             Dbkeys.timestamp: timestamp,
-            Dbkeys.content: encrypted,
+           // Dbkeys.content: encrypted,
             Dbkeys.messageType: type.index,
             Dbkeys.hasSenderDeleted: false,
             Dbkeys.hasRecipientDeleted: false,
@@ -991,9 +991,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             }
           }
           // _playPopSound();
-        } else {
+       /* } else {
           Fiberchat.toast('Nothing to encrypt');
-        }
+        }*/
       } on Exception catch (_) {
         // print('Exception caught!');
         Fiberchat.toast("Exception: $_");
@@ -2660,7 +2660,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   Widget buildMessage(BuildContext context, Map<String, dynamic> doc,
       {bool saved = false, List<Message>? savedMsgs}) {
     final observer = Provider.of<Observer>(context, listen: false);
-    final bool isMe = doc[Dbkeys.from] == currentUserNo;
+    print("ismine number :::: $currentUserNo");
+    final bool isMe = doc[Dbkeys.from] == currentUserNo/*'9999999999'*/;
     bool isContinuing;
     if (savedMsgs == null)
       isContinuing =

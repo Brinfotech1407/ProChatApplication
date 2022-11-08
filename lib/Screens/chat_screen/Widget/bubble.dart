@@ -24,7 +24,7 @@ class Bubble extends StatelessWidget {
   });
   final dynamic isURLtext;
   final dynamic messagetype;
-  final int? timestamp;
+  final int timestamp;
   final Widget child;
   final dynamic delivered;
   final bool isMe, isContinuing, isMssgDeleted;
@@ -33,17 +33,17 @@ class Bubble extends StatelessWidget {
   final Map<String, dynamic> mssgDoc;
 
   humanReadableTime() => DateFormat(is24hrsFormat == true ? 'HH:mm' : 'h:mm a')
-      .format(DateTime.fromMillisecondsSinceEpoch(timestamp!));
+      .format(DateTime.fromMillisecondsSinceEpoch(timestamp));
 
-  getSeenStatus(seen) {
+ /* getSeenStatus(seen) {
     if (seen is bool) return true;
     if (seen is String) return true;
-    return timestamp! <= seen;
-  }
+    return timestamp <= seen;
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    final bool seen = getSeenStatus(SeenProvider.of(context).value);
+    final bool seen =true;// getSeenStatus(SeenProvider.of(context).value);
     final bg = isMe ? fiberchatteagreen : fiberchatWhite;
     final align = isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     dynamic icon = delivered is bool && delivered
