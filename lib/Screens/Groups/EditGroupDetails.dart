@@ -158,7 +158,7 @@ class EditGroupDetailsState extends State<EditGroupDetails> {
               ),
               titleSpacing: 0,
               backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatDeepGreen
+                  ? fiberchatDeepBlue
                   : fiberchatWhite,
               title: new Text(
                 getTranslated(this.context, 'editgroup'),

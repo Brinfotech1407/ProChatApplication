@@ -4341,7 +4341,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   decoration: BoxDecoration(
                       color: DESIGN_TYPE == Themetype.whatsapp
                           ? fiberchatgreen
-                          : fiberchatLightGreen,
+                          : fiberchatLightBlue,
                       // border: Border.all(
                       //   color: Colors.red[500],
                       // ),
@@ -5213,7 +5213,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           ? Center(
                               child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                      fiberchatLightGreen)),
+                                      fiberchatLightBlue)),
                             )
                           : Text(getTranslated(this.context, 'sayhi'),
                               textAlign: TextAlign.center,
@@ -5376,7 +5376,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                 Icon(
                                   Icons.local_phone,
                                   size: 35,
-                                  color: fiberchatLightGreen,
+                                  color: fiberchatLightBlue,
                                 ),
                                 SizedBox(height: 13),
                                 Text(
@@ -5450,7 +5450,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                   Icon(
                                     Icons.videocam,
                                     size: 39,
-                                    color: fiberchatLightGreen,
+                                    color: fiberchatLightBlue,
                                   ),
                                   SizedBox(height: 13),
                                   Text(
@@ -5550,7 +5550,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                 ),
                                 backgroundColor:
                                     DESIGN_TYPE == Themetype.whatsapp
-                                        ? fiberchatDeepGreen
+                                        ? fiberchatDeepBlue
                                         : fiberchatWhite,
                                 title: InkWell(
                                   onTap: () {
@@ -5942,7 +5942,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                                 ),
                                                                 myElevatedButton(
                                                                     color:
-                                                                        fiberchatLightGreen,
+                                                                        fiberchatLightBlue,
                                                                     child:
                                                                         Padding(
                                                                       padding: const EdgeInsets
@@ -6330,7 +6330,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                               }),
                                                           myElevatedButton(
                                                               color:
-                                                                  fiberchatLightGreen,
+                                                                  fiberchatLightBlue,
                                                               child: Text(
                                                                 getTranslated(
                                                                     this.context,

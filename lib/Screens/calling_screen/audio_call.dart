@@ -428,8 +428,8 @@ class _AudioCallState extends State<AudioCall> {
             alignment: Alignment.center,
             margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             color: DESIGN_TYPE == Themetype.messenger
-                ? fiberchatDeepGreen
-                : fiberchatDeepGreen,
+                ? fiberchatDeepBlue
+                : fiberchatDeepBlue,
             height: h / 4,
             width: w,
             child: Column(
@@ -535,7 +535,7 @@ class _AudioCallState extends State<AudioCall> {
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: status == 'pickedup'
-                              ? fiberchatLightGreen
+                              ? fiberchatLightBlue
                               : DESIGN_TYPE == Themetype.whatsapp
                                   ? fiberchatWhite.withOpacity(0.5)
                                   : fiberchatWhite,
@@ -564,7 +564,7 @@ class _AudioCallState extends State<AudioCall> {
                                     ? Icons.call_end_rounded
                                     : Icons.person,
                             size: 140,
-                            color: fiberchatDeepGreen,
+                            color: fiberchatDeepBlue,
                           ),
                         )
                       : Stack(
@@ -593,7 +593,7 @@ class _AudioCallState extends State<AudioCall> {
                                               ? Icons.call_end_rounded
                                               : Icons.person,
                                       size: 140,
-                                      color: fiberchatDeepGreen,
+                                      color: fiberchatDeepBlue,
                                     ),
                                   )),
                                   errorWidget: (context, url, error) =>
@@ -608,7 +608,7 @@ class _AudioCallState extends State<AudioCall> {
                                               ? Icons.call_end_rounded
                                               : Icons.person,
                                       size: 140,
-                                      color: fiberchatDeepGreen,
+                                      color: fiberchatDeepBlue,
                                     ),
                                   ),
                                 )),
@@ -634,7 +634,7 @@ class _AudioCallState extends State<AudioCall> {
                                     ? Icons.call_end_rounded
                                     : Icons.person,
                             size: 140,
-                            color: fiberchatDeepGreen,
+                            color: fiberchatDeepBlue,
                           ),
                         )
                       : Stack(
@@ -665,7 +665,7 @@ class _AudioCallState extends State<AudioCall> {
                                               ? Icons.call_end_rounded
                                               : Icons.person,
                                       size: 140,
-                                      color: fiberchatDeepGreen,
+                                      color: fiberchatDeepBlue,
                                     ),
                                   )),
                                   errorWidget: (context, url, error) =>
@@ -680,7 +680,7 @@ class _AudioCallState extends State<AudioCall> {
                                               ? Icons.call_end_rounded
                                               : Icons.person,
                                       size: 140,
-                                      color: fiberchatDeepGreen,
+                                      color: fiberchatDeepBlue,
                                     ),
                                   ),
                                 )),
@@ -780,7 +780,7 @@ class _AudioCallState extends State<AudioCall> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: status == 'pickedup'
-                  ? fiberchatLightGreen
+                  ? fiberchatLightBlue
                   : DESIGN_TYPE == Themetype.whatsapp
                       ? fiberchatWhite
                       : fiberchatBlack,
@@ -797,10 +797,10 @@ class _AudioCallState extends State<AudioCall> {
                 fontWeight: FontWeight.normal,
                 color: status == 'pickedup'
                     ? DESIGN_TYPE == Themetype.whatsapp
-                        ? fiberchatLightGreen
+                        ? fiberchatLightBlue
                         : fiberchatBlack
                     : DESIGN_TYPE == Themetype.whatsapp
-                        ? fiberchatLightGreen
+                        ? fiberchatLightBlue
                         : fiberchatgreen,
                 fontSize: 16,
               ),
@@ -1078,8 +1078,8 @@ class _AudioCallState extends State<AudioCall> {
             ? PIPView(builder: (context, isFloating) {
                 return Scaffold(
                     backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                        ? fiberchatDeepGreen
-                        : fiberchatDeepGreen,
+                        ? fiberchatDeepBlue
+                        : fiberchatDeepBlue,
                     body:
                         StreamBuilder<DocumentSnapshot<Map<String, dynamic>?>?>(
                       stream: stream
@@ -1173,7 +1173,7 @@ class _AudioCallState extends State<AudioCall> {
             : PIPView(builder: (context, isFloating) {
                 return Scaffold(
                     backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                        ? fiberchatDeepGreen
+                        ? fiberchatDeepBlue
                         : fiberchatWhite,
                     body:
                         StreamBuilder<DocumentSnapshot<Map<String, dynamic>?>?>(

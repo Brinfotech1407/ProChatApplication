@@ -218,7 +218,7 @@ class _InfiniteCOLLECTIONListViewWidgetState
                                   Icon(
                                     Icons.message_rounded,
                                     size: 60,
-                                    color: fiberchatLightGreen,
+                                    color: fiberchatLightBlue,
                                   ),
                                   SizedBox(
                                     height: 10,
@@ -283,7 +283,7 @@ class _InfiniteCOLLECTIONListViewWidgetState
                                   Icon(
                                     Icons.message_rounded,
                                     size: 60,
-                                    color: fiberchatLightGreen,
+                                    color: fiberchatLightBlue,
                                   ),
                                   SizedBox(
                                     height: 10,

@@ -135,7 +135,7 @@ class _PasscodeScreenState extends State<PasscodeScreen>
               ),
               elevation: 0,
               backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatDeepGreen
+                  ? fiberchatDeepBlue
                   : fiberchatWhite,
               title: Text(
                 widget.title!,
@@ -192,7 +192,7 @@ class _PasscodeScreenState extends State<PasscodeScreen>
             )
           : null,
       backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-          ? fiberchatDeepGreen
+          ? fiberchatDeepBlue
           : fiberchatWhite,
       body: Center(
           child: SingleChildScrollView(

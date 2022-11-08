@@ -166,7 +166,7 @@ class _AudioPlaybackState extends State<AudioPlayback> {
                         TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
                   ),
                   Slider(
-                      activeColor: fiberchatDeepGreen,
+                      activeColor: fiberchatDeepBlue,
                       value: position?.inMilliseconds.toDouble() ?? 0.0,
                       onChanged: (double value) {
                         audioPlayer.seek((value / 1000).roundToDouble());

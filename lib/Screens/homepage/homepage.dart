@@ -236,7 +236,7 @@ class HomepageState extends State<Homepage>
                       : 1,
                   backgroundColor:
                   DESIGN_TYPE == Themetype.whatsapp
-                      ? fiberchatDeepGreen
+                      ? fiberchatDeepBlue
                       : fiberchatWhite,
                   title: Text(
                     Appname,
@@ -293,8 +293,8 @@ class HomepageState extends State<Homepage>
                                 Icons.keyboard_arrow_down,
                                 color: DESIGN_TYPE ==
                                     Themetype.whatsapp
-                                    ? fiberchatLightGreen
-                                    : fiberchatLightGreen,
+                                    ? fiberchatLightBlue
+                                    : fiberchatLightBlue,
                                 size: 27,
                               )
                             ],
@@ -1267,14 +1267,14 @@ class HomepageState extends State<Homepage>
                     child: AlertDialog(
                       title: Text(
                         title,
-                        style: TextStyle(color: fiberchatDeepGreen),
+                        style: TextStyle(color: fiberchatDeepBlue),
                       ),
                       content: Text(message),
                       actions: <Widget>[
                         TextButton(
                             child: Text(
                               btnLabel,
-                              style: TextStyle(color: fiberchatLightGreen),
+                              style: TextStyle(color: fiberchatLightBlue),
                             ),
                             onPressed: () => custom_url_launcher(
                                 widget.doc![Platform.isAndroid
@@ -1801,7 +1801,7 @@ Future _showNotificationWithDefaultSound(String? title, String? message,
 
 Widget errorScreen(String? title, String? subtitle) {
   return Scaffold(
-    backgroundColor: fiberchatDeepGreen,
+    backgroundColor: fiberchatDeepBlue,
     body: Center(
       child: Padding(
         padding: const EdgeInsets.all(30.0),

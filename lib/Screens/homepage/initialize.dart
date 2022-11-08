@@ -52,7 +52,7 @@ class _InitializeState extends State<Initialize> {
   String? deviceid;
   bool isemulator = false;
   DocumentSnapshot<Map<String, dynamic>>? doc;
-  Color mycolor = fiberchatDeepGreen;
+  Color mycolor = fiberchatDeepBlue;
   String platform = "";
   bool isDocHave = false;
 

@@ -106,7 +106,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
                               ),
                             ),
                             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                                ? fiberchatDeepGreen
+                                ? fiberchatDeepBlue
                                 : fiberchatWhite,
                             centerTitle: false,
                             // leadingWidth: 40,
@@ -330,7 +330,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
                                                                     ),
                                                                     myElevatedButton(
                                                                         color:
-                                                                            fiberchatLightGreen,
+                                                                            fiberchatLightBlue,
                                                                         child:
                                                                             Padding(
                                                                           padding: const EdgeInsets.fromLTRB(
@@ -740,7 +740,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
                                                                                     padding: const EdgeInsets.only(bottom: 2.5, right: 4),
                                                                                     child: Icon(
                                                                                       Icons.contact_page,
-                                                                                      color: fiberchatLightGreen.withOpacity(0.7),
+                                                                                      color: fiberchatLightBlue.withOpacity(0.7),
                                                                                       size: 14,
                                                                                     ),
                                                                                   ),
@@ -749,7 +749,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
                                                                                     text: getTranslated(this.context, 'nosavedcontacts'),
                                                                                     // text:
                                                                                     //     'No Saved Contacts available for this task',
-                                                                                    style: TextStyle(color: fiberchatLightGreen.withOpacity(0.7), height: 1.3, fontSize: 13, fontWeight: FontWeight.w400)),
+                                                                                    style: TextStyle(color: fiberchatLightBlue.withOpacity(0.7), height: 1.3, fontSize: 13, fontWeight: FontWeight.w400)),
                                                                               ],
                                                                             ),
                                                                           )),
@@ -886,7 +886,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
                                                                               ? Icon(
                                                                                   Icons.check,
                                                                                   size: 19.0,
-                                                                                  color: fiberchatLightGreen,
+                                                                                  color: fiberchatLightBlue,
                                                                                 )
                                                                               : Icon(
                                                                                   Icons.check,

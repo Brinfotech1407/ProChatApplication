@@ -200,7 +200,7 @@ class _AudioRecordState extends State<AudioRecord> {
       return Center(
         child: isLoading == true
             ? CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(fiberchatLightGreen))
+                valueColor: AlwaysStoppedAnimation<Color>(fiberchatLightBlue))
             : Column(
                 children: [
                   SizedBox(
@@ -301,7 +301,7 @@ class _AudioRecordState extends State<AudioRecord> {
                               elevation: 2.0,
                               fillColor: _mPlayer!.isPlaying
                                   ? Colors.white
-                                  : fiberchatLightGreen,
+                                  : fiberchatLightBlue,
                               child: Icon(
                                 _mPlayer!.isPlaying
                                     ? Icons.stop
@@ -330,7 +330,7 @@ class _AudioRecordState extends State<AudioRecord> {
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        fiberchatLightGreen),
+                                        fiberchatLightBlue),
                                 elevation:
                                     MaterialStateProperty.all<double>(0.2),
                                 padding: MaterialStateProperty.all<
@@ -378,7 +378,7 @@ class _AudioRecordState extends State<AudioRecord> {
         onWillPop: onWillPopNEw,
         child: Scaffold(
           backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-              ? fiberchatDeepGreen
+              ? fiberchatDeepBlue
               : fiberchatWhite,
           appBar: AppBar(
             leading: IconButton(
@@ -396,7 +396,7 @@ class _AudioRecordState extends State<AudioRecord> {
             centerTitle: true,
             elevation: 0,
             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                ? fiberchatDeepGreen
+                ? fiberchatDeepBlue
                 : fiberchatWhite,
             title: Text(
               widget.title,

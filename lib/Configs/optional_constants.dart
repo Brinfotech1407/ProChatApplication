@@ -85,4 +85,4 @@ final loginPageTopColor =
     DESIGN_TYPE == Themetype.whatsapp ? fiberchatgreen : fiberchatWhite;
 
 final loginPageBottomColor =
-    DESIGN_TYPE == Themetype.whatsapp ? fiberchatDeepGreen : fiberchatWhite;
+    DESIGN_TYPE == Themetype.whatsapp ? fiberchatDeepBlue : fiberchatWhite;

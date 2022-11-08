@@ -1167,7 +1167,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                   decoration: BoxDecoration(
                       color: DESIGN_TYPE == Themetype.whatsapp
                           ? fiberchatgreen
-                          : fiberchatLightGreen,
+                          : fiberchatLightBlue,
                       // border: Border.all(
                       //   color: Colors.red[500],
                       // ),
@@ -4149,7 +4149,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                 Icon(
                                   Icons.local_phone,
                                   size: 35,
-                                  color: fiberchatLightGreen,
+                                  color: fiberchatLightBlue,
                                 ),
                                 SizedBox(height: 13),
                                 Text(
@@ -4223,7 +4223,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                   Icon(
                                     Icons.videocam,
                                     size: 39,
-                                    color: fiberchatLightGreen,
+                                    color: fiberchatLightBlue,
                                   ),
                                   SizedBox(height: 13),
                                   Text(
@@ -4368,7 +4368,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                               ),
                             ),
                             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                                ? fiberchatDeepGreen
+                                ? fiberchatDeepBlue
                                 : fiberchatWhite,
                             title: InkWell(
                               onTap: () {
@@ -4606,7 +4606,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                                             ),
                                                             myElevatedButton(
                                                                 color:
-                                                                    fiberchatLightGreen,
+                                                                    fiberchatLightBlue,
                                                                 child: Padding(
                                                                   padding:
                                                                       const EdgeInsets

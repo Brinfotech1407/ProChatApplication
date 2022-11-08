@@ -469,7 +469,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                             : SizedBox()
                       ],
                       backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                          ? fiberchatDeepGreen
+                          ? fiberchatDeepBlue
                           : fiberchatWhite,
                       title: InkWell(
                         onTap: () {
@@ -1029,7 +1029,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                         child: Icon(Icons.add,
                                                             size: 19,
                                                             color:
-                                                                fiberchatLightGreen),
+                                                                fiberchatLightBlue),
                                                       ),
                                                       // Text(
                                                       //   getTranslated(context, 'add'),

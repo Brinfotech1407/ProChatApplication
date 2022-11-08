@@ -132,7 +132,7 @@ class _SelectContactToShareState extends State<SelectContactToShare>
                               ),
                             ),
                             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                                ? fiberchatDeepGreen
+                                ? fiberchatDeepBlue
                                 : fiberchatWhite,
                             centerTitle: false,
                             // leadingWidth: 40,

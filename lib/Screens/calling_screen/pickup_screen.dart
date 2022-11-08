@@ -43,7 +43,7 @@ class PickupScreen extends StatelessWidget {
         builder: (context, firestoreDataProviderCALLHISTORY, _child) => h > w &&
                 ((h / w) > 1.5)
             ? Scaffold(
-                backgroundColor: fiberchatDeepGreen,
+                backgroundColor: fiberchatDeepBlue,
                 body: Container(
                   alignment: Alignment.center,
                   child: Column(
@@ -55,8 +55,8 @@ class PickupScreen extends StatelessWidget {
                         margin: EdgeInsets.only(
                             top: MediaQuery.of(context).padding.top),
                         color: DESIGN_TYPE == Themetype.messenger
-                            ? fiberchatDeepGreen
-                            : fiberchatDeepGreen,
+                            ? fiberchatDeepBlue
+                            : fiberchatDeepBlue,
                         height: h / 4,
                         width: w,
                         child: Column(
@@ -75,7 +75,7 @@ class PickupScreen extends StatelessWidget {
                                       : Icons.mic_rounded,
                                   size: 40,
                                   color: DESIGN_TYPE == Themetype.whatsapp
-                                      ? fiberchatLightGreen
+                                      ? fiberchatLightBlue
                                       : Colors.white.withOpacity(0.5),
                                 ),
                                 SizedBox(
@@ -88,7 +88,7 @@ class PickupScreen extends StatelessWidget {
                                   style: TextStyle(
                                       fontSize: 18.0,
                                       color: DESIGN_TYPE == Themetype.whatsapp
-                                          ? fiberchatLightGreen
+                                          ? fiberchatLightBlue
                                           : Colors.white.withOpacity(0.5),
                                       fontWeight: FontWeight.w400),
                                 ),
@@ -147,7 +147,7 @@ class PickupScreen extends StatelessWidget {
                               child: Icon(
                                 Icons.person,
                                 size: 140,
-                                color: fiberchatDeepGreen,
+                                color: fiberchatDeepBlue,
                               ),
                             )
                           : Stack(
@@ -169,7 +169,7 @@ class PickupScreen extends StatelessWidget {
                                         child: Icon(
                                           Icons.person,
                                           size: 140,
-                                          color: fiberchatDeepGreen,
+                                          color: fiberchatDeepBlue,
                                         ),
                                       )),
                                       errorWidget: (context, url, error) =>
@@ -180,7 +180,7 @@ class PickupScreen extends StatelessWidget {
                                         child: Icon(
                                           Icons.person,
                                           size: 140,
-                                          color: fiberchatDeepGreen,
+                                          color: fiberchatDeepBlue,
                                         ),
                                       ),
                                     )),
@@ -530,7 +530,7 @@ class PickupScreen extends StatelessWidget {
                               ),
                               shape: CircleBorder(),
                               elevation: 2.0,
-                              fillColor: fiberchatLightGreen,
+                              fillColor: fiberchatLightBlue,
                               padding: const EdgeInsets.all(15.0),
                             )
                           ],

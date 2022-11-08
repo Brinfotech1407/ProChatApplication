@@ -1046,7 +1046,7 @@ class RecentChatsWithoutLastMessageState
                 ),
             child: FloatingActionButton(
                 heroTag: "sdfweewfwq123sdasfw",
-                backgroundColor: fiberchatLightGreen,
+                backgroundColor: fiberchatLightBlue,
                 child: Icon(
                   Icons.chat,
                   size: 30.0,

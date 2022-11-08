@@ -15,7 +15,7 @@ class Splashscreen extends StatelessWidget {
             body: Center(
               child: CircularProgressIndicator(
                   valueColor:
-                      AlwaysStoppedAnimation<Color>(fiberchatLightGreen)),
+                      AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
             ))
         : Scaffold(
             backgroundColor: SplashBackgroundSolidColor,

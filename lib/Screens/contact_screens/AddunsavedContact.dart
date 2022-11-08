@@ -131,10 +131,10 @@ class _AddunsavedNumberState extends State<AddunsavedNumber> {
               ? Center(
                   child: CircularProgressIndicator(
                       valueColor:
-                          AlwaysStoppedAnimation<Color>(fiberchatLightGreen)),
+                          AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
                 )
               : MySimpleButton(
-                  buttoncolor: fiberchatLightGreen.withOpacity(0.99),
+                  buttoncolor: fiberchatLightBlue.withOpacity(0.99),
                   buttontext: getTranslated(context, 'searchuser'),
                   onpressed: () {
                     RegExp e164 = new RegExp(r'^\+[1-9]\d{1,14}$');
@@ -207,7 +207,7 @@ class _AddunsavedNumberState extends State<AddunsavedNumber> {
                 ),
               ),
               backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatDeepGreen
+                  ? fiberchatDeepBlue
                   : fiberchatWhite,
               title: Text(
                 getTranslated(

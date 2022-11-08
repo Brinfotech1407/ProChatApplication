@@ -279,7 +279,7 @@ class _ContactsState extends State<Contacts>
                           ),
                         ),
                         backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                            ? fiberchatDeepGreen
+                            ? fiberchatDeepBlue
                             : fiberchatWhite,
                         centerTitle: false,
                         title: _appBarTitle,

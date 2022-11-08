@@ -77,7 +77,7 @@ class _SettingsOptionState extends State<SettingsOption> {
               },
             ),
             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                ? fiberchatDeepGreen
+                ? fiberchatDeepBlue
                 : fiberchatWhite,
             title: Text(
               getTranslated(context, 'settingsoption'),
@@ -147,11 +147,11 @@ class _SettingsOptionState extends State<SettingsOption> {
                                         child: Padding(
                                         padding: const EdgeInsets.all(3.0),
                                         child: LinearProgressIndicator(
-                                          backgroundColor: fiberchatLightGreen
+                                          backgroundColor: fiberchatLightBlue
                                               .withOpacity(0.4),
                                           valueColor:
                                               AlwaysStoppedAnimation<Color>(
-                                                  fiberchatLightGreen),
+                                                  fiberchatLightBlue),
                                         ),
                                       ))
                                     : Switch(
@@ -336,9 +336,9 @@ class _SettingsOptionState extends State<SettingsOption> {
                                   padding: const EdgeInsets.all(3.0),
                                   child: LinearProgressIndicator(
                                     backgroundColor:
-                                        fiberchatLightGreen.withOpacity(0.4),
+                                        fiberchatLightBlue.withOpacity(0.4),
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        fiberchatLightGreen),
+                                        fiberchatLightBlue),
                                   ),
                                 ))),
                             onTap: () {
@@ -721,7 +721,7 @@ class _SettingsOptionState extends State<SettingsOption> {
                                       height: w / 10,
                                     ),
                                     myElevatedButton(
-                                        color: fiberchatLightGreen,
+                                        color: fiberchatLightBlue,
                                         child: Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               10, 15, 10, 15),

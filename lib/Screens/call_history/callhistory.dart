@@ -114,7 +114,7 @@ class _CallHistoryState extends State<CallHistory> {
                             : 0),
                 child: FloatingActionButton(
                     heroTag: "dfsf4e8t4yaddweqewt834",
-                    backgroundColor: fiberchatLightGreen,
+                    backgroundColor: fiberchatLightBlue,
                     child: Icon(
                       Icons.add_call,
                       size: 30.0,
@@ -322,7 +322,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                 padding: EdgeInsets.fromLTRB(
                                                     6, 2, 6, 2),
                                                 decoration: BoxDecoration(
-                                                    color: fiberchatLightGreen,
+                                                    color: fiberchatLightBlue,
                                                     borderRadius:
                                                         BorderRadius.all(
                                                             Radius.circular(
@@ -382,10 +382,10 @@ class _CallHistoryState extends State<CallHistory> {
                                           color: dc['TYPE'] == 'INCOMING'
                                               ? (dc['STARTED'] == null
                                                   ? Colors.redAccent
-                                                  : fiberchatLightGreen)
+                                                  : fiberchatLightBlue)
                                               : (dc['STARTED'] == null
                                                   ? Colors.redAccent
-                                                  : fiberchatLightGreen),
+                                                  : fiberchatLightBlue),
                                         ),
                                         SizedBox(
                                           width: 7,
@@ -581,7 +581,7 @@ class _CallHistoryState extends State<CallHistory> {
                                               padding: EdgeInsets.fromLTRB(
                                                   6, 2, 6, 2),
                                               decoration: BoxDecoration(
-                                                  color: fiberchatLightGreen,
+                                                  color: fiberchatLightBlue,
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(20))),
@@ -653,10 +653,10 @@ class _CallHistoryState extends State<CallHistory> {
                                         color: dc['TYPE'] == 'INCOMING'
                                             ? (dc['STARTED'] == null
                                                 ? Colors.redAccent
-                                                : fiberchatLightGreen)
+                                                : fiberchatLightBlue)
                                             : (dc['STARTED'] == null
                                                 ? Colors.redAccent
-                                                : fiberchatLightGreen),
+                                                : fiberchatLightBlue),
                                       ),
                                       SizedBox(
                                         width: 7,

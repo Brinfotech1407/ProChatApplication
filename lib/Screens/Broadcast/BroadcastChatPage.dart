@@ -1085,7 +1085,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                   decoration: BoxDecoration(
                       color: DESIGN_TYPE == Themetype.whatsapp
                           ? fiberchatgreen
-                          : fiberchatLightGreen,
+                          : fiberchatLightBlue,
                       // border: Border.all(
                       //   color: Colors.red[500],
                       // ),
@@ -2438,7 +2438,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                               ),
                             ),
                             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                                ? fiberchatDeepGreen
+                                ? fiberchatDeepBlue
                                 : fiberchatWhite,
                             title: InkWell(
                               onTap: () {

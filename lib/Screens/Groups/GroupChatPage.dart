@@ -1213,7 +1213,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                   decoration: BoxDecoration(
                       color: DESIGN_TYPE == Themetype.whatsapp
                           ? fiberchatgreen
-                          : fiberchatLightGreen,
+                          : fiberchatLightBlue,
                       // border: Border.all(
                       //   color: Colors.red[500],
                       // ),
@@ -4264,7 +4264,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                               ),
                             ),
                             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                                ? fiberchatDeepGreen
+                                ? fiberchatDeepBlue
                                 : fiberchatWhite,
                             title: InkWell(
                               onTap: () {
@@ -4562,7 +4562,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                                             ),
                                                             myElevatedButton(
                                                                 color:
-                                                                    fiberchatLightGreen,
+                                                                    fiberchatLightBlue,
                                                                 child: Padding(
                                                                   padding:
                                                                       const EdgeInsets

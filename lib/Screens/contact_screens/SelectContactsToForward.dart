@@ -356,7 +356,7 @@ class _SelectContactsToForwardState extends State<SelectContactsToForward>
                               ),
                             ),
                             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                                ? fiberchatDeepGreen
+                                ? fiberchatDeepBlue
                                 : fiberchatWhite,
                             centerTitle: false,
                             // leadingWidth: 40,
@@ -441,7 +441,7 @@ class _SelectContactsToForwardState extends State<SelectContactsToForward>
                                                               Icons.check,
                                                               size: 19.0,
                                                               color:
-                                                                  fiberchatLightGreen,
+                                                                  fiberchatLightBlue,
                                                             )
                                                           : Icon(
                                                               null,
@@ -598,7 +598,7 @@ class _SelectContactsToForwardState extends State<SelectContactsToForward>
                                                                           ? Icon(
                                                                               Icons.check,
                                                                               size: 19.0,
-                                                                              color: fiberchatLightGreen,
+                                                                              color: fiberchatLightBlue,
                                                                             )
                                                                           : Icon(
                                                                               null,

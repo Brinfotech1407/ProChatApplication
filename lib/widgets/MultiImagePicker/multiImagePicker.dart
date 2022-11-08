@@ -162,7 +162,7 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
             style: TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 26,
-                color: fiberchatLightGreen),
+                color: fiberchatLightBlue),
           ),
           SizedBox(
             height: 20,

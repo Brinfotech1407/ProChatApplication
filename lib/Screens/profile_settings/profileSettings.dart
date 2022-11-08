@@ -184,7 +184,7 @@ class ProfileSettingState extends State<ProfileSetting> {
               ),
               titleSpacing: 0,
               backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatDeepGreen
+                  ? fiberchatDeepBlue
                   : fiberchatWhite,
               title: new Text(
                 getTranslated(this.context, 'editprofile'),
@@ -235,7 +235,7 @@ class ProfileSettingState extends State<ProfileSetting> {
                                                           valueColor:
                                                               AlwaysStoppedAnimation<
                                                                       Color>(
-                                                                  fiberchatLightGreen),
+                                                                  fiberchatLightBlue),
                                                         )),
                                                     width: 150.0,
                                                     height: 150.0),
@@ -269,7 +269,7 @@ class ProfileSettingState extends State<ProfileSetting> {
                                   right: 0,
                                   child: FloatingActionButton(
                                       heroTag: "112233e8t4yt834",
-                                      backgroundColor: fiberchatLightGreen,
+                                      backgroundColor: fiberchatLightBlue,
                                       child: Icon(Icons.camera_alt,
                                           color: fiberchatWhite),
                                       onPressed: () {

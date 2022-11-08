@@ -48,7 +48,7 @@ class PDFViewerCachedFromUrl extends StatelessWidget {
                     fontSize: 18),
               ),
               backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatDeepGreen
+                  ? fiberchatDeepBlue
                   : fiberchatWhite,
             ),
             body: const PDF().cachedFromUrl(
@@ -85,7 +85,7 @@ class PDFViewerCachedFromUrl extends StatelessWidget {
                       fontSize: 18),
                 ),
                 backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                    ? fiberchatDeepGreen
+                    ? fiberchatDeepBlue
                     : fiberchatWhite,
               ),
               body: const PDF().cachedFromUrl(

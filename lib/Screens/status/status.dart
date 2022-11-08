@@ -345,7 +345,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                   ),
                   FloatingActionButton(
                     heroTag: "frewrwr",
-                    backgroundColor: fiberchatLightGreen,
+                    backgroundColor: fiberchatLightBlue,
                     child: Icon(
                       Icons.camera_alt_rounded,
                       size: 25,
@@ -1444,7 +1444,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                                       Icon(
                                         Icons.image,
                                         size: 39,
-                                        color: fiberchatLightGreen,
+                                        color: fiberchatLightBlue,
                                       ),
                                       SizedBox(height: 3),
                                       Text(
@@ -1474,7 +1474,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                                         Icon(
                                           Icons.video_camera_back,
                                           size: 39,
-                                          color: fiberchatLightGreen,
+                                          color: fiberchatLightBlue,
                                         ),
                                         SizedBox(height: 3),
                                         Text(
@@ -1515,7 +1515,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                                       Icon(
                                         Icons.text_fields,
                                         size: 39,
-                                        color: fiberchatLightGreen,
+                                        color: fiberchatLightBlue,
                                       ),
                                       SizedBox(height: 3),
                                       Text(
@@ -1544,7 +1544,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                                       Icon(
                                         Icons.image,
                                         size: 39,
-                                        color: fiberchatLightGreen,
+                                        color: fiberchatLightBlue,
                                       ),
                                       SizedBox(height: 3),
                                       Text(
@@ -1574,7 +1574,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                                         Icon(
                                           Icons.video_camera_back,
                                           size: 39,
-                                          color: fiberchatLightGreen,
+                                          color: fiberchatLightBlue,
                                         ),
                                         SizedBox(height: 3),
                                         Text(

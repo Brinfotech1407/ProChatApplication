@@ -555,7 +555,7 @@ class RecentChatsState extends State<RecentChats> {
                     : 0),
             child: FloatingActionButton(
                 heroTag: "dfsf4e8t4yaddweqewt834",
-                backgroundColor: fiberchatLightGreen,
+                backgroundColor: fiberchatLightBlue,
                 child: Icon(
                   Icons.chat,
                   size: 30.0,

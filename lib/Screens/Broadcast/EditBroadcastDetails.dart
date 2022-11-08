@@ -147,7 +147,7 @@ class EditBroadcastDetailsState extends State<EditBroadcastDetails> {
               ),
               titleSpacing: 0,
               backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatDeepGreen
+                  ? fiberchatDeepBlue
                   : fiberchatWhite,
               title: new Text(
                 getTranslated(context, 'editbroadcast'),

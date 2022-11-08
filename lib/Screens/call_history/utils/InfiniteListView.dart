@@ -94,7 +94,7 @@ class _InfiniteListViewState extends State<InfiniteListView> {
                             child: Center(
                               child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                      fiberchatLightGreen)),
+                                      fiberchatLightBlue)),
                             ),
                           ),
                         ),

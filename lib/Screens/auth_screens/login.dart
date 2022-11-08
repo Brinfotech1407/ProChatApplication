@@ -567,7 +567,7 @@ class LoginScreenState extends State<LoginScreen>
                                   width: 15,
                                   child: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: fiberchatLightGreen,
+                                    color: fiberchatLightBlue,
                                     size: 27,
                                   ),
                                 )
@@ -655,7 +655,7 @@ class LoginScreenState extends State<LoginScreen>
                       BoxShadow(
                         blurRadius: 3.0,
                         color: DESIGN_TYPE == Themetype.whatsapp
-                            ? fiberchatDeepGreen.withOpacity(0.3)
+                            ? fiberchatDeepBlue.withOpacity(0.3)
                             : fiberchatBlack.withOpacity(0.1),
                         spreadRadius: 1.0,
                       ),
@@ -728,8 +728,8 @@ class LoginScreenState extends State<LoginScreen>
                           spacing: 0.3,
                           height: 57,
                           buttoncolor: DESIGN_TYPE == Themetype.whatsapp
-                              ? fiberchatLightGreen
-                              : fiberchatLightGreen,
+                              ? fiberchatLightBlue
+                              : fiberchatLightBlue,
                           buttontext: getTranslated(this.context, 'sendverf'),
                           onpressed: widget.isblocknewlogins == true
                               ? () {
@@ -814,7 +814,7 @@ class LoginScreenState extends State<LoginScreen>
                             text: getTranslated(this.context, 'tnc'),
                             style: TextStyle(
                                 height: 1.7,
-                                color: fiberchatLightGreen,
+                                color: fiberchatLightBlue,
                                 fontWeight: FontWeight.w700,
                                 fontFamily: FONTFAMILY_NAME,
                                 fontSize: 14.8),
@@ -863,7 +863,7 @@ class LoginScreenState extends State<LoginScreen>
                             style: TextStyle(
                                 height: 1.7,
                                 fontFamily: FONTFAMILY_NAME,
-                                color: fiberchatLightGreen,
+                                color: fiberchatLightBlue,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14.8),
                             recognizer: TapGestureRecognizer()
@@ -942,7 +942,7 @@ class LoginScreenState extends State<LoginScreen>
           ),
           Center(
             child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(fiberchatLightGreen)),
+                valueColor: AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
           ),
           SizedBox(
             height: 48,
@@ -1033,15 +1033,15 @@ class LoginScreenState extends State<LoginScreen>
               ? Center(
                   child: CircularProgressIndicator(
                       valueColor:
-                          AlwaysStoppedAnimation<Color>(fiberchatLightGreen)),
+                          AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
                 )
               : Padding(
                   padding: EdgeInsets.fromLTRB(17, 22, 17, 5),
                   child: MySimpleButton(
                     height: 57,
                     buttoncolor: DESIGN_TYPE == Themetype.whatsapp
-                        ? fiberchatLightGreen
-                        : fiberchatLightGreen,
+                        ? fiberchatLightBlue
+                        : fiberchatLightBlue,
                     buttontext: getTranslated(this.context, 'verify_otp'),
                     onpressed: () {
                       if (_code.length == 6) {
@@ -1080,7 +1080,7 @@ class LoginScreenState extends State<LoginScreen>
                                 text: " 00:${timeProvider.start} ",
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: fiberchatLightGreen,
+                                    color: fiberchatLightBlue,
                                     fontWeight: FontWeight.w700),
                               ),
                               TextSpan(
@@ -1161,14 +1161,14 @@ class LoginScreenState extends State<LoginScreen>
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Icon(Icons.restart_alt_outlined,
-                                                  color: fiberchatLightGreen),
+                                                  color: fiberchatLightBlue),
                                               Text(
                                                 ' ' +
                                                     getTranslated(
                                                         this.context, 'resend'),
                                                 style: TextStyle(
                                                     fontSize: 13,
-                                                    color: fiberchatLightGreen,
+                                                    color: fiberchatLightBlue,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -1271,7 +1271,7 @@ class LoginScreenState extends State<LoginScreen>
           //     ?
           Center(
             child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(fiberchatLightGreen)),
+                valueColor: AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
           ),
           // : Padding(
           //     padding: EdgeInsets.fromLTRB(17, 22, 17, 5),
@@ -1334,7 +1334,7 @@ class LoginScreenState extends State<LoginScreen>
 
     return Fiberchat.getNTPWrappedWidget(Scaffold(
       backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-          ? fiberchatDeepGreen
+          ? fiberchatDeepBlue
           : fiberchatWhite,
       body: SingleChildScrollView(
           child: Column(

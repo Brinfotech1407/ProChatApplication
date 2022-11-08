@@ -280,7 +280,7 @@ class _PreChatState extends State<PreChat> {
             ),
           ),
           backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-              ? fiberchatDeepGreen
+              ? fiberchatDeepBlue
               : fiberchatWhite,
           title: Text(
             widget.name!,

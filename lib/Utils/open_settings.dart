@@ -21,7 +21,7 @@ class _OpenSettingsState extends State<OpenSettings> {
   @override
   Widget build(BuildContext context) {
     return Fiberchat.getNTPWrappedWidget(Material(
-        color: fiberchatDeepGreen,
+        color: fiberchatDeepBlue,
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +45,7 @@ class _OpenSettingsState extends State<OpenSettings> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.0),
                 child: myElevatedButton(
-                    color: fiberchatLightGreen,
+                    color: fiberchatLightBlue,
                     onPressed: () {
                       openAppSettings();
                     },

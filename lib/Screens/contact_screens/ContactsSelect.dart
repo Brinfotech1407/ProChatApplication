@@ -190,7 +190,7 @@ class _ContactsSelectState extends State<ContactsSelect>
                           ),
                         ),
                         backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                            ? fiberchatDeepGreen
+                            ? fiberchatDeepBlue
                             : fiberchatWhite,
                         centerTitle: false,
                         title: _appBarTitle,

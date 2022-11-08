@@ -116,7 +116,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                         ),
                       ),
                       backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                          ? fiberchatDeepGreen
+                          ? fiberchatDeepBlue
                           : fiberchatWhite,
                       centerTitle: false,
                       actions: <Widget>[
@@ -279,7 +279,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                             tileColor: Colors.white,
                                             leading: CircleAvatar(
                                                 backgroundColor:
-                                                    fiberchatLightGreen,
+                                                    fiberchatLightBlue,
                                                 radius: 22.5,
                                                 child: Icon(
                                                   Icons.share_rounded,
@@ -300,7 +300,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                             tileColor: Colors.white,
                                             leading: CircleAvatar(
                                                 backgroundColor:
-                                                    fiberchatLightGreen,
+                                                    fiberchatLightBlue,
                                                 radius: 22.5,
                                                 child: Icon(
                                                   Icons.group,
@@ -322,7 +322,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                             tileColor: Colors.white,
                                             leading: CircleAvatar(
                                                 backgroundColor:
-                                                    fiberchatLightGreen,
+                                                    fiberchatLightBlue,
                                                 radius: 22.5,
                                                 child: Icon(
                                                   Icons.campaign,

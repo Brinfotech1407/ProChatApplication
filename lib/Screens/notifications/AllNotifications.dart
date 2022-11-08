@@ -77,7 +77,7 @@ class _AllNotificationsState extends State<AllNotifications> {
                 },
               ),
               backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatDeepGreen
+                  ? fiberchatDeepBlue
                   : fiberchatWhite,
               title: Text(
                 getTranslated(context, 'allnotifications'),

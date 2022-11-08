@@ -9,8 +9,8 @@ import 'Enum.dart';
 //-**********---------- WHATSAPP Color Theme: -------------------------
 final fiberchatBlack = new Color(0xFF1E1E1E);
 final fiberchatBlue = new Color(0xFF02ac88);
-final fiberchatDeepGreen = new Color(0xFF01826b);
-final fiberchatLightGreen = new Color(0xFF02ac88);
+final fiberchatDeepBlue = new Color(0xFF4169E1);
+final fiberchatLightBlue = new Color(0xFF87CEFA);
 final fiberchatgreen = new Color(0xFF098b74);
 final fiberchatteagreen = new Color(0xFFe9fedf);
 final fiberchatWhite = Colors.white;
@@ -20,7 +20,7 @@ const DESIGN_TYPE = Themetype.whatsapp;
 const IsSplashOnlySolidColor = false;
 const SplashBackgroundSolidColor = Color(
     0xFF01826b); //applies this colors to fill the areas around splash screen.  Color Code: 0xFF01826b for Whatsapp theme & 0xFFFFFFFF for messenger theme.
-final statusBarColor = fiberchatDeepGreen;
+final statusBarColor = fiberchatDeepBlue;
 final isDarkIconsinStatusBar =
     false; // This Color will be applied to status bar across the App if App is messenger theme. For whatsapp theme, it picks the color automatically.
 

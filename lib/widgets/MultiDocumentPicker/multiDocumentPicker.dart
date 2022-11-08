@@ -157,7 +157,7 @@ class _MultiDocumentPickerState extends State<MultiDocumentPicker> {
             style: TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 26,
-                color: fiberchatLightGreen),
+                color: fiberchatLightBlue),
           ),
           SizedBox(
             height: 20,

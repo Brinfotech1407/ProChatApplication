@@ -170,7 +170,7 @@ class _FiberchatWrapperState extends State<FiberchatWrapper> {
                                   fontFamily: FONTFAMILY_NAME,
                                   primaryColor: fiberchatgreen,
                                   primaryColorLight: fiberchatgreen,
-                                  indicatorColor: fiberchatLightGreen),
+                                  indicatorColor: fiberchatLightBlue),
                               title: Appname,
                               debugShowCheckedModeBanner: false,
                               home: Initialize(
@@ -237,7 +237,7 @@ class _FiberchatWrapperState extends State<FiberchatWrapper> {
                               fontFamily: FONTFAMILY_NAME,
                               primaryColor: fiberchatgreen,
                               primaryColorLight: fiberchatgreen,
-                              indicatorColor: fiberchatLightGreen),
+                              indicatorColor: fiberchatLightBlue),
                           debugShowCheckedModeBanner: false,
                           home: Splashscreen()),
                     );

@@ -287,7 +287,7 @@ class _BroadcastDetailsState extends State<BroadcastDetails> {
                             ))
                       ],
                       backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                          ? fiberchatDeepGreen
+                          ? fiberchatDeepBlue
                           : fiberchatWhite,
                       title: InkWell(
                         onTap: () {},
@@ -720,7 +720,7 @@ class _BroadcastDetailsState extends State<BroadcastDetails> {
                                                         child: Icon(Icons.add,
                                                             size: 19,
                                                             color:
-                                                                fiberchatLightGreen),
+                                                                fiberchatLightBlue),
                                                       ),
                                                       // Text(
                                                       //   'ADD ',

@@ -60,7 +60,7 @@ class _SecurityState extends State<Security> {
                 )),
             elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,
             backgroundColor: DESIGN_TYPE == Themetype.whatsapp
-                ? fiberchatDeepGreen
+                ? fiberchatDeepBlue
                 : fiberchatWhite,
             title: Text(
               widget.title!,
@@ -77,7 +77,7 @@ class _SecurityState extends State<Security> {
             child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: myElevatedButton(
-                  color: fiberchatLightGreen,
+                  color: fiberchatLightBlue,
                   child: Text(
                     getTranslated(this.context, 'done'),
                     style: TextStyle(color: Colors.white),
@@ -160,7 +160,7 @@ class _SecurityState extends State<Security> {
                           trailing: Icon(Icons.check_circle,
                               color: _passCode == null
                                   ? fiberchatGrey
-                                  : fiberchatLightGreen,
+                                  : fiberchatLightBlue,
                               size: 35),
                           title: myElevatedButton(
                             color: fiberchatgreen,

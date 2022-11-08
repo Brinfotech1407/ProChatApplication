@@ -52,7 +52,7 @@ class PhotoViewWrapper extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           heroTag: "dfs32231t834",
-          backgroundColor: fiberchatLightGreen,
+          backgroundColor: fiberchatLightBlue,
           onPressed: () async {
             GalleryDownloader.saveNetworkImage(
                 context, imageUrl, false, "", keyloader);
