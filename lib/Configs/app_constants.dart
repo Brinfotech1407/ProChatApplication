@@ -10,7 +10,7 @@ import 'Enum.dart';
 final fiberchatBlack = new Color(0xFF1E1E1E);
 final fiberchatBlue = new Color(0xFF02ac88);
 final fiberchatDeepBlue = new Color(0xFF4169E1);
-final fiberchatLightBlue = new Color(0xFF87CEFA);
+final fiberchatLightBlue = new Color(0xFF0096FF);
 final fiberchatgreen = new Color(0xFF098b74);
 final fiberchatteagreen = new Color(0xFFe9fedf);
 final fiberchatWhite = Colors.white;
@@ -75,7 +75,7 @@ const GiphyAPIKey =
 
 //*--App Configurations---
 const Appname =
-    'Fiberchat'; //app name shown evrywhere with the app where required
+    'Prochat'; //app name shown evrywhere with the app where required
 const DEFAULT_COUNTTRYCODE_ISO =
     'US'; //default country ISO 2 letter for login screen
 const DEFAULT_COUNTTRYCODE_NUMBER =
