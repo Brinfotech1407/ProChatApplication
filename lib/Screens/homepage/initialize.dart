@@ -783,8 +783,8 @@ class _InitializeState extends State<Initialize> {
                                                             LoginScreen(
                                                               prefs: widget.prefs,
                                                               accountApprovalMessage:'' ,
-                                                              isaccountapprovalbyadminneeded: true,
-                                                              isblocknewlogins: true,
+                                                              isaccountapprovalbyadminneeded: false,
+                                                              isblocknewlogins: false,
                                                               title: getTranslated(context, 'signin'),
                                                             ))));
                                               },
