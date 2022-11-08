@@ -208,6 +208,545 @@ class HomepageState extends State<Homepage>
   //   });
   // }
 
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    final observer = Provider.of<Observer>(context, listen: true);
+    return isNotAllowEmulator == true
+        ? errorScreen(
+        'Emulator Not Allowed.', ' Please use any real device & Try again.')
+        : accountstatus != null
+        ? errorScreen(accountstatus, accountactionmessage)
+        : ConnectWithAdminApp == true && maintainanceMessage != null
+        ? errorScreen('App Under maintainance', maintainanceMessage)
+        : ConnectWithAdminApp == false && isFetching == false
+        ? Splashscreen(
+      isShowOnlySpinner: widget.isShowOnlyCircularSpin,
+    )
+        : PickupLayout(
+        prefs: widget.prefs!,
+        scaffold: Fiberchat.getNTPWrappedWidget(WillPopScope(
+          onWillPop: onWillPop,
+          child: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                  elevation: DESIGN_TYPE == Themetype.messenger
+                      ? 0.4
+                      : 1,
+                  backgroundColor:
+                  DESIGN_TYPE == Themetype.whatsapp
+                      ? fiberchatDeepGreen
+                      : fiberchatWhite,
+                  title: Text(
+                    Appname,
+                    style: TextStyle(
+                      color: DESIGN_TYPE == Themetype.whatsapp
+                          ? fiberchatWhite
+                          : fiberchatBlack,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                   /*title: Align(
+                     alignment: Alignment.centerLeft,
+                     child: Image.asset(
+                         'assets/images/applogo.png',
+                         height: 80,
+                         width: 140,
+                         fit: BoxFit.fitHeight),
+                   ),*/
+                   titleSpacing: 14,
+                  actions: <Widget>[
+//
+                    Language.languageList().length < 2
+                        ? SizedBox()
+                        : Container(
+                      alignment: Alignment.centerRight,
+                      margin: EdgeInsets.only(top: 4),
+                      width: 120,
+                      child: DropdownButton<Language>(
+                        // iconSize: 40,
+
+                        isExpanded: true,
+                        underline: SizedBox(),
+                        icon: Container(
+                          width: 60,
+                          height: 30,
+                          child: Row(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.language_outlined,
+                                color: DESIGN_TYPE ==
+                                    Themetype.whatsapp
+                                    ? fiberchatWhite
+                                    : fiberchatBlack
+                                    .withOpacity(0.7),
+                                size: 22,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                                color: DESIGN_TYPE ==
+                                    Themetype.whatsapp
+                                    ? fiberchatLightGreen
+                                    : fiberchatLightGreen,
+                                size: 27,
+                              )
+                            ],
+                          ),
+                        ),
+                        onChanged: (Language? language) {
+                          _changeLanguage(language!);
+                        },
+                        items: Language.languageList()
+                            .map<
+                            DropdownMenuItem<
+                                Language>>(
+                              (e) => DropdownMenuItem<
+                              Language>(
+                            value: e,
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .end,
+                              children: <Widget>[
+                                Text(
+                                  IsShowLanguageNameInNativeLanguage ==
+                                      true
+                                      ? '' +
+                                      e.name +
+                                      '  ' +
+                                      e.flag +
+                                      ' '
+                                      : ' ' +
+                                      e.languageNameInEnglish +
+                                      '  ' +
+                                      e.flag +
+                                      ' ',
+                                  style: TextStyle(
+                                      fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                            .toList(),
+                      ),
+                    ),
+// // //---- All localizations settings----
+                    PopupMenuButton(
+                        padding: EdgeInsets.all(0),
+                        icon: Padding(
+                          padding:
+                          const EdgeInsets.only(right: 1),
+                          child: Icon(
+                            Icons.more_vert_outlined,
+                            color: DESIGN_TYPE ==
+                                Themetype.whatsapp
+                                ? fiberchatWhite
+                                : fiberchatBlack,
+                          ),
+                        ),
+                        color: fiberchatWhite,
+                        onSelected: (dynamic val) async {
+                          switch (val) {
+                            case 'rate':
+                              break;
+                            case 'tutorials':
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return SimpleDialog(
+                                      contentPadding:
+                                      EdgeInsets.all(20),
+                                      children: <Widget>[
+                                        ListTile(
+                                          title: Text(
+                                            getTranslated(
+                                                context,
+                                                'swipeview'),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        ListTile(
+                                            title: Text(
+                                              getTranslated(context,
+                                                  'swipehide'),
+                                            )),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        ListTile(
+                                            title: Text(
+                                              getTranslated(context,
+                                                  'lp_setalias'),
+                                            ))
+                                      ],
+                                    );
+                                  });
+                              break;
+                            case 'privacy':
+                              break;
+                            case 'tnc':
+                              break;
+                            case 'share':
+                              break;
+                            case 'notifications':
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                          AllNotifications(
+                                            prefs:
+                                            widget.prefs!,
+                                          )));
+
+                              break;
+                            case 'feedback':
+                              break;
+                            case 'logout':
+                              break;
+                            case 'settings':
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder:
+                                          (context) =>
+                                          SettingsOption(
+                                            prefs: widget
+                                                .prefs!,
+                                            onTapLogout:
+                                                () async {
+                                              await logout(
+                                                  context);
+                                            },
+                                            onTapEditProfile:
+                                                () {
+                                              Navigator.push(
+                                                  context,
+                                                  new MaterialPageRoute(
+                                                      builder: (context) => ProfileSetting(
+                                                        prefs: widget.prefs!,
+                                                        biometricEnabled: biometricEnabled,
+                                                        type: Fiberchat.getAuthenticationType(biometricEnabled, _cachedModel),
+                                                      )));
+                                            },
+                                            currentUserNo:
+                                            widget
+                                                .currentUserNo!,
+                                            biometricEnabled:
+                                            biometricEnabled,
+                                            type: Fiberchat
+                                                .getAuthenticationType(
+                                                biometricEnabled,
+                                                _cachedModel),
+                                          )));
+
+                              break;
+                            case 'group':
+                              if (observer
+                                  .isAllowCreatingGroups ==
+                                  false) {
+                                Fiberchat.showRationale(
+                                    getTranslated(this.context,
+                                        'disabled'));
+                              } else {
+                                final AvailableContactsProvider
+                                dbcontactsProvider =
+                                Provider.of<
+                                    AvailableContactsProvider>(
+                                    context,
+                                    listen: false);
+                                dbcontactsProvider
+                                    .fetchContacts(
+                                    context,
+                                    _cachedModel,
+                                    widget.currentUserNo!,
+                                    widget.prefs!);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddContactsToGroup(
+                                              currentUserNo: widget
+                                                  .currentUserNo,
+                                              model:
+                                              _cachedModel,
+                                              biometricEnabled:
+                                              false,
+                                              prefs:
+                                              widget.prefs!,
+                                              isAddingWhileCreatingGroup:
+                                              true,
+                                            )));
+                              }
+                              break;
+
+                            case 'broadcast':
+                              if (observer
+                                  .isAllowCreatingBroadcasts ==
+                                  false) {
+                                Fiberchat.showRationale(
+                                    getTranslated(this.context,
+                                        'disabled'));
+                              } else {
+                                final AvailableContactsProvider
+                                dbcontactsProvider =
+                                Provider.of<
+                                    AvailableContactsProvider>(
+                                    context,
+                                    listen: false);
+                                dbcontactsProvider
+                                    .fetchContacts(
+                                    context,
+                                    _cachedModel,
+                                    widget.currentUserNo!,
+                                    widget.prefs!);
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddContactsToBroadcast(
+                                              currentUserNo: widget
+                                                  .currentUserNo,
+                                              model:
+                                              _cachedModel,
+                                              biometricEnabled:
+                                              false,
+                                              prefs:
+                                              widget.prefs!,
+                                              isAddingWhileCreatingBroadcast:
+                                              true,
+                                            )));
+                              }
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) =>
+                        <PopupMenuItem<String>>[
+                          PopupMenuItem<String>(
+                              value: 'group',
+                              child: Text(
+                                getTranslated(
+                                    context, 'newgroup'),
+                              )),
+                          PopupMenuItem<String>(
+                              value: 'broadcast',
+                              child: Text(
+                                getTranslated(context,
+                                    'newbroadcast'),
+                              )),
+                          PopupMenuItem<String>(
+                            value: 'tutorials',
+                            child: Text(
+                              getTranslated(
+                                  context, 'tutorials'),
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                              value: 'settings',
+                              child: Text(
+                                getTranslated(context,
+                                    'settingsoption'),
+                              )),
+                        ]),
+                  ],
+                  bottom: TabBar(
+                    isScrollable: IsAdaptiveWidthTab == true
+                        ? true
+                        : DEFAULT_LANGUAGE_FILE_CODE == "en" &&
+                        (widget.prefs?.getString(
+                            LAGUAGE_CODE) ==
+                            null ||
+                            widget.prefs?.getString(
+                                LAGUAGE_CODE) ==
+                                "en")
+                        ? false
+                        : widget.prefs?.getString(
+                        LAGUAGE_CODE) ==
+                        'pt' ||
+                        widget.prefs
+                            ?.getString(
+                            LAGUAGE_CODE) ==
+                            'my' ||
+                        widget
+                            .prefs
+                            ?.getString(
+                            LAGUAGE_CODE) ==
+                            'nl' ||
+                        widget
+                            .prefs
+                            ?.getString(
+                            LAGUAGE_CODE) ==
+                            'vi' ||
+                        widget
+                            .prefs
+                            ?.getString(
+                            LAGUAGE_CODE) ==
+                            'tr' ||
+                        widget.prefs?.getString(
+                            LAGUAGE_CODE) ==
+                            'id' ||
+                        widget.prefs?.getString(
+                            LAGUAGE_CODE) ==
+                            'ka' ||
+                        widget.prefs?.getString(
+                            LAGUAGE_CODE) ==
+                            'fr' ||
+                        widget.prefs?.getString(
+                            LAGUAGE_CODE) ==
+                            'es'
+                        ? true
+                        : false,
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: FONTFAMILY_NAME,
+                    ),
+                    unselectedLabelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: FONTFAMILY_NAME,
+                    ),
+                    labelColor:
+                    DESIGN_TYPE == Themetype.whatsapp
+                        ? fiberchatWhite
+                        : fiberchatBlack,
+                    unselectedLabelColor:
+                    DESIGN_TYPE == Themetype.whatsapp
+                        ? fiberchatWhite.withOpacity(0.6)
+                        : fiberchatBlack.withOpacity(0.6),
+                    indicatorWeight: 3,
+                    indicatorColor:
+                    DESIGN_TYPE == Themetype.whatsapp
+                        ? fiberchatWhite
+                        : fiberchatgreen,
+                    controller:
+                    observer.isCallFeatureTotallyHide ==
+                        false
+                        ? controllerIfcallallowed
+                        : controllerIfcallNotallowed,
+                    tabs: observer.isCallFeatureTotallyHide ==
+                        false
+                        ? <Widget>[
+                      Tab(
+                        child: Text(
+                          getTranslated(context, 'chats'),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily:
+                              FONTFAMILY_NAME),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          getTranslated(
+                              context, 'status'),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily:
+                              FONTFAMILY_NAME),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          getTranslated(context, 'calls'),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily:
+                              FONTFAMILY_NAME),
+                        ),
+                      ),
+                    ]
+                        : <Widget>[
+                      Tab(
+                        child: Text(
+                          getTranslated(context, 'chats'),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily:
+                              FONTFAMILY_NAME),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          getTranslated(
+                              context, 'status'),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily:
+                              FONTFAMILY_NAME),
+                        ),
+                      ),
+                    ],
+                  )),
+              body: TabBarView(
+                controller:
+                observer.isCallFeatureTotallyHide == false
+                    ? controllerIfcallallowed
+                    : controllerIfcallNotallowed,
+                children: observer.isCallFeatureTotallyHide ==
+                    false
+                    ? <Widget>[
+                  IsShowLastMessageInChatTileWithTime ==
+                      false
+                      ? RecentChatsWithoutLastMessage(
+                      prefs: widget.prefs!,
+                      currentUserNo:
+                      widget.currentUserNo,
+                      isSecuritySetupDone: false)
+                      : RecentChats(
+                      prefs: widget.prefs!,
+                      currentUserNo:
+                      widget.currentUserNo,
+                      isSecuritySetupDone: false),
+                  Status(
+                      currentUserFullname: userFullname,
+                      currentUserPhotourl: userPhotourl,
+                      phoneNumberVariants:
+                      this.phoneNumberVariants,
+                      currentUserNo: widget.currentUserNo,
+                      model: _cachedModel,
+                      biometricEnabled: biometricEnabled,
+                      prefs: widget.prefs!),
+                  CallHistory(
+                    model: _cachedModel,
+                    userphone: widget.currentUserNo,
+                    prefs: widget.prefs!,
+                  ),
+                ]
+                    : <Widget>[
+                  IsShowLastMessageInChatTileWithTime ==
+                      false
+                      ? RecentChatsWithoutLastMessage(
+                      prefs: widget.prefs!,
+                      currentUserNo:
+                      widget.currentUserNo,
+                      isSecuritySetupDone: false)
+                      : RecentChats(
+                      prefs: widget.prefs!,
+                      currentUserNo:
+                      widget.currentUserNo,
+                      isSecuritySetupDone: false),
+                  Status(
+                      currentUserFullname: userFullname,
+                      currentUserPhotourl: userPhotourl,
+                      phoneNumberVariants:
+                      this.phoneNumberVariants,
+                      currentUserNo: widget.currentUserNo,
+                      model: _cachedModel,
+                      biometricEnabled: biometricEnabled,
+                      prefs: widget.prefs!),
+                ],
+              )),
+        )));
+  }
+
   incrementSessionCount(String myphone) async {
     final StatusProvider statusProvider =
         Provider.of<StatusProvider>(context, listen: false);
@@ -1143,544 +1682,6 @@ class HomepageState extends State<Homepage>
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-
-    final observer = Provider.of<Observer>(context, listen: true);
-    return isNotAllowEmulator == true
-        ? errorScreen(
-            'Emulator Not Allowed.', ' Please use any real device & Try again.')
-        : accountstatus != null
-            ? errorScreen(accountstatus, accountactionmessage)
-            : ConnectWithAdminApp == true && maintainanceMessage != null
-                ? errorScreen('App Under maintainance', maintainanceMessage)
-                : ConnectWithAdminApp == true && isFetching == true
-                    ? Splashscreen(
-                        isShowOnlySpinner: widget.isShowOnlyCircularSpin,
-                      )
-                    : PickupLayout(
-                        prefs: widget.prefs!,
-                        scaffold: Fiberchat.getNTPWrappedWidget(WillPopScope(
-                          onWillPop: onWillPop,
-                          child: Scaffold(
-                              backgroundColor: Colors.white,
-                              appBar: AppBar(
-                                  elevation: DESIGN_TYPE == Themetype.messenger
-                                      ? 0.4
-                                      : 1,
-                                  backgroundColor:
-                                      DESIGN_TYPE == Themetype.whatsapp
-                                          ? fiberchatDeepGreen
-                                          : fiberchatWhite,
-                                  title: Text(
-                                    Appname,
-                                    style: TextStyle(
-                                      color: DESIGN_TYPE == Themetype.whatsapp
-                                          ? fiberchatWhite
-                                          : fiberchatBlack,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  // title: Align(
-                                  //   alignment: Alignment.centerLeft,
-                                  //   child: Image.asset(
-                                  //       'assets/images/applogo.png',
-                                  //       height: 80,
-                                  //       width: 140,
-                                  //       fit: BoxFit.fitHeight),
-                                  // ),
-                                  // titleSpacing: 14,
-                                  actions: <Widget>[
-//
-                                    Language.languageList().length < 2
-                                        ? SizedBox()
-                                        : Container(
-                                            alignment: Alignment.centerRight,
-                                            margin: EdgeInsets.only(top: 4),
-                                            width: 120,
-                                            child: DropdownButton<Language>(
-                                              // iconSize: 40,
-
-                                              isExpanded: true,
-                                              underline: SizedBox(),
-                                              icon: Container(
-                                                width: 60,
-                                                height: 30,
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.language_outlined,
-                                                      color: DESIGN_TYPE ==
-                                                              Themetype.whatsapp
-                                                          ? fiberchatWhite
-                                                          : fiberchatBlack
-                                                              .withOpacity(0.7),
-                                                      size: 22,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Icon(
-                                                      Icons.keyboard_arrow_down,
-                                                      color: DESIGN_TYPE ==
-                                                              Themetype.whatsapp
-                                                          ? fiberchatLightGreen
-                                                          : fiberchatLightGreen,
-                                                      size: 27,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              onChanged: (Language? language) {
-                                                _changeLanguage(language!);
-                                              },
-                                              items: Language.languageList()
-                                                  .map<
-                                                      DropdownMenuItem<
-                                                          Language>>(
-                                                    (e) => DropdownMenuItem<
-                                                        Language>(
-                                                      value: e,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            IsShowLanguageNameInNativeLanguage ==
-                                                                    true
-                                                                ? '' +
-                                                                    e.name +
-                                                                    '  ' +
-                                                                    e.flag +
-                                                                    ' '
-                                                                : ' ' +
-                                                                    e.languageNameInEnglish +
-                                                                    '  ' +
-                                                                    e.flag +
-                                                                    ' ',
-                                                            style: TextStyle(
-                                                                fontSize: 15),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                  .toList(),
-                                            ),
-                                          ),
-// // //---- All localizations settings----
-                                    PopupMenuButton(
-                                        padding: EdgeInsets.all(0),
-                                        icon: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 1),
-                                          child: Icon(
-                                            Icons.more_vert_outlined,
-                                            color: DESIGN_TYPE ==
-                                                    Themetype.whatsapp
-                                                ? fiberchatWhite
-                                                : fiberchatBlack,
-                                          ),
-                                        ),
-                                        color: fiberchatWhite,
-                                        onSelected: (dynamic val) async {
-                                          switch (val) {
-                                            case 'rate':
-                                              break;
-                                            case 'tutorials':
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return SimpleDialog(
-                                                      contentPadding:
-                                                          EdgeInsets.all(20),
-                                                      children: <Widget>[
-                                                        ListTile(
-                                                          title: Text(
-                                                            getTranslated(
-                                                                context,
-                                                                'swipeview'),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        ListTile(
-                                                            title: Text(
-                                                          getTranslated(context,
-                                                              'swipehide'),
-                                                        )),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        ListTile(
-                                                            title: Text(
-                                                          getTranslated(context,
-                                                              'lp_setalias'),
-                                                        ))
-                                                      ],
-                                                    );
-                                                  });
-                                              break;
-                                            case 'privacy':
-                                              break;
-                                            case 'tnc':
-                                              break;
-                                            case 'share':
-                                              break;
-                                            case 'notifications':
-                                              Navigator.push(
-                                                  context,
-                                                  new MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          AllNotifications(
-                                                            prefs:
-                                                                widget.prefs!,
-                                                          )));
-
-                                              break;
-                                            case 'feedback':
-                                              break;
-                                            case 'logout':
-                                              break;
-                                            case 'settings':
-                                              Navigator.push(
-                                                  context,
-                                                  new MaterialPageRoute(
-                                                      builder:
-                                                          (context) =>
-                                                              SettingsOption(
-                                                                prefs: widget
-                                                                    .prefs!,
-                                                                onTapLogout:
-                                                                    () async {
-                                                                  await logout(
-                                                                      context);
-                                                                },
-                                                                onTapEditProfile:
-                                                                    () {
-                                                                  Navigator.push(
-                                                                      context,
-                                                                      new MaterialPageRoute(
-                                                                          builder: (context) => ProfileSetting(
-                                                                                prefs: widget.prefs!,
-                                                                                biometricEnabled: biometricEnabled,
-                                                                                type: Fiberchat.getAuthenticationType(biometricEnabled, _cachedModel),
-                                                                              )));
-                                                                },
-                                                                currentUserNo:
-                                                                    widget
-                                                                        .currentUserNo!,
-                                                                biometricEnabled:
-                                                                    biometricEnabled,
-                                                                type: Fiberchat
-                                                                    .getAuthenticationType(
-                                                                        biometricEnabled,
-                                                                        _cachedModel),
-                                                              )));
-
-                                              break;
-                                            case 'group':
-                                              if (observer
-                                                      .isAllowCreatingGroups ==
-                                                  false) {
-                                                Fiberchat.showRationale(
-                                                    getTranslated(this.context,
-                                                        'disabled'));
-                                              } else {
-                                                final AvailableContactsProvider
-                                                    dbcontactsProvider =
-                                                    Provider.of<
-                                                            AvailableContactsProvider>(
-                                                        context,
-                                                        listen: false);
-                                                dbcontactsProvider
-                                                    .fetchContacts(
-                                                        context,
-                                                        _cachedModel,
-                                                        widget.currentUserNo!,
-                                                        widget.prefs!);
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AddContactsToGroup(
-                                                              currentUserNo: widget
-                                                                  .currentUserNo,
-                                                              model:
-                                                                  _cachedModel,
-                                                              biometricEnabled:
-                                                                  false,
-                                                              prefs:
-                                                                  widget.prefs!,
-                                                              isAddingWhileCreatingGroup:
-                                                                  true,
-                                                            )));
-                                              }
-                                              break;
-
-                                            case 'broadcast':
-                                              if (observer
-                                                      .isAllowCreatingBroadcasts ==
-                                                  false) {
-                                                Fiberchat.showRationale(
-                                                    getTranslated(this.context,
-                                                        'disabled'));
-                                              } else {
-                                                final AvailableContactsProvider
-                                                    dbcontactsProvider =
-                                                    Provider.of<
-                                                            AvailableContactsProvider>(
-                                                        context,
-                                                        listen: false);
-                                                dbcontactsProvider
-                                                    .fetchContacts(
-                                                        context,
-                                                        _cachedModel,
-                                                        widget.currentUserNo!,
-                                                        widget.prefs!);
-                                                await Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AddContactsToBroadcast(
-                                                              currentUserNo: widget
-                                                                  .currentUserNo,
-                                                              model:
-                                                                  _cachedModel,
-                                                              biometricEnabled:
-                                                                  false,
-                                                              prefs:
-                                                                  widget.prefs!,
-                                                              isAddingWhileCreatingBroadcast:
-                                                                  true,
-                                                            )));
-                                              }
-                                              break;
-                                          }
-                                        },
-                                        itemBuilder: (context) =>
-                                            <PopupMenuItem<String>>[
-                                              PopupMenuItem<String>(
-                                                  value: 'group',
-                                                  child: Text(
-                                                    getTranslated(
-                                                        context, 'newgroup'),
-                                                  )),
-                                              PopupMenuItem<String>(
-                                                  value: 'broadcast',
-                                                  child: Text(
-                                                    getTranslated(context,
-                                                        'newbroadcast'),
-                                                  )),
-                                              PopupMenuItem<String>(
-                                                value: 'tutorials',
-                                                child: Text(
-                                                  getTranslated(
-                                                      context, 'tutorials'),
-                                                ),
-                                              ),
-                                              PopupMenuItem<String>(
-                                                  value: 'settings',
-                                                  child: Text(
-                                                    getTranslated(context,
-                                                        'settingsoption'),
-                                                  )),
-                                            ]),
-                                  ],
-                                  bottom: TabBar(
-                                    isScrollable: IsAdaptiveWidthTab == true
-                                        ? true
-                                        : DEFAULT_LANGUAGE_FILE_CODE == "en" &&
-                                                (widget.prefs?.getString(
-                                                            LAGUAGE_CODE) ==
-                                                        null ||
-                                                    widget.prefs?.getString(
-                                                            LAGUAGE_CODE) ==
-                                                        "en")
-                                            ? false
-                                            : widget.prefs?.getString(
-                                                            LAGUAGE_CODE) ==
-                                                        'pt' ||
-                                                    widget.prefs
-                                                            ?.getString(
-                                                                LAGUAGE_CODE) ==
-                                                        'my' ||
-                                                    widget
-                                                            .prefs
-                                                            ?.getString(
-                                                                LAGUAGE_CODE) ==
-                                                        'nl' ||
-                                                    widget
-                                                            .prefs
-                                                            ?.getString(
-                                                                LAGUAGE_CODE) ==
-                                                        'vi' ||
-                                                    widget
-                                                            .prefs
-                                                            ?.getString(
-                                                                LAGUAGE_CODE) ==
-                                                        'tr' ||
-                                                    widget.prefs?.getString(
-                                                            LAGUAGE_CODE) ==
-                                                        'id' ||
-                                                    widget.prefs?.getString(
-                                                            LAGUAGE_CODE) ==
-                                                        'ka' ||
-                                                    widget.prefs?.getString(
-                                                            LAGUAGE_CODE) ==
-                                                        'fr' ||
-                                                    widget.prefs?.getString(
-                                                            LAGUAGE_CODE) ==
-                                                        'es'
-                                                ? true
-                                                : false,
-                                    labelStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: FONTFAMILY_NAME,
-                                    ),
-                                    unselectedLabelStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: FONTFAMILY_NAME,
-                                    ),
-                                    labelColor:
-                                        DESIGN_TYPE == Themetype.whatsapp
-                                            ? fiberchatWhite
-                                            : fiberchatBlack,
-                                    unselectedLabelColor:
-                                        DESIGN_TYPE == Themetype.whatsapp
-                                            ? fiberchatWhite.withOpacity(0.6)
-                                            : fiberchatBlack.withOpacity(0.6),
-                                    indicatorWeight: 3,
-                                    indicatorColor:
-                                        DESIGN_TYPE == Themetype.whatsapp
-                                            ? fiberchatWhite
-                                            : fiberchatgreen,
-                                    controller:
-                                        observer.isCallFeatureTotallyHide ==
-                                                false
-                                            ? controllerIfcallallowed
-                                            : controllerIfcallNotallowed,
-                                    tabs: observer.isCallFeatureTotallyHide ==
-                                            false
-                                        ? <Widget>[
-                                            Tab(
-                                              child: Text(
-                                                getTranslated(context, 'chats'),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                        FONTFAMILY_NAME),
-                                              ),
-                                            ),
-                                            Tab(
-                                              child: Text(
-                                                getTranslated(
-                                                    context, 'status'),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                        FONTFAMILY_NAME),
-                                              ),
-                                            ),
-                                            Tab(
-                                              child: Text(
-                                                getTranslated(context, 'calls'),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                        FONTFAMILY_NAME),
-                                              ),
-                                            ),
-                                          ]
-                                        : <Widget>[
-                                            Tab(
-                                              child: Text(
-                                                getTranslated(context, 'chats'),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                        FONTFAMILY_NAME),
-                                              ),
-                                            ),
-                                            Tab(
-                                              child: Text(
-                                                getTranslated(
-                                                    context, 'status'),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                        FONTFAMILY_NAME),
-                                              ),
-                                            ),
-                                          ],
-                                  )),
-                              body: TabBarView(
-                                controller:
-                                    observer.isCallFeatureTotallyHide == false
-                                        ? controllerIfcallallowed
-                                        : controllerIfcallNotallowed,
-                                children: observer.isCallFeatureTotallyHide ==
-                                        false
-                                    ? <Widget>[
-                                        IsShowLastMessageInChatTileWithTime ==
-                                                false
-                                            ? RecentChatsWithoutLastMessage(
-                                                prefs: widget.prefs!,
-                                                currentUserNo:
-                                                    widget.currentUserNo,
-                                                isSecuritySetupDone: false)
-                                            : RecentChats(
-                                                prefs: widget.prefs!,
-                                                currentUserNo:
-                                                    widget.currentUserNo,
-                                                isSecuritySetupDone: false),
-                                        Status(
-                                            currentUserFullname: userFullname,
-                                            currentUserPhotourl: userPhotourl,
-                                            phoneNumberVariants:
-                                                this.phoneNumberVariants,
-                                            currentUserNo: widget.currentUserNo,
-                                            model: _cachedModel,
-                                            biometricEnabled: biometricEnabled,
-                                            prefs: widget.prefs!),
-                                        CallHistory(
-                                          model: _cachedModel,
-                                          userphone: widget.currentUserNo,
-                                          prefs: widget.prefs!,
-                                        ),
-                                      ]
-                                    : <Widget>[
-                                        IsShowLastMessageInChatTileWithTime ==
-                                                false
-                                            ? RecentChatsWithoutLastMessage(
-                                                prefs: widget.prefs!,
-                                                currentUserNo:
-                                                    widget.currentUserNo,
-                                                isSecuritySetupDone: false)
-                                            : RecentChats(
-                                                prefs: widget.prefs!,
-                                                currentUserNo:
-                                                    widget.currentUserNo,
-                                                isSecuritySetupDone: false),
-                                        Status(
-                                            currentUserFullname: userFullname,
-                                            currentUserPhotourl: userPhotourl,
-                                            phoneNumberVariants:
-                                                this.phoneNumberVariants,
-                                            currentUserNo: widget.currentUserNo,
-                                            model: _cachedModel,
-                                            biometricEnabled: biometricEnabled,
-                                            prefs: widget.prefs!),
-                                      ],
-                              )),
-                        )));
-  }
 }
 
 Future<dynamic> myBackgroundMessageHandlerAndroid(RemoteMessage message) async {

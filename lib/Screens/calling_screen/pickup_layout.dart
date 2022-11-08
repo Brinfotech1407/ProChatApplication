@@ -28,10 +28,10 @@ class PickupLayout extends StatelessWidget {
 
     return observer.isOngoingCall == true
         ? scaffold
-        : (userProvider.getUser != null)
-            ? StreamBuilder<DocumentSnapshot>(
+        : /*(userProvider.getUser != null)
+            ?*/ StreamBuilder<DocumentSnapshot>(
                 stream:
-                    callMethods.callStream(phone: userProvider.getUser!.phone),
+                    callMethods.callStream(phone:'9999999999'),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.data() != null) {
                     Call call = Call.fromMap(
@@ -47,7 +47,7 @@ class PickupLayout extends StatelessWidget {
                   }
                   return scaffold;
                 },
-              )
-            : Splashscreen();
+              );
+            //: Splashscreen();
   }
 }
