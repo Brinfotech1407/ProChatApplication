@@ -3,10 +3,17 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:prochat/Configs/Dbkeys.dart';
 import 'package:prochat/Configs/Dbpaths.dart';
 import 'package:prochat/Configs/app_constants.dart';
+import 'package:prochat/Models/DataModel.dart';
+import 'package:prochat/Models/E2EE/e2ee.dart' as e2ee;
 import 'package:prochat/Screens/Broadcast/AddContactsToBroadcast.dart';
 import 'package:prochat/Screens/Groups/AddContactsToGroup.dart';
 import 'package:prochat/Screens/chat_screen/utils/aes_encryption.dart';
@@ -18,21 +25,15 @@ import 'package:prochat/Services/Admob/admob.dart';
 import 'package:prochat/Services/Providers/BroadcastProvider.dart';
 import 'package:prochat/Services/Providers/GroupChatProvider.dart';
 import 'package:prochat/Services/Providers/Observer.dart';
-import 'package:prochat/Services/localization/language_constants.dart';
-import 'package:prochat/Models/DataModel.dart';
 import 'package:prochat/Services/Providers/user_provider.dart';
+import 'package:prochat/Services/localization/language_constants.dart';
 import 'package:prochat/Utils/crc.dart';
+import 'package:prochat/Utils/late_load.dart';
 import 'package:prochat/Utils/setStatusBarColor.dart';
 import 'package:prochat/Utils/utils.dart';
-import 'package:prochat/Utils/late_load.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:prochat/Models/E2EE/e2ee.dart' as e2ee;
-import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:shared_preferences/shared_preferences.dart';
 
 Color darkGrey = Colors.blueGrey[700]!;
 Color lightGrey = Colors.blueGrey[400]!;
@@ -47,6 +48,7 @@ class RecentChats extends StatefulWidget {
   final String? currentUserNo;
   final SharedPreferences prefs;
   final bool isSecuritySetupDone;
+
   @override
   State createState() =>
       new RecentChatsState(currentUserNo: this.currentUserNo);
@@ -77,6 +79,7 @@ class RecentChatsState extends State<RecentChats> {
   late encrypt.Encrypter cryptor;
   final iv = encrypt.IV.fromLength(8);
   String? privateKey, sharedSecret;
+
   Future<String?> readPersonalMessage(
       peer, String inputMssg, bool isAESencryption) async {
     try {
@@ -229,7 +232,10 @@ class RecentChatsState extends State<RecentChats> {
                         prefs: widget.prefs,
                         readFunction: readPersonalMessage(
                             realTimePeerData,
-                            messages.last[Dbkeys.content],
+                            messages.last.data().containsKey(Dbkeys.content)
+                                ? messages.last[Dbkeys.content]
+                                : '',
+                            // messages.last[Dbkeys.content],
                             messages.last
                                 .data()
                                 .containsKey(Dbkeys.latestEncrypted)),

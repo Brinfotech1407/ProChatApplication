@@ -2,90 +2,90 @@
 
 import 'dart:async';
 import 'dart:convert';
-
 import 'dart:io';
-import 'package:prochat/Services/Providers/AvailableContactsProvider.dart';
-import 'package:prochat/Utils/custom_url_launcher.dart';
-import 'package:prochat/Utils/setStatusBarColor.dart';
-import 'package:prochat/widgets/AllinOneCameraGalleryImageVideoPicker/AllinOneCameraGalleryImageVideoPicker.dart';
-import 'package:prochat/widgets/CameraGalleryImagePicker/camera_image_gallery_picker.dart';
-import 'package:prochat/widgets/CameraGalleryImagePicker/multiMediaPicker.dart';
-import 'package:prochat/widgets/DownloadManager/download_all_file_type.dart';
-import 'package:prochat/widgets/VideoEditor/video_editor.dart';
-import 'package:path/path.dart' as p;
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' as emojipic;
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:prochat/Configs/app_constants.dart';
-import 'package:prochat/Configs/optional_constants.dart';
-import 'package:prochat/Screens/auth_screens/login.dart';
-import 'package:prochat/Screens/chat_screen/utils/aes_encryption.dart';
-import 'package:prochat/Screens/chat_screen/utils/uploadMediaWithProgress.dart';
-import 'package:prochat/Screens/contact_screens/SelectContactsToForward.dart';
-import 'package:prochat/Screens/security_screens/security.dart';
-import 'package:prochat/Services/Admob/admob.dart';
-import 'package:prochat/Utils/emoji_detect.dart';
-import 'package:prochat/Utils/mime_type.dart';
-import 'package:prochat/main.dart';
-import 'package:prochat/widgets/CountryPicker/CountryCode.dart';
-import 'package:prochat/Configs/Dbkeys.dart';
-import 'package:prochat/Configs/Dbpaths.dart';
-import 'package:prochat/Screens/chat_screen/utils/deleteChatMedia.dart';
-import 'package:prochat/Screens/privacypolicy&TnC/PdfViewFromCachedUrl.dart';
-import 'package:prochat/Services/Providers/Observer.dart';
-import 'package:prochat/widgets/MultiDocumentPicker/multiDocumentPicker.dart';
-import 'package:prochat/widgets/MyElevatedButton/MyElevatedButton.dart';
-import 'package:prochat/widgets/SoundPlayer/SoundPlayerPro.dart';
-import 'package:prochat/Services/Providers/currentchat_peer.dart';
-import 'package:prochat/Services/localization/language_constants.dart';
-import 'package:prochat/Screens/call_history/callhistory.dart';
-import 'package:prochat/Screens/chat_screen/utils/audioPlayback.dart';
-import 'package:prochat/Screens/chat_screen/utils/message.dart';
-import 'package:prochat/Screens/contact_screens/ContactsSelect.dart';
-import 'package:prochat/Models/DataModel.dart';
-import 'package:prochat/Screens/chat_screen/utils/photo_view.dart';
-import 'package:prochat/Screens/profile_settings/profile_view.dart';
-import 'package:prochat/Services/Providers/seen_provider.dart';
-import 'package:prochat/Services/Providers/seen_state.dart';
-import 'package:prochat/Screens/calling_screen/pickup_layout.dart';
-import 'package:prochat/Utils/call_utilities.dart';
-import 'package:prochat/Utils/permissions.dart';
-import 'package:prochat/Utils/chat_controller.dart';
-import 'package:prochat/Utils/crc.dart';
-import 'package:prochat/Utils/open_settings.dart';
-import 'package:prochat/Utils/save.dart';
-import 'package:prochat/Utils/utils.dart';
-import 'package:prochat/widgets/AudioRecorder/Audiorecord.dart';
-import 'package:prochat/widgets/ImagePicker/image_picker.dart';
-import 'package:prochat/widgets/VideoPicker/VideoPreview.dart';
-import 'package:prochat/Screens/chat_screen/Widget/bubble.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:giphy_get/giphy_get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:link_preview_generator/link_preview_generator.dart';
 import 'package:media_info/media_info.dart';
+import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:prochat/Configs/Dbkeys.dart';
+import 'package:prochat/Configs/Dbpaths.dart';
+import 'package:prochat/Configs/Enum.dart';
+import 'package:prochat/Configs/app_constants.dart';
+import 'package:prochat/Configs/optional_constants.dart';
+import 'package:prochat/Models/DataModel.dart';
+import 'package:prochat/Models/E2EE/e2ee.dart' as e2ee;
+import 'package:prochat/Screens/auth_screens/login.dart';
+import 'package:prochat/Screens/call_history/callhistory.dart';
+import 'package:prochat/Screens/calling_screen/pickup_layout.dart';
+import 'package:prochat/Screens/chat_screen/Widget/bubble.dart';
+import 'package:prochat/Screens/chat_screen/utils/aes_encryption.dart';
+import 'package:prochat/Screens/chat_screen/utils/audioPlayback.dart';
+import 'package:prochat/Screens/chat_screen/utils/deleteChatMedia.dart';
+import 'package:prochat/Screens/chat_screen/utils/message.dart';
+import 'package:prochat/Screens/chat_screen/utils/photo_view.dart';
+import 'package:prochat/Screens/chat_screen/utils/uploadMediaWithProgress.dart';
+import 'package:prochat/Screens/contact_screens/ContactsSelect.dart';
+import 'package:prochat/Screens/contact_screens/SelectContactsToForward.dart';
+import 'package:prochat/Screens/privacypolicy&TnC/PdfViewFromCachedUrl.dart';
+import 'package:prochat/Screens/profile_settings/profile_view.dart';
+import 'package:prochat/Screens/security_screens/security.dart';
+import 'package:prochat/Services/Admob/admob.dart';
+import 'package:prochat/Services/Providers/AvailableContactsProvider.dart';
+import 'package:prochat/Services/Providers/Observer.dart';
+import 'package:prochat/Services/Providers/currentchat_peer.dart';
+import 'package:prochat/Services/Providers/seen_provider.dart';
+import 'package:prochat/Services/Providers/seen_state.dart';
+import 'package:prochat/Services/localization/language_constants.dart';
+import 'package:prochat/Utils/call_utilities.dart';
+import 'package:prochat/Utils/chat_controller.dart';
+import 'package:prochat/Utils/crc.dart';
+import 'package:prochat/Utils/custom_url_launcher.dart';
+import 'package:prochat/Utils/emoji_detect.dart';
+import 'package:prochat/Utils/mime_type.dart';
+import 'package:prochat/Utils/open_settings.dart';
+import 'package:prochat/Utils/permissions.dart';
+import 'package:prochat/Utils/save.dart';
+import 'package:prochat/Utils/setStatusBarColor.dart';
+import 'package:prochat/Utils/unawaited.dart';
+import 'package:prochat/Utils/utils.dart';
+import 'package:prochat/main.dart';
+import 'package:prochat/widgets/AllinOneCameraGalleryImageVideoPicker/AllinOneCameraGalleryImageVideoPicker.dart';
+import 'package:prochat/widgets/AudioRecorder/Audiorecord.dart';
+import 'package:prochat/widgets/CameraGalleryImagePicker/camera_image_gallery_picker.dart';
+import 'package:prochat/widgets/CameraGalleryImagePicker/multiMediaPicker.dart';
+import 'package:prochat/widgets/CountryPicker/CountryCode.dart';
+import 'package:prochat/widgets/DownloadManager/download_all_file_type.dart';
+import 'package:prochat/widgets/ImagePicker/image_picker.dart';
+import 'package:prochat/widgets/MultiDocumentPicker/multiDocumentPicker.dart';
+import 'package:prochat/widgets/MyElevatedButton/MyElevatedButton.dart';
+import 'package:prochat/widgets/SoundPlayer/SoundPlayerPro.dart';
+import 'package:prochat/widgets/VideoEditor/video_editor.dart';
+import 'package:prochat/widgets/VideoPicker/VideoPreview.dart';
 import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:prochat/Models/E2EE/e2ee.dart' as e2ee;
-import 'package:prochat/Utils/unawaited.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter/services.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' as emojipic;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_compress/video_compress.dart' as compress;
 import 'package:video_thumbnail/video_thumbnail.dart';
-import 'package:prochat/Configs/Enum.dart';
 
 hidekeyboard(BuildContext context) {
   FocusScope.of(context).requestFocus(FocusNode());
@@ -100,6 +100,7 @@ class ChatScreen extends StatefulWidget {
   final MessageType? sharedFilestype;
   final bool isSharingIntentForwarded;
   final String? sharedText;
+
   ChatScreen({
     Key? key,
     required this.currentUserNo,
@@ -134,8 +135,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   bool typing = false;
   late File thumbnailFile;
   File? pickedFile;
+
   // bool isLoading = true;
   bool isgeneratingSomethingLoader = false;
+
   // int tempSendIndex = 0;
   String? imageUrl;
   SeenState? seenState;
@@ -168,6 +171,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   PlayerState playerState = PlayerState.stopped;
 
   get isPlaying => playerState == PlayerState.playing;
+
   get isPaused => playerState == PlayerState.paused;
 
   get durationText =>
@@ -177,6 +181,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       position != null ? position.toString().split('.').first : '';
 
   bool isMuted = false;
+
   void setStateIfMounted(f) {
     if (mounted) setState(f);
   }
@@ -185,6 +190,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   int _numInterstitialLoadAttempts = 0;
   RewardedAd? _rewardedAd;
   int _numRewardedLoadAttempts = 0;
+
   @override
   void initState() {
     super.initState();
@@ -226,6 +232,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   bool hasPeerBlockedMe = false;
+
   listenToBlock() {
     chatStatusSubscriptionForPeer = FirebaseFirestore.instance
         .collection(DbPaths.collectionusers)
@@ -545,6 +552,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   int? thumnailtimestamp;
+
   getFileData(File image, {int? timestamp, int? totalFiles}) {
     final observer = Provider.of<Observer>(this.context, listen: false);
 
@@ -600,6 +608,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   String? videometadata;
+
   Future uploadFile(bool isthumbnail, {int? timestamp}) async {
     uploadTimestamp = timestamp ?? DateTime.now().millisecondsSinceEpoch;
     String fileName = getFileName(
@@ -862,136 +871,136 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         if (chatStatus == null || chatStatus == 4)
           ChatController.request(currentUserNo, peerNo, chatId);
         textEditingController.clear();
-        final encrypted = AESEncryptData.encryptAES(content, sharedSecret);
+        // final encrypted = AESEncryptData.encryptAES(content, sharedSecret);
 
         // final encrypted = encryptWithCRC(content);
         //if (encrypted is String) {
-          Future messaging = FirebaseFirestore.instance
-              .collection(DbPaths.collectionmessages)
-              .doc(chatId)
-              .collection(chatId!)
-              .doc('$timestamp')
-              .set({
-            Dbkeys.isMuted: isPeerMuted,
-            Dbkeys.from: currentUserNo,
-            Dbkeys.to: peerNo,
-            Dbkeys.timestamp: timestamp,
-           // Dbkeys.content: encrypted,
-            Dbkeys.messageType: type.index,
-            Dbkeys.hasSenderDeleted: false,
-            Dbkeys.hasRecipientDeleted: false,
-            Dbkeys.sendername: _cachedModel.currentUser![Dbkeys.nickname],
-            Dbkeys.isReply: isReplyKeyboard,
-            Dbkeys.replyToMsgDoc: replyDoc,
-            Dbkeys.isForward: isForward,
-            Dbkeys.latestEncrypted: true,
-          }, SetOptions(merge: true));
+        Future messaging = FirebaseFirestore.instance
+            .collection(DbPaths.collectionmessages)
+            .doc(chatId)
+            .collection(chatId!)
+            .doc('$timestamp')
+            .set({
+          Dbkeys.isMuted: isPeerMuted,
+          Dbkeys.from: currentUserNo,
+          Dbkeys.to: peerNo,
+          Dbkeys.timestamp: timestamp,
+          Dbkeys.content: content,
+          Dbkeys.messageType: type.index,
+          Dbkeys.hasSenderDeleted: false,
+          Dbkeys.hasRecipientDeleted: false,
+          Dbkeys.sendername: _cachedModel.currentUser![Dbkeys.nickname],
+          Dbkeys.isReply: isReplyKeyboard,
+          Dbkeys.replyToMsgDoc: replyDoc,
+          Dbkeys.isForward: isForward,
+          Dbkeys.latestEncrypted: true,
+        }, SetOptions(merge: true));
 
-          _cachedModel.addMessage(peerNo, timestamp, messaging);
-          var tempDoc = {
-            Dbkeys.isMuted: isPeerMuted,
-            Dbkeys.from: currentUserNo,
-            Dbkeys.to: peerNo,
-            Dbkeys.timestamp: timestamp,
-            Dbkeys.content: content,
-            Dbkeys.messageType: type.index,
-            Dbkeys.hasSenderDeleted: false,
-            Dbkeys.hasRecipientDeleted: false,
-            Dbkeys.sendername: _cachedModel.currentUser![Dbkeys.nickname],
-            Dbkeys.isReply: isReplyKeyboard,
-            Dbkeys.replyToMsgDoc: replyDoc,
-            Dbkeys.isForward: isForward,
-            Dbkeys.latestEncrypted: true,
-            Dbkeys.tempcontent: tempcontent,
-          };
-          setStatusBarColor();
-          setStateIfMounted(() {
-            isReplyKeyboard = false;
-            replyDoc = null;
-            messages = List.from(messages)
-              ..add(Message(
-                buildTempMessage(
-                    context, type, content, timestamp, messaging, tempDoc),
-                onTap: (tempDoc[Dbkeys.from] == widget.currentUserNo &&
-                            tempDoc[Dbkeys.hasSenderDeleted] == true) ==
-                        true
-                    ? () {}
-                    : type == MessageType.image
-                        ? () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PhotoViewWrapper(
-                                    keyloader: _keyLoader34,
-                                    imageUrl: content,
-                                    message: content,
-                                    tag: timestamp.toString(),
-                                    imageProvider:
-                                        CachedNetworkImageProvider(content),
-                                  ),
-                                ));
-                          }
-                        : null,
-                onDismiss: tempDoc[Dbkeys.content] == '' ||
-                        tempDoc[Dbkeys.content] == null
-                    ? () {}
-                    : () {
-                        setStateIfMounted(() {
-                          isReplyKeyboard = true;
-                          replyDoc = tempDoc;
-                        });
-                        HapticFeedback.heavyImpact();
-                        keyboardFocusNode.requestFocus();
-                      },
-                onDoubleTap: () {
-                  // save(tempDoc);
-                },
-                onLongPress: () {
-                  if (tempDoc.containsKey(Dbkeys.hasRecipientDeleted) &&
-                      tempDoc.containsKey(Dbkeys.hasSenderDeleted)) {
-                    if ((tempDoc[Dbkeys.from] == widget.currentUserNo &&
-                            tempDoc[Dbkeys.hasSenderDeleted] == true) ==
-                        false) {
-                      //--Show Menu only if message is not deleted by current user already
-                      contextMenuNew(this.context, tempDoc, true);
-                    }
-                  } else {
-                    contextMenuOld(context, tempDoc);
+        _cachedModel.addMessage(peerNo, timestamp, messaging);
+        var tempDoc = {
+          Dbkeys.isMuted: isPeerMuted,
+          Dbkeys.from: currentUserNo,
+          Dbkeys.to: peerNo,
+          Dbkeys.timestamp: timestamp,
+          Dbkeys.content: content,
+          Dbkeys.messageType: type.index,
+          Dbkeys.hasSenderDeleted: false,
+          Dbkeys.hasRecipientDeleted: false,
+          Dbkeys.sendername: _cachedModel.currentUser![Dbkeys.nickname],
+          Dbkeys.isReply: isReplyKeyboard,
+          Dbkeys.replyToMsgDoc: replyDoc,
+          Dbkeys.isForward: isForward,
+          Dbkeys.latestEncrypted: true,
+          Dbkeys.tempcontent: tempcontent,
+        };
+        setStatusBarColor();
+        setStateIfMounted(() {
+          isReplyKeyboard = false;
+          replyDoc = null;
+          messages = List.from(messages)
+            ..add(Message(
+              buildTempMessage(
+                  context, type, content, timestamp, messaging, tempDoc),
+              onTap: (tempDoc[Dbkeys.from] == widget.currentUserNo &&
+                          tempDoc[Dbkeys.hasSenderDeleted] == true) ==
+                      true
+                  ? () {}
+                  : type == MessageType.image
+                      ? () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PhotoViewWrapper(
+                                  keyloader: _keyLoader34,
+                                  imageUrl: content,
+                                  message: content,
+                                  tag: timestamp.toString(),
+                                  imageProvider:
+                                      CachedNetworkImageProvider(content),
+                                ),
+                              ));
+                        }
+                      : null,
+              onDismiss: tempDoc[Dbkeys.content] == '' ||
+                      tempDoc[Dbkeys.content] == null
+                  ? () {}
+                  : () {
+                      setStateIfMounted(() {
+                        isReplyKeyboard = true;
+                        replyDoc = tempDoc;
+                      });
+                      HapticFeedback.heavyImpact();
+                      keyboardFocusNode.requestFocus();
+                    },
+              onDoubleTap: () {
+                // save(tempDoc);
+              },
+              onLongPress: () {
+                if (tempDoc.containsKey(Dbkeys.hasRecipientDeleted) &&
+                    tempDoc.containsKey(Dbkeys.hasSenderDeleted)) {
+                  if ((tempDoc[Dbkeys.from] == widget.currentUserNo &&
+                          tempDoc[Dbkeys.hasSenderDeleted] == true) ==
+                      false) {
+                    //--Show Menu only if message is not deleted by current user already
+                    contextMenuNew(this.context, tempDoc, true);
                   }
-                },
-                from: currentUserNo,
-                timestamp: timestamp,
-              ));
-          });
+                } else {
+                  contextMenuOld(context, tempDoc);
+                }
+              },
+              from: currentUserNo,
+              timestamp: timestamp,
+            ));
+        });
 
-          unawaited(realtime.animateTo(0.0,
-              duration: Duration(milliseconds: 300), curve: Curves.easeOut));
+        unawaited(realtime.animateTo(0.0,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut));
 
-          if (type == MessageType.doc ||
-              type == MessageType.audio ||
-              // (type == MessageType.image && !content.contains('giphy')) ||
-              type == MessageType.location ||
-              type == MessageType.contact &&
-                  widget.isSharingIntentForwarded == false) {
-            if (IsVideoAdShow == true &&
-                observer.isadmobshow == true &&
-                IsInterstitialAdShow == false) {
-              Future.delayed(const Duration(milliseconds: 800), () {
-                _showRewardedAd();
-              });
-            } else if (IsInterstitialAdShow == true &&
-                observer.isadmobshow == true) {
-              _showInterstitialAd();
-            }
-          } else if (type == MessageType.video) {
-            if (IsVideoAdShow == true && observer.isadmobshow == true) {
-              Future.delayed(const Duration(milliseconds: 800), () {
-                _showRewardedAd();
-              });
-            }
+        if (type == MessageType.doc ||
+            type == MessageType.audio ||
+            // (type == MessageType.image && !content.contains('giphy')) ||
+            type == MessageType.location ||
+            type == MessageType.contact &&
+                widget.isSharingIntentForwarded == false) {
+          if (IsVideoAdShow == true &&
+              observer.isadmobshow == true &&
+              IsInterstitialAdShow == false) {
+            Future.delayed(const Duration(milliseconds: 800), () {
+              _showRewardedAd();
+            });
+          } else if (IsInterstitialAdShow == true &&
+              observer.isadmobshow == true) {
+            _showInterstitialAd();
           }
-          // _playPopSound();
-       /* } else {
+        } else if (type == MessageType.video) {
+          if (IsVideoAdShow == true && observer.isadmobshow == true) {
+            Future.delayed(const Duration(milliseconds: 800), () {
+              _showRewardedAd();
+            });
+          }
+        }
+        // _playPopSound();
+        /* } else {
           Fiberchat.toast('Nothing to encrypt');
         }*/
       } on Exception catch (_) {
@@ -1844,6 +1853,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             linkPreviewStyle: LinkPreviewStyle.large,
           );
   }
+
   // Widget selectablelinkify(String? text, double? fontsize) {
   //   return SelectableLinkify(
   //     style: TextStyle(fontSize: fontsize, color: Colors.black87),
@@ -2661,7 +2671,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       {bool saved = false, List<Message>? savedMsgs}) {
     final observer = Provider.of<Observer>(context, listen: false);
     print("ismine number :::: $currentUserNo");
-    final bool isMe = doc[Dbkeys.from] == currentUserNo/*'9999999999'*/;
+    final bool isMe = doc[Dbkeys.from] == currentUserNo /*'9999999999'*/;
     bool isContinuing;
     if (savedMsgs == null)
       isContinuing =
@@ -4029,6 +4039,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   FocusNode keyboardFocusNode = new FocusNode();
+
   Widget buildInputAndroid(BuildContext context, bool isemojiShowing,
       Function refreshThisInput, bool keyboardVisible) {
     final observer = Provider.of<Observer>(context, listen: true);
@@ -4686,10 +4697,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         docs.docs.forEach((doc) {
           Map<String, dynamic> _doc = Map.from(doc.data());
           int? ts = _doc[Dbkeys.timestamp];
-          _doc[Dbkeys.content] = _doc.containsKey(Dbkeys.latestEncrypted) ==
+          /*_doc[Dbkeys.content] = _doc.containsKey(Dbkeys.latestEncrypted) ==
                   true
               ? AESEncryptData.decryptAES(_doc[Dbkeys.content], sharedSecret)
-              : decryptWithCRC(_doc[Dbkeys.content]);
+              : decryptWithCRC(_doc[Dbkeys.content]);*/
           messages.add(Message(buildMessage(this.context, _doc),
               onDismiss:
                   _doc[Dbkeys.content] == '' || _doc[Dbkeys.content] == null
@@ -4775,10 +4786,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           }).forEach((change) {
             Map<String, dynamic> _doc = Map.from(change.doc.data()!);
             int? ts = _doc[Dbkeys.timestamp];
-            _doc[Dbkeys.content] = _doc.containsKey(Dbkeys.latestEncrypted) ==
+           /* _doc[Dbkeys.content] = _doc.containsKey(Dbkeys.latestEncrypted) ==
                     true
                 ? AESEncryptData.decryptAES(_doc[Dbkeys.content], sharedSecret)
-                : decryptWithCRC(_doc[Dbkeys.content]);
+                : decryptWithCRC(_doc[Dbkeys.content]);*/
 
             messages.add(Message(
               buildMessage(this.context, _doc),
@@ -4862,11 +4873,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               messages.removeAt(i);
               setStateIfMounted(() {});
               int? ts = _doc[Dbkeys.timestamp];
-              _doc[Dbkeys.content] =
+              /*_doc[Dbkeys.content] =
                   _doc.containsKey(Dbkeys.latestEncrypted) == true
                       ? AESEncryptData.decryptAES(
                           _doc[Dbkeys.content], sharedSecret)
-                      : decryptWithCRC(_doc[Dbkeys.content]);
+                      : decryptWithCRC(_doc[Dbkeys.content]);*/
               messages.insert(
                   i,
                   Message(
@@ -4951,6 +4962,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   int currentUploadingIndex = 0;
+
   uploadEach(
     int index,
   ) async {
@@ -5291,6 +5303,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   bool isemojiShowing = false;
+
   refreshInput() {
     setStateIfMounted(() {
       if (isemojiShowing == false) {
