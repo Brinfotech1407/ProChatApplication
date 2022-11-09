@@ -1,12 +1,13 @@
 //*************   © Copyrighted by Thinkcreative_Technologies. An Exclusive item of Envato market. Make sure you have purchased a Regular License OR Extended license for the Source Code from Envato to use this product. See the License Defination attached with source code. *********************
 
-import 'package:prochat/Configs/app_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:prochat/Configs/app_constants.dart';
 
 class Splashscreen extends StatelessWidget {
   final bool? isShowOnlySpinner;
 
   Splashscreen({this.isShowOnlySpinner = false});
+
   @override
   Widget build(BuildContext context) {
     return IsSplashOnlySolidColor == true || this.isShowOnlySpinner == true
@@ -18,17 +19,17 @@ class Splashscreen extends StatelessWidget {
                       AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
             ))
         : Scaffold(
-            backgroundColor: SplashBackgroundSolidColor,
+            backgroundColor: fiberchatBlue,
             body: Center(
-                child: Image.asset(
-              '$SplashPath',
-              width: double.infinity,
-              fit: MediaQuery.of(context).size.height >
-                      MediaQuery.of(context).size.width
-                  ? BoxFit.cover
-                  : BoxFit.fitHeight,
-              height: MediaQuery.of(context).size.height,
-            )),
+              child: Text(
+                'Prochat',
+                style: TextStyle(
+                  fontSize: 25.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           );
   }
 }

@@ -31,7 +31,7 @@ class PickupLayout extends StatelessWidget {
         : /*(userProvider.getUser != null)
             ?*/ StreamBuilder<DocumentSnapshot>(
                 stream:
-                    callMethods.callStream(phone:'9999999999'),
+                    callMethods.callStream(phone:userProvider.getUser!.phone),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.data() != null) {
                     Call call = Call.fromMap(
