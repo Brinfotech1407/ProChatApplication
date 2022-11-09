@@ -7,8 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as web;
 import 'package:prochat/Configs/Dbkeys.dart';
 import 'package:prochat/Configs/app_constants.dart';
@@ -18,8 +16,6 @@ import 'package:prochat/Screens/splash_screen/splash_screen.dart';
 import 'package:prochat/Services/localization/language_constants.dart';
 import 'package:prochat/Utils/batch_write_component.dart';
 import 'package:prochat/Utils/error_codes.dart';
-import 'package:prochat/Utils/unawaited.dart';
-import 'package:prochat/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //::::: WARNING :  DO NOT EDIT THIS PAGE OR ELSE YOU WILL FACE LICENSE VALIDATION ISSUES
@@ -144,6 +140,8 @@ class _InitializeState extends State<Initialize> {
   @override
   void initState() {
     initialise();
+
+    checkUserLoginOrNot();
 
     super.initState();
   }
@@ -677,5 +675,17 @@ class _InitializeState extends State<Initialize> {
 
     final characters = Characters(string);
     return characters.toList().reversed.join();
+  }
+
+  void checkUserLoginOrNot() {
+    String phoneNo = widget.prefs.getString(Dbkeys.phone) ?? '';
+    bool alreadyLoggedIn = false;
+    if (phoneNo.isNotEmpty) {
+      alreadyLoggedIn = true;
+    }
+
+    setState(() {
+      isready = alreadyLoggedIn;
+    });
   }
 }
