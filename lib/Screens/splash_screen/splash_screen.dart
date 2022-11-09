@@ -19,12 +19,12 @@ class Splashscreen extends StatelessWidget {
                       AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
             ))
         : Scaffold(
-            backgroundColor: fiberchatBlue,
+            backgroundColor: fiberchatDeepBlue,
             body: Center(
               child: Text(
                 'Prochat',
                 style: TextStyle(
-                  fontSize: 25.0,
+                  fontSize: 35.0,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),

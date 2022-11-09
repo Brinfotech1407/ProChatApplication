@@ -2,45 +2,47 @@
 
 import 'dart:async';
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:prochat/Configs/Dbkeys.dart';
 import 'package:prochat/Configs/Dbpaths.dart';
+import 'package:prochat/Configs/Enum.dart';
+import 'package:prochat/Configs/app_constants.dart';
 import 'package:prochat/Configs/optional_constants.dart';
+import 'package:prochat/Models/E2EE/e2ee.dart' as e2ee;
 import 'package:prochat/Screens/homepage/homepage.dart';
 import 'package:prochat/Screens/privacypolicy&TnC/PdfViewFromCachedUrl.dart';
 import 'package:prochat/Services/Providers/Observer.dart';
 import 'package:prochat/Services/Providers/TimerProvider.dart';
-import 'package:prochat/Utils/custom_url_launcher.dart';
-import 'package:prochat/Utils/phonenumberVariantsGenerator.dart';
-import 'package:prochat/widgets/PhoneField/intl_phone_field.dart';
-import 'package:prochat/widgets/PhoneField/phone_number.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:prochat/Configs/app_constants.dart';
 import 'package:prochat/Services/localization/language.dart';
 import 'package:prochat/Services/localization/language_constants.dart';
-import 'package:prochat/main.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:prochat/Utils/custom_url_launcher.dart';
+import 'package:prochat/Utils/phonenumberVariantsGenerator.dart';
+import 'package:prochat/Utils/unawaited.dart';
 import 'package:prochat/Utils/utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:prochat/main.dart';
+import 'package:prochat/widgets/PhoneField/intl_phone_field.dart';
+import 'package:prochat/widgets/PhoneField/phone_number.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:prochat/Models/E2EE/e2ee.dart' as e2ee;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:prochat/Configs/Enum.dart';
 import 'package:sms_autofill/sms_autofill.dart';
-import 'package:prochat/Utils/unawaited.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key,
-    this.title,
-    required this.isaccountapprovalbyadminneeded,
-    required this.accountApprovalMessage,
-    this.prefs,
-    this.doc,
-    required this.isblocknewlogins})
+  LoginScreen(
+      {Key? key,
+      this.title,
+      required this.isaccountapprovalbyadminneeded,
+      required this.accountApprovalMessage,
+      this.prefs,
+      this.doc,
+      required this.isblocknewlogins})
       : super(key: key);
 
   final String? title;
@@ -145,8 +147,7 @@ class LoginScreenState extends State<LoginScreen>
       });
 
       print(
-          'Authentication failed -ERROR: ${authException
-              .message}. Try again later.');
+          'Authentication failed -ERROR: ${authException.message}. Try again later.');
 
       Fiberchat.toast('Authentication failed - ${authException.message}');
     };
@@ -198,7 +199,7 @@ class LoginScreenState extends State<LoginScreen>
   subscribeToNotification(String currentUserNo, bool isFreshNewAccount) async {
     await FirebaseMessaging.instance
         .subscribeToTopic(
-        '${currentUserNo.replaceFirst(new RegExp(r'\+'), '')}')
+            '${currentUserNo.replaceFirst(new RegExp(r'\+'), '')}')
         .catchError((err) {
       print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
     });
@@ -209,10 +210,10 @@ class LoginScreenState extends State<LoginScreen>
     });
     await FirebaseMessaging.instance
         .subscribeToTopic(Platform.isAndroid
-        ? Dbkeys.topicUSERSandroid
-        : Platform.isIOS
-        ? Dbkeys.topicUSERSios
-        : Dbkeys.topicUSERSweb)
+            ? Dbkeys.topicUSERSandroid
+            : Platform.isIOS
+                ? Dbkeys.topicUSERSios
+                : Dbkeys.topicUSERSweb)
         .catchError((err) {
       print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
     });
@@ -226,16 +227,11 @@ class LoginScreenState extends State<LoginScreen>
         if (query.docs.length > 0) {
           query.docs.forEach((doc) async {
             if (doc.data().containsKey(Dbkeys.groupMUTEDMEMBERS)) {
-              if (doc[Dbkeys.groupMUTEDMEMBERS].contains(
-                  currentUserNo)) {} else {
+              if (doc[Dbkeys.groupMUTEDMEMBERS].contains(currentUserNo)) {
+              } else {
                 await FirebaseMessaging.instance
                     .subscribeToTopic(
-                    "GROUP${doc[Dbkeys.groupID]
-                        .replaceAll(RegExp('-'), '')
-                        .substring(1, doc[Dbkeys.groupID]
-                        .replaceAll(RegExp('-'), '')
-                        .toString()
-                        .length)}")
+                        "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
                     .catchError((err) {
                   print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
                 });
@@ -243,12 +239,7 @@ class LoginScreenState extends State<LoginScreen>
             } else {
               await FirebaseMessaging.instance
                   .subscribeToTopic(
-                  "GROUP${doc[Dbkeys.groupID]
-                      .replaceAll(RegExp('-'), '')
-                      .substring(1, doc[Dbkeys.groupID]
-                      .replaceAll(RegExp('-'), '')
-                      .toString()
-                      .length)}")
+                      "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
                   .catchError((err) {
                 print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
               });
@@ -270,7 +261,7 @@ class LoginScreenState extends State<LoginScreen>
           verificationId: verificationId!, smsCode: _code);
 
       UserCredential firebaseUser =
-      await firebaseAuth.signInWithCredential(credential);
+          await firebaseAuth.signInWithCredential(credential);
 
       // ignore: unnecessary_null_comparison
       if (firebaseUser != null) {
@@ -304,16 +295,12 @@ class LoginScreenState extends State<LoginScreen>
               Dbkeys.aboutMe: '',
               //---Additional fields added for Admin app compatible----
               Dbkeys.accountstatus:
-              widget.isaccountapprovalbyadminneeded == true
-                  ? Dbkeys.sTATUSpending
-                  : Dbkeys.sTATUSallowed,
+                  widget.isaccountapprovalbyadminneeded == true
+                      ? Dbkeys.sTATUSpending
+                      : Dbkeys.sTATUSallowed,
               Dbkeys.actionmessage: widget.accountApprovalMessage,
-              Dbkeys.lastLogin: DateTime
-                  .now()
-                  .millisecondsSinceEpoch,
-              Dbkeys.joinedOn: DateTime
-                  .now()
-                  .millisecondsSinceEpoch,
+              Dbkeys.lastLogin: DateTime.now().millisecondsSinceEpoch,
+              Dbkeys.joinedOn: DateTime.now().millisecondsSinceEpoch,
               Dbkeys.searchKey: _name.text.trim().substring(0, 1).toUpperCase(),
               Dbkeys.videoCallMade: 0,
               Dbkeys.videoCallRecieved: 0,
@@ -332,14 +319,14 @@ class LoginScreenState extends State<LoginScreen>
                 .collection(DbPaths.collectiondashboard)
                 .doc(DbPaths.docuserscount)
                 .set(
-                widget.isaccountapprovalbyadminneeded == false
-                    ? {
-                  Dbkeys.totalapprovedusers: FieldValue.increment(1),
-                }
-                    : {
-                  Dbkeys.totalpendingusers: FieldValue.increment(1),
-                },
-                SetOptions(merge: true));
+                    widget.isaccountapprovalbyadminneeded == false
+                        ? {
+                            Dbkeys.totalapprovedusers: FieldValue.increment(1),
+                          }
+                        : {
+                            Dbkeys.totalpendingusers: FieldValue.increment(1),
+                          },
+                    SetOptions(merge: true));
 
             await FirebaseFirestore.instance
                 .collection(DbPaths.collectioncountrywiseData)
@@ -354,34 +341,27 @@ class LoginScreenState extends State<LoginScreen>
                 .update({
               Dbkeys.nOTIFICATIONxxaction: 'PUSH',
               Dbkeys.nOTIFICATIONxxdesc: widget
-                  .isaccountapprovalbyadminneeded ==
-                  true
-                  ? '${_name.text
-                  .trim()} has Joined $Appname. APPROVE the user account. You can view the user profile from All Users List.'
-                  : '${_name.text
-                  .trim()} has Joined $Appname. You can view the user profile from All Users List.',
+                          .isaccountapprovalbyadminneeded ==
+                      true
+                  ? '${_name.text.trim()} has Joined $Appname. APPROVE the user account. You can view the user profile from All Users List.'
+                  : '${_name.text.trim()} has Joined $Appname. You can view the user profile from All Users List.',
               Dbkeys.nOTIFICATIONxxtitle: 'New User Joined',
               Dbkeys.nOTIFICATIONxximageurl: null,
               Dbkeys.nOTIFICATIONxxlastupdate: DateTime.now(),
               'list': FieldValue.arrayUnion([
                 {
                   Dbkeys.docid:
-                  DateTime
-                      .now()
-                      .millisecondsSinceEpoch
-                      .toString(),
+                      DateTime.now().millisecondsSinceEpoch.toString(),
                   Dbkeys.nOTIFICATIONxxdesc: widget
-                      .isaccountapprovalbyadminneeded ==
-                      true
-                      ? '${_name.text
-                      .trim()} has Joined $Appname. APPROVE the user account. You can view the user profile from All Users List.'
-                      : '${_name.text
-                      .trim()} has Joined $Appname. You can view the user profile from All Users List.',
+                              .isaccountapprovalbyadminneeded ==
+                          true
+                      ? '${_name.text.trim()} has Joined $Appname. APPROVE the user account. You can view the user profile from All Users List.'
+                      : '${_name.text.trim()} has Joined $Appname. You can view the user profile from All Users List.',
                   Dbkeys.nOTIFICATIONxxtitle: 'New User Joined',
                   Dbkeys.nOTIFICATIONxximageurl: null,
                   Dbkeys.nOTIFICATIONxxlastupdate: DateTime.now(),
                   Dbkeys.nOTIFICATIONxxauthor:
-                  currentUser!.uid + 'XXX' + 'userapp',
+                      currentUser!.uid + 'XXX' + 'userapp',
                 }
               ])
             });
@@ -406,8 +386,7 @@ class LoginScreenState extends State<LoginScreen>
             unawaited(Navigator.pushReplacement(
                 this.context,
                 MaterialPageRoute(
-                    builder: (newContext) =>
-                        Homepage(
+                    builder: (newContext) => Homepage(
                           doc: widget.doc,
                           currentUserNo: phoneNo,
                           prefs: widget.prefs,
@@ -429,62 +408,56 @@ class LoginScreenState extends State<LoginScreen>
                 .collection(DbPaths.collectionusers)
                 .doc(phoneNo)
                 .update(
-              !documents[0].data().containsKey(Dbkeys.deviceDetails)
-                  ? {
-                Dbkeys.authenticationType:
-                AuthenticationType.passcode.index,
-                Dbkeys.accountstatus:
-                widget.isaccountapprovalbyadminneeded == true
-                    ? Dbkeys.sTATUSpending
-                    : Dbkeys.sTATUSallowed,
-                Dbkeys.actionmessage: widget.accountApprovalMessage,
-                Dbkeys.lastLogin:
-                DateTime
-                    .now()
-                    .millisecondsSinceEpoch,
-                Dbkeys.joinedOn:
-                documents[0].data()![Dbkeys.lastSeen] != true
-                    ? documents[0].data()![Dbkeys.lastSeen]
-                    : DateTime
-                    .now()
-                    .millisecondsSinceEpoch,
-                Dbkeys.nickname: _name.text.trim(),
-                Dbkeys.searchKey:
-                _name.text.trim().substring(0, 1).toUpperCase(),
-                Dbkeys.videoCallMade: 0,
-                Dbkeys.videoCallRecieved: 0,
-                Dbkeys.audioCallMade: 0,
-                Dbkeys.audioCallRecieved: 0,
-                Dbkeys.mssgSent: 0,
-                Dbkeys.deviceDetails: mapDeviceInfo,
-                Dbkeys.currentDeviceID: deviceid,
-                Dbkeys.phonenumbervariants: phoneNumberVariantsList(
-                    countrycode:
-                    documents[0].data()![Dbkeys.countryCode],
-                    phonenumber:
-                    documents[0].data()![Dbkeys.phoneRaw]),
-                Dbkeys.notificationTokens: [fcmToken],
-              }
-                  : {
-                Dbkeys.searchKey:
-                _name.text.trim().substring(0, 1).toUpperCase(),
-                Dbkeys.nickname: _name.text.trim(),
-                Dbkeys.authenticationType:
-                AuthenticationType.passcode.index,
-                Dbkeys.lastLogin:
-                DateTime
-                    .now()
-                    .millisecondsSinceEpoch,
-                Dbkeys.deviceDetails: mapDeviceInfo,
-                Dbkeys.currentDeviceID: deviceid,
-                Dbkeys.phonenumbervariants: phoneNumberVariantsList(
-                    countrycode:
-                    documents[0].data()![Dbkeys.countryCode],
-                    phonenumber:
-                    documents[0].data()![Dbkeys.phoneRaw]),
-                Dbkeys.notificationTokens: [fcmToken],
-              },
-            );
+                  !documents[0].data().containsKey(Dbkeys.deviceDetails)
+                      ? {
+                          Dbkeys.authenticationType:
+                              AuthenticationType.passcode.index,
+                          Dbkeys.accountstatus:
+                              widget.isaccountapprovalbyadminneeded == true
+                                  ? Dbkeys.sTATUSpending
+                                  : Dbkeys.sTATUSallowed,
+                          Dbkeys.actionmessage: widget.accountApprovalMessage,
+                          Dbkeys.lastLogin:
+                              DateTime.now().millisecondsSinceEpoch,
+                          Dbkeys.joinedOn:
+                              documents[0].data()![Dbkeys.lastSeen] != true
+                                  ? documents[0].data()![Dbkeys.lastSeen]
+                                  : DateTime.now().millisecondsSinceEpoch,
+                          Dbkeys.nickname: _name.text.trim(),
+                          Dbkeys.searchKey:
+                              _name.text.trim().substring(0, 1).toUpperCase(),
+                          Dbkeys.videoCallMade: 0,
+                          Dbkeys.videoCallRecieved: 0,
+                          Dbkeys.audioCallMade: 0,
+                          Dbkeys.audioCallRecieved: 0,
+                          Dbkeys.mssgSent: 0,
+                          Dbkeys.deviceDetails: mapDeviceInfo,
+                          Dbkeys.currentDeviceID: deviceid,
+                          Dbkeys.phonenumbervariants: phoneNumberVariantsList(
+                              countrycode:
+                                  documents[0].data()![Dbkeys.countryCode],
+                              phonenumber:
+                                  documents[0].data()![Dbkeys.phoneRaw]),
+                          Dbkeys.notificationTokens: [fcmToken],
+                        }
+                      : {
+                          Dbkeys.searchKey:
+                              _name.text.trim().substring(0, 1).toUpperCase(),
+                          Dbkeys.nickname: _name.text.trim(),
+                          Dbkeys.authenticationType:
+                              AuthenticationType.passcode.index,
+                          Dbkeys.lastLogin:
+                              DateTime.now().millisecondsSinceEpoch,
+                          Dbkeys.deviceDetails: mapDeviceInfo,
+                          Dbkeys.currentDeviceID: deviceid,
+                          Dbkeys.phonenumbervariants: phoneNumberVariantsList(
+                              countrycode:
+                                  documents[0].data()![Dbkeys.countryCode],
+                              phonenumber:
+                                  documents[0].data()![Dbkeys.phoneRaw]),
+                          Dbkeys.notificationTokens: [fcmToken],
+                        },
+                );
             // Write data to local
             await widget.prefs?.setString(Dbkeys.id, documents[0][Dbkeys.id]);
             await widget.prefs?.setString(Dbkeys.nickname, _name.text.trim());
@@ -499,8 +472,7 @@ class LoginScreenState extends State<LoginScreen>
             unawaited(Navigator.pushReplacement(
                 this.context,
                 MaterialPageRoute(
-                    builder: (newContext) =>
-                        Homepage(
+                    builder: (newContext) => Homepage(
                           doc: widget.doc,
                           currentUserNo: phoneNo,
                           prefs: widget.prefs,
@@ -553,14 +525,8 @@ class LoginScreenState extends State<LoginScreen>
   customclippath(double w, double h) {
     return ClipPath(
       child: Container(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        padding: EdgeInsets.only(top: MediaQuery
-            .of(this.context)
-            .padding
-            .top),
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(top: MediaQuery.of(this.context).padding.top),
         height: 400,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -579,72 +545,69 @@ class LoginScreenState extends State<LoginScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Language
-                      .languageList()
-                      .length < 2
+                  Language.languageList().length < 2
                       ? SizedBox(
-                    height: 40,
-                  )
+                          height: 40,
+                        )
                       : Container(
-                    alignment: Alignment.centerRight,
-                    margin: EdgeInsets.only(top: 4, right: 10),
-                    width: 190,
-                    padding: EdgeInsets.all(8),
-                    child: DropdownButton<Language>(
-                      underline: SizedBox(),
-                      icon: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.language_outlined,
-                            color: DESIGN_TYPE == Themetype.whatsapp
-                                ? fiberchatWhite
-                                : fiberchatBlack.withOpacity(0.8),
-                          ),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          SizedBox(
-                            width: 15,
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: fiberchatLightBlue,
-                              size: 27,
+                          alignment: Alignment.centerRight,
+                          margin: EdgeInsets.only(top: 4, right: 10),
+                          width: 190,
+                          padding: EdgeInsets.all(8),
+                          child: DropdownButton<Language>(
+                            underline: SizedBox(),
+                            icon: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.language_outlined,
+                                  color: DESIGN_TYPE == Themetype.whatsapp
+                                      ? fiberchatWhite
+                                      : fiberchatBlack.withOpacity(0.8),
+                                ),
+                                SizedBox(
+                                  width: 2,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: fiberchatLightBlue,
+                                    size: 27,
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                      onChanged: (Language? language) {
-                        _changeLanguage(language!);
-                      },
-                      items: Language.languageList()
-                          .map<DropdownMenuItem<Language>>(
-                            (e) =>
-                            DropdownMenuItem<Language>(
-                              value: e,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                      IsShowLanguageNameInNativeLanguage ==
-                                          true
-                                          ? '' +
-                                          e.name +
-                                          '  ' +
-                                          e.flag +
-                                          ' '
-                                          : ' ' +
-                                          e.languageNameInEnglish +
-                                          '  ' +
-                                          e.flag +
-                                          ' '),
-                                ],
-                              ),
-                            ),
-                      )
-                          .toList(),
-                    ),
-                  ),
+                            onChanged: (Language? language) {
+                              _changeLanguage(language!);
+                            },
+                            items: Language.languageList()
+                                .map<DropdownMenuItem<Language>>(
+                                  (e) => DropdownMenuItem<Language>(
+                                    value: e,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                            IsShowLanguageNameInNativeLanguage ==
+                                                    true
+                                                ? '' +
+                                                    e.name +
+                                                    '  ' +
+                                                    e.flag +
+                                                    ' '
+                                                : ' ' +
+                                                    e.languageNameInEnglish +
+                                                    '  ' +
+                                                    e.flag +
+                                                    ' '),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
 
                   //---- All localizations settings----
                 ],
@@ -665,26 +628,27 @@ class LoginScreenState extends State<LoginScreen>
 
   Container showLoginHeader() {
     return Container(
+      height: 65,
       padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
         boxShadow: [
-        BoxShadow(
-        blurRadius: 10.0,
+          BoxShadow(
+            blurRadius: 10.0,
+          ),
+        ],
+        shape: BoxShape.rectangle,
+        color: fiberchatDeepBlue,
+        borderRadius: BorderRadius.all(Radius.circular(10) //
+            ),
       ),
-    ],
-    shape: BoxShape.rectangle,
-    color: fiberchatDeepBlue,
-    borderRadius: BorderRadius.all(Radius.circular(10) //
-    ),
-    ),
-    child: Text(
-    'Prochat',
-    style: TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-    color: Colors.white,
-    ),
-    ),
+      child: Text(
+        'Prochat',
+        style: TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
@@ -706,8 +670,7 @@ class LoginScreenState extends State<LoginScreen>
 
   loginWidgetsendSMScode(double w) {
     return Consumer<Observer>(
-        builder: (context, observer, _) =>
-            Column(
+        builder: (context, observer, _) => Column(
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -724,10 +687,7 @@ class LoginScreenState extends State<LoginScreen>
                     color: Colors.white,
                   ),
                   margin: EdgeInsets.fromLTRB(15,
-                      MediaQuery
-                          .of(this.context)
-                          .size
-                          .height / 2.50, 16, 0),
+                      MediaQuery.of(this.context).size.height / 2.50, 16, 0),
                   child: Column(
                     children: <Widget>[
                       SizedBox(
@@ -796,58 +756,56 @@ class LoginScreenState extends State<LoginScreen>
                           buttontext: getTranslated(this.context, 'sendverf'),
                           onpressed: widget.isblocknewlogins == true
                               ? () {
-                            Fiberchat.toast(
-                              getTranslated(
-                                  this.context, 'logindisabled'),
-                            );
-                          }
-                              : () {
-                            final timerProvider =
-                            Provider.of<TimerProvider>(context,
-                                listen: false);
-
-                            setState(() {});
-                            RegExp e164 =
-                            new RegExp(r'^\+[1-9]\d{1,14}$');
-                            if (_name.text
-                                .trim()
-                                .isNotEmpty) {
-                              String _phone =
-                              _phoneNo.text.toString().trim();
-                              if (_phone.isNotEmpty &&
-                                  e164.hasMatch(phoneCode! + _phone)) {
-                                if (_phone.startsWith('0') &&
-                                    phoneCode == '+81') {
-                                  timerProvider.resetTimer();
-                                  setState(() {
-                                    _phone = _phone.substring(1);
-                                    _phoneNo.text = _phone;
-                                    currentStatus =
-                                        LoginStatus.sendingSMScode.index;
-                                    isCodeSent = false;
-                                  });
-
-                                  verifyPhoneNumber();
-                                } else {
-                                  timerProvider.resetTimer();
-                                  setState(() {
-                                    currentStatus =
-                                        LoginStatus.sendingSMScode.index;
-                                    isCodeSent = false;
-                                  });
-                                  verifyPhoneNumber();
+                                  Fiberchat.toast(
+                                    getTranslated(
+                                        this.context, 'logindisabled'),
+                                  );
                                 }
-                              } else {
-                                Fiberchat.toast(
-                                  getTranslated(
-                                      this.context, 'entervalidmob'),
-                                );
-                              }
-                            } else {
-                              Fiberchat.toast(
-                                  getTranslated(this.context, 'nameem'));
-                            }
-                          },
+                              : () {
+                                  final timerProvider =
+                                      Provider.of<TimerProvider>(context,
+                                          listen: false);
+
+                                  setState(() {});
+                                  RegExp e164 =
+                                      new RegExp(r'^\+[1-9]\d{1,14}$');
+                                  if (_name.text.trim().isNotEmpty) {
+                                    String _phone =
+                                        _phoneNo.text.toString().trim();
+                                    if (_phone.isNotEmpty &&
+                                        e164.hasMatch(phoneCode! + _phone)) {
+                                      if (_phone.startsWith('0') &&
+                                          phoneCode == '+81') {
+                                        timerProvider.resetTimer();
+                                        setState(() {
+                                          _phone = _phone.substring(1);
+                                          _phoneNo.text = _phone;
+                                          currentStatus =
+                                              LoginStatus.sendingSMScode.index;
+                                          isCodeSent = false;
+                                        });
+
+                                        verifyPhoneNumber();
+                                      } else {
+                                        timerProvider.resetTimer();
+                                        setState(() {
+                                          currentStatus =
+                                              LoginStatus.sendingSMScode.index;
+                                          isCodeSent = false;
+                                        });
+                                        verifyPhoneNumber();
+                                      }
+                                    } else {
+                                      Fiberchat.toast(
+                                        getTranslated(
+                                            this.context, 'entervalidmob'),
+                                      );
+                                    }
+                                  } else {
+                                    Fiberchat.toast(
+                                        getTranslated(this.context, 'nameem'));
+                                  }
+                                },
                         ),
                       ),
 
@@ -903,12 +861,12 @@ class LoginScreenState extends State<LoginScreen>
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PDFViewerCachedFromUrl(
-                                                prefs: widget.prefs!,
-                                                title: getTranslated(
-                                                    this.context, 'tnc'),
-                                                url: observer.tnc,
-                                                isregistered: false,
-                                              ),
+                                            prefs: widget.prefs!,
+                                            title: getTranslated(
+                                                this.context, 'tnc'),
+                                            url: observer.tnc,
+                                            isregistered: false,
+                                          ),
                                         ));
                                   }
                                 }
@@ -950,12 +908,12 @@ class LoginScreenState extends State<LoginScreen>
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PDFViewerCachedFromUrl(
-                                                prefs: widget.prefs!,
-                                                title: getTranslated(
-                                                    this.context, 'pp'),
-                                                url: observer.privacypolicy,
-                                                isregistered: false,
-                                              ),
+                                            prefs: widget.prefs!,
+                                            title: getTranslated(
+                                                this.context, 'pp'),
+                                            url: observer.privacypolicy,
+                                            isregistered: false,
+                                          ),
                                         ));
                                   }
                                 }
@@ -984,10 +942,7 @@ class LoginScreenState extends State<LoginScreen>
         color: Colors.white,
       ),
       margin: EdgeInsets.fromLTRB(
-          15, MediaQuery
-          .of(this.context)
-          .size
-          .height / 2.50, 16, 0),
+          15, MediaQuery.of(this.context).size.height / 2.50, 16, 0),
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -1036,10 +991,7 @@ class LoginScreenState extends State<LoginScreen>
         color: Colors.white,
       ),
       margin: EdgeInsets.fromLTRB(
-          15, MediaQuery
-          .of(this.context)
-          .size
-          .height / 2.50, 16, 0),
+          15, MediaQuery.of(this.context).size.height / 2.50, 16, 0),
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -1055,13 +1007,13 @@ class LoginScreenState extends State<LoginScreen>
                 codeLength: 6,
                 decoration: UnderlineDecoration(
                   bgColorBuilder:
-                  FixedColorBuilder(fiberchatGrey.withOpacity(0.1)),
+                      FixedColorBuilder(fiberchatGrey.withOpacity(0.1)),
                   textStyle: TextStyle(
                       fontSize: 22,
                       color: fiberchatBlack,
                       fontWeight: FontWeight.bold),
                   colorBuilder:
-                  FixedColorBuilder(fiberchatGrey.withOpacity(0.1)),
+                      FixedColorBuilder(fiberchatGrey.withOpacity(0.1)),
                 ),
                 currentCode: _code,
                 onCodeSubmitted: (code) {
@@ -1102,155 +1054,153 @@ class LoginScreenState extends State<LoginScreen>
           ),
           isShowCompletedLoading == true
               ? Center(
-            child: CircularProgressIndicator(
-                valueColor:
-                AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
-          )
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(fiberchatLightBlue)),
+                )
               : Padding(
-            padding: EdgeInsets.fromLTRB(17, 22, 17, 5),
-            child: MySimpleButton(
-              height: 57,
-              buttoncolor: DESIGN_TYPE == Themetype.whatsapp
-                  ? fiberchatLightBlue
-                  : fiberchatLightBlue,
-              buttontext: getTranslated(this.context, 'verify_otp'),
-              onpressed: () {
-                if (_code.length == 6) {
-                  setState(() {
-                    isVerifyingCode = true;
-                  });
-                  handleSignIn();
-                } else
-                  Fiberchat.toast(
-                      getTranslated(this.context, 'correctotp'));
-              },
-            ),
-          ),
+                  padding: EdgeInsets.fromLTRB(17, 22, 17, 5),
+                  child: MySimpleButton(
+                    height: 57,
+                    buttoncolor: DESIGN_TYPE == Themetype.whatsapp
+                        ? fiberchatLightBlue
+                        : fiberchatLightBlue,
+                    buttontext: getTranslated(this.context, 'verify_otp'),
+                    onpressed: () {
+                      if (_code.length == 6) {
+                        setState(() {
+                          isVerifyingCode = true;
+                        });
+                        handleSignIn();
+                      } else
+                        Fiberchat.toast(
+                            getTranslated(this.context, 'correctotp'));
+                    },
+                  ),
+                ),
           SizedBox(
             height: 20,
           ),
           isShowCompletedLoading == true
               ? SizedBox(
-            height: 36,
-          )
-              : Consumer<TimerProvider>(
-            builder: (context, timeProvider, _) =>
-            timeProvider.wait ==
-                true &&
-                isCodeSent == true
-                ? Padding(
-              padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
-              child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: getTranslated(this.context, 'resendcode'),
-                        style: TextStyle(
-                            fontSize: 14, color: fiberchatGrey),
-                      ),
-                      TextSpan(
-                        text: " 00:${timeProvider.start} ",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: fiberchatLightBlue,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      TextSpan(
-                        text: getTranslated(this.context, 'seconds'),
-                        style: TextStyle(
-                            fontSize: 14, color: fiberchatGrey),
-                      ),
-                    ],
-                  )),
-            )
-                : timeProvider.isActionBarShow == false
-                ? SizedBox(
-              height: 35,
-            )
-                : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                    onTap: () {
-                      final timerProvider =
-                      Provider.of<TimerProvider>(context,
-                          listen: false);
-                      timerProvider.resetTimer();
-                      unawaited(Navigator.pushReplacement(
-                          this.context,
-                          MaterialPageRoute(
-                              builder: (newContext) =>
-                                  Homepage(
-                                    doc: widget.doc,
-                                    currentUserNo: null,
-                                    prefs: widget.prefs,
-                                  ))));
-                    },
-                    child: Container(
-                      margin:
-                      EdgeInsets.fromLTRB(23, 12, 10, 10),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.arrow_back_ios,
-                            color: fiberchatGrey,
-                            size: 16,
-                          ),
-                          Text(
-                            getTranslated(this.context, 'back'),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: fiberchatGrey,
-                                fontSize: 13),
-                          ),
-                        ],
-                      ),
-                    )),
-                attempt > 1
-                    ? SizedBox(
-                  height: 0,
+                  height: 36,
                 )
-                    : InkWell(
-                    onTap: () {
-                      setState(() {
-                        attempt++;
+              : Consumer<TimerProvider>(
+                  builder: (context, timeProvider, _) => timeProvider.wait ==
+                              true &&
+                          isCodeSent == true
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+                          child: RichText(
+                              text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: getTranslated(this.context, 'resendcode'),
+                                style: TextStyle(
+                                    fontSize: 14, color: fiberchatGrey),
+                              ),
+                              TextSpan(
+                                text: " 00:${timeProvider.start} ",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: fiberchatLightBlue,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              TextSpan(
+                                text: getTranslated(this.context, 'seconds'),
+                                style: TextStyle(
+                                    fontSize: 14, color: fiberchatGrey),
+                              ),
+                            ],
+                          )),
+                        )
+                      : timeProvider.isActionBarShow == false
+                          ? SizedBox(
+                              height: 35,
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      final timerProvider =
+                                          Provider.of<TimerProvider>(context,
+                                              listen: false);
+                                      timerProvider.resetTimer();
+                                      unawaited(Navigator.pushReplacement(
+                                          this.context,
+                                          MaterialPageRoute(
+                                              builder: (newContext) => Homepage(
+                                                    doc: widget.doc,
+                                                    currentUserNo: null,
+                                                    prefs: widget.prefs,
+                                                  ))));
+                                    },
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.fromLTRB(23, 12, 10, 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.arrow_back_ios,
+                                            color: fiberchatGrey,
+                                            size: 16,
+                                          ),
+                                          Text(
+                                            getTranslated(this.context, 'back'),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: fiberchatGrey,
+                                                fontSize: 13),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                                attempt > 1
+                                    ? SizedBox(
+                                        height: 0,
+                                      )
+                                    : InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            attempt++;
 
-                        timeProvider.resetTimer();
-                        isCodeSent = false;
-                        currentStatus = LoginStatus
-                            .sendingSMScode.index;
-                      });
-                      verifyPhoneNumber();
-                    },
-                    child: Container(
-                      margin:
-                      EdgeInsets.fromLTRB(10, 4, 23, 4),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.restart_alt_outlined,
-                              color: fiberchatLightBlue),
-                          Text(
-                            ' ' +
-                                getTranslated(
-                                    this.context, 'resend'),
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: fiberchatLightBlue,
-                                fontWeight:
-                                FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ))
-              ],
-            ),
-          ),
+                                            timeProvider.resetTimer();
+                                            isCodeSent = false;
+                                            currentStatus = LoginStatus
+                                                .sendingSMScode.index;
+                                          });
+                                          verifyPhoneNumber();
+                                        },
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.fromLTRB(10, 4, 23, 4),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(Icons.restart_alt_outlined,
+                                                  color: fiberchatLightBlue),
+                                              Text(
+                                                ' ' +
+                                                    getTranslated(
+                                                        this.context, 'resend'),
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: fiberchatLightBlue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ))
+                              ],
+                            ),
+                ),
 
           SizedBox(
             height: 27,
@@ -1277,10 +1227,7 @@ class LoginScreenState extends State<LoginScreen>
         color: Colors.white,
       ),
       margin: EdgeInsets.fromLTRB(
-          15, MediaQuery
-          .of(this.context)
-          .size
-          .height / 2.50, 16, 0),
+          15, MediaQuery.of(this.context).size.height / 2.50, 16, 0),
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -1405,14 +1352,8 @@ class LoginScreenState extends State<LoginScreen>
   // final _enterNumberFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    var w = MediaQuery
-        .of(this.context)
-        .size
-        .width;
-    var h = MediaQuery
-        .of(this.context)
-        .size
-        .height;
+    var w = MediaQuery.of(this.context).size.width;
+    var h = MediaQuery.of(this.context).size.height;
 
     return Fiberchat.getNTPWrappedWidget(Scaffold(
       backgroundColor: DESIGN_TYPE == Themetype.whatsapp
@@ -1420,13 +1361,13 @@ class LoginScreenState extends State<LoginScreen>
           : fiberchatWhite,
       body: SingleChildScrollView(
           child: Column(
-            children: <Widget>[
-              Stack(
-                clipBehavior: Clip.none,
-                children: <Widget>[customclippath(w, h), buildCurrentWidget(w)],
-              ),
-            ],
-          )),
+        children: <Widget>[
+          Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[customclippath(w, h), buildCurrentWidget(w)],
+          ),
+        ],
+      )),
     ));
   }
 }
@@ -1444,17 +1385,18 @@ class MySimpleButton extends StatefulWidget {
   final double? borderradius;
   final Function? onpressed;
 
-  MySimpleButton({this.buttontext,
-    this.buttoncolor,
-    this.height,
-    this.spacing,
-    this.borderradius,
-    this.width,
-    this.buttontextcolor,
-    // this.icon,
-    this.onpressed,
-    // this.forcewidget,
-    this.shadowcolor});
+  MySimpleButton(
+      {this.buttontext,
+      this.buttoncolor,
+      this.height,
+      this.spacing,
+      this.borderradius,
+      this.width,
+      this.buttontextcolor,
+      // this.icon,
+      this.onpressed,
+      // this.forcewidget,
+      this.shadowcolor});
 
   @override
   _MySimpleButtonState createState() => _MySimpleButtonState();
@@ -1463,10 +1405,7 @@ class MySimpleButton extends StatefulWidget {
 class _MySimpleButtonState extends State<MySimpleButton> {
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery
-        .of(this.context)
-        .size
-        .width;
+    double w = MediaQuery.of(this.context).size.width;
     return GestureDetector(
         onTap: widget.onpressed as void Function()?,
         child: Container(
@@ -1496,7 +1435,7 @@ class _MySimpleButtonState extends State<MySimpleButton> {
                 color: widget.buttoncolor ?? fiberchatgreen,
               ),
               borderRadius:
-              BorderRadius.all(Radius.circular(widget.borderradius ?? 5))),
+                  BorderRadius.all(Radius.circular(widget.borderradius ?? 5))),
         ));
   }
 }
@@ -1514,42 +1453,39 @@ class MobileInputWithOutline extends StatefulWidget {
   final String? buttonText;
   final Function(PhoneNumber? phone)? onSaved;
 
-  MobileInputWithOutline({this.height,
-    this.width,
-    this.borderColor,
-    this.buttonhintTextColor,
-    this.hintStyle,
-    this.buttonTextColor,
-    this.onSaved,
-    this.hintText,
-    this.controller,
-    this.initialCountryCode,
-    this.buttonText});
+  MobileInputWithOutline(
+      {this.height,
+      this.width,
+      this.borderColor,
+      this.buttonhintTextColor,
+      this.hintStyle,
+      this.buttonTextColor,
+      this.onSaved,
+      this.hintText,
+      this.controller,
+      this.initialCountryCode,
+      this.buttonText});
 
   @override
   _MobileInputWithOutlineState createState() => _MobileInputWithOutlineState();
 }
 
 class _MobileInputWithOutlineState extends State<MobileInputWithOutline> {
-  BoxDecoration boxDecoration({double radius = 5,
-    Color bgColor = Colors.white,
-    var showShadow = false}) {
+  BoxDecoration boxDecoration(
+      {double radius = 5,
+      Color bgColor = Colors.white,
+      var showShadow = false}) {
     return BoxDecoration(
         color: bgColor,
         boxShadow: showShadow
-        ? [
-        BoxShadow(
-            color: fiberchatgreen, blurRadius: 10, spreadRadius: 2)
-        ]
+            ? [
+                BoxShadow(
+                    color: fiberchatgreen, blurRadius: 10, spreadRadius: 2)
+              ]
             : [BoxShadow(color: Colors.transparent)],
-    border:
-    Border.all(color: widget.borderColor ?? Colors.grey, width: 1.5),
-    borderRadius: BorderRadius.all(Radius.circular
-    (
-    radius
-    )
-    )
-    );
+        border:
+            Border.all(color: widget.borderColor ?? Colors.grey, width: 1.5),
+        borderRadius: BorderRadius.all(Radius.circular(radius)));
   }
 
   @override
@@ -1559,15 +1495,12 @@ class _MobileInputWithOutlineState extends State<MobileInputWithOutline> {
         Container(
           padding: EdgeInsetsDirectional.only(bottom: 7, top: 5),
           height: widget.height ?? 50,
-          width: widget.width ?? MediaQuery
-              .of(this.context)
-              .size
-              .width,
+          width: widget.width ?? MediaQuery.of(this.context).size.width,
           decoration: boxDecoration(),
           child: IntlPhoneField(
               searchText: "Search by Country / Region Name",
               dropDownArrowColor:
-              widget.buttonhintTextColor ?? Colors.grey[300],
+                  widget.buttonhintTextColor ?? Colors.grey[300],
               textAlign: TextAlign.left,
               initialCountryCode: widget.initialCountryCode,
               controller: widget.controller,
@@ -1653,37 +1586,38 @@ class InpuTextBox extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatter;
   final Widget? prefixIconbutton;
 
-  InpuTextBox({this.controller,
-    this.boxbordercolor,
-    this.boxheight,
-    this.fontsize,
-    this.leftrightmargin,
-    this.letterspacing,
-    this.forcedmargin,
-    this.boxwidth,
-    this.boxcornerradius,
-    this.boxbcgcolor,
-    this.hinttext,
-    this.boxborderwidth,
-    this.onSaved,
-    this.textCapitalization,
-    this.onchanged,
-    this.placeholder,
-    this.showIconboundary,
-    this.subtitle,
-    this.disabled,
-    this.keyboardtype,
-    this.inputFormatter,
-    this.validator,
-    this.title,
-    this.maxLines,
-    this.autovalidate,
-    this.prefixIconbutton,
-    this.maxcharacters,
-    this.isboldinput,
-    this.obscuretext,
-    this.sufficIconbutton,
-    this.minLines});
+  InpuTextBox(
+      {this.controller,
+      this.boxbordercolor,
+      this.boxheight,
+      this.fontsize,
+      this.leftrightmargin,
+      this.letterspacing,
+      this.forcedmargin,
+      this.boxwidth,
+      this.boxcornerradius,
+      this.boxbcgcolor,
+      this.hinttext,
+      this.boxborderwidth,
+      this.onSaved,
+      this.textCapitalization,
+      this.onchanged,
+      this.placeholder,
+      this.showIconboundary,
+      this.subtitle,
+      this.disabled,
+      this.keyboardtype,
+      this.inputFormatter,
+      this.validator,
+      this.title,
+      this.maxLines,
+      this.autovalidate,
+      this.prefixIconbutton,
+      this.maxcharacters,
+      this.isboldinput,
+      this.obscuretext,
+      this.sufficIconbutton,
+      this.minLines});
 
   @override
   _InpuTextBoxState createState() => _InpuTextBoxState();
@@ -1708,10 +1642,7 @@ class _InpuTextBoxState extends State<InpuTextBox> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery
-        .of(this.context)
-        .size
-        .width;
+    double w = MediaQuery.of(this.context).size.width;
     return Align(
       child: Container(
         margin: EdgeInsets.fromLTRB(
@@ -1742,14 +1673,14 @@ class _InpuTextBoxState extends State<InpuTextBox> {
                 onChanged: widget.onchanged ?? (val) {},
                 maxLength: widget.maxcharacters ?? null,
                 validator:
-                widget.validator as String? Function(String?)? ?? null,
+                    widget.validator as String? Function(String?)? ?? null,
                 keyboardType: widget.keyboardtype ?? null,
                 autovalidateMode: widget.autovalidate == true
                     ? AutovalidateMode.always
                     : AutovalidateMode.disabled,
                 inputFormatters: widget.inputFormatter ?? [],
                 textCapitalization:
-                widget.textCapitalization ?? TextCapitalization.sentences,
+                    widget.textCapitalization ?? TextCapitalization.sentences,
                 style: TextStyle(
                   letterSpacing: widget.letterspacing ?? null,
                   fontSize: widget.fontsize ?? 15,
@@ -1763,65 +1694,65 @@ class _InpuTextBoxState extends State<InpuTextBox> {
                 decoration: InputDecoration(
                     prefixIcon: widget.prefixIconbutton != null
                         ? Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                                width: widget.boxborderwidth ?? 1.5,
-                                color: widget.showIconboundary == true ||
-                                    widget.showIconboundary == null
-                                    ? Colors.grey.withOpacity(0.3)
-                                    : Colors.transparent),
-                          ),
-                          // color: Colors.white,
-                        ),
-                        margin: EdgeInsets.only(
-                            left: 2, right: 5, top: 2, bottom: 2),
-                        // height: 45,
-                        alignment: Alignment.center,
-                        width: 50,
-                        child: widget.prefixIconbutton != null
-                            ? widget.prefixIconbutton
-                            : null)
+                            decoration: BoxDecoration(
+                              border: Border(
+                                right: BorderSide(
+                                    width: widget.boxborderwidth ?? 1.5,
+                                    color: widget.showIconboundary == true ||
+                                            widget.showIconboundary == null
+                                        ? Colors.grey.withOpacity(0.3)
+                                        : Colors.transparent),
+                              ),
+                              // color: Colors.white,
+                            ),
+                            margin: EdgeInsets.only(
+                                left: 2, right: 5, top: 2, bottom: 2),
+                            // height: 45,
+                            alignment: Alignment.center,
+                            width: 50,
+                            child: widget.prefixIconbutton != null
+                                ? widget.prefixIconbutton
+                                : null)
                         : null,
                     suffixIcon: widget.sufficIconbutton != null ||
-                        widget.obscuretext == true
+                            widget.obscuretext == true
                         ? Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            left: BorderSide(
-                                width: widget.boxborderwidth ?? 1.5,
-                                color: widget.showIconboundary == true ||
-                                    widget.showIconboundary == null
-                                    ? Colors.grey.withOpacity(0.3)
-                                    : Colors.transparent),
-                          ),
-                          // color: Colors.white,
-                        ),
-                        margin: EdgeInsets.only(
-                            left: 2, right: 5, top: 2, bottom: 2),
-                        // height: 45,
-                        alignment: Alignment.center,
-                        width: 50,
-                        child: widget.sufficIconbutton != null
-                            ? widget.sufficIconbutton
-                            : widget.obscuretext == true
-                            ? IconButton(
-                            icon: Icon(
-                                isobscuretext == true
-                                    ? Icons.visibility_outlined
-                                    : Icons.visibility_off_outlined,
-                                color: Colors.blueGrey),
-                            onPressed: () {
-                              changeobscure();
-                            })
-                            : null)
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                    width: widget.boxborderwidth ?? 1.5,
+                                    color: widget.showIconboundary == true ||
+                                            widget.showIconboundary == null
+                                        ? Colors.grey.withOpacity(0.3)
+                                        : Colors.transparent),
+                              ),
+                              // color: Colors.white,
+                            ),
+                            margin: EdgeInsets.only(
+                                left: 2, right: 5, top: 2, bottom: 2),
+                            // height: 45,
+                            alignment: Alignment.center,
+                            width: 50,
+                            child: widget.sufficIconbutton != null
+                                ? widget.sufficIconbutton
+                                : widget.obscuretext == true
+                                    ? IconButton(
+                                        icon: Icon(
+                                            isobscuretext == true
+                                                ? Icons.visibility_outlined
+                                                : Icons.visibility_off_outlined,
+                                            color: Colors.blueGrey),
+                                        onPressed: () {
+                                          changeobscure();
+                                        })
+                                    : null)
                         : null,
                     filled: true,
                     fillColor: widget.boxbcgcolor ?? Colors.white,
                     enabledBorder: OutlineInputBorder(
                       // width: 0.0 produces a thin "hairline" border
                       borderRadius:
-                      BorderRadius.circular(widget.boxcornerradius ?? 1),
+                          BorderRadius.circular(widget.boxcornerradius ?? 1),
                       borderSide: BorderSide(
                           color: widget.boxbordercolor ??
                               Colors.grey.withOpacity(0.2),
@@ -1830,12 +1761,12 @@ class _InpuTextBoxState extends State<InpuTextBox> {
                     focusedBorder: OutlineInputBorder(
                       // width: 0.0 produces a thin "hairline" border
                       borderRadius:
-                      BorderRadius.circular(widget.boxcornerradius ?? 1),
+                          BorderRadius.circular(widget.boxcornerradius ?? 1),
                       borderSide: BorderSide(color: fiberchatgreen, width: 1.5),
                     ),
                     border: OutlineInputBorder(
                         borderRadius:
-                        BorderRadius.circular(widget.boxcornerradius ?? 1),
+                            BorderRadius.circular(widget.boxcornerradius ?? 1),
                         borderSide: BorderSide(color: Colors.grey)),
                     contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     // labelText: 'Password',
