@@ -15,10 +15,12 @@ class PickupLayout extends StatelessWidget {
   final Widget scaffold;
   final SharedPreferences prefs;
   final CallMethods callMethods = CallMethods();
+  final String? currentUserNo;
 
   PickupLayout({
     required this.scaffold,
     required this.prefs,
+    this.currentUserNo,
   });
 
   @override
@@ -31,7 +33,7 @@ class PickupLayout extends StatelessWidget {
         : /*(userProvider.getUser != null)
             ?*/ StreamBuilder<DocumentSnapshot>(
                 stream:
-                    callMethods.callStream(phone:'9999999999'),
+                    callMethods.callStream(phone:currentUserNo),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.data() != null) {
                     Call call = Call.fromMap(

@@ -226,6 +226,7 @@ class HomepageState extends State<Homepage>
     )
         : PickupLayout(
         prefs: widget.prefs!,
+        currentUserNo: widget.currentUserNo,
         scaffold: Fiberchat.getNTPWrappedWidget(WillPopScope(
           onWillPop: onWillPop,
           child: Scaffold(
