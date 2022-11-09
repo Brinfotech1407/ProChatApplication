@@ -90,9 +90,7 @@ class RecentChatsState extends State<RecentChats> {
           .toBase64();
       final key = encrypt.Key.fromBase64(sharedSecret!);
       cryptor = new encrypt.Encrypter(encrypt.Salsa20(key));
-      return isAESencryption == true
-          ? AESEncryptData.decryptAES(inputMssg, sharedSecret)
-          : decryptWithCRC(inputMssg);
+      return inputMssg;
     } catch (e) {
       sharedSecret = null;
       return "";
