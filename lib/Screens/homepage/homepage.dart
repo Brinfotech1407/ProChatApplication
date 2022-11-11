@@ -1707,27 +1707,43 @@ class HomepageState extends State<Homepage>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add_circle_outline_sharp,
-                        size: 25,
-                        color: Colors.blue,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Add New Account',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
-                          textAlign: TextAlign.left,
+                GestureDetector(
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline_sharp,
+                          size: 25,
+                          color: Colors.blue,
                         ),
-                      ),
-                    ],
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Add New Account',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    unawaited(Navigator.pushReplacement(
+                        this.context,
+                        MaterialPageRoute(
+                            builder: (newContext) =>LoginScreen(
+                              prefs: widget.prefs,
+                              accountApprovalMessage: '',
+                              isaccountapprovalbyadminneeded: false,
+                              isblocknewlogins: false,
+                              title: getTranslated(context, 'signin'),
+                            ))));
+
+                  },
                 ),
                 Container(
                   child: Divider(color: Colors.grey, height: 1.0),
@@ -1743,11 +1759,11 @@ class HomepageState extends State<Homepage>
 
 Widget setupAddDialogListing() {
   return Container(
-    height: 300.0, // Change as per your requirement
-    width: 300.0, // Change as per your requirement
+    height: 150.0, // Change as per your requirement
+    width: 150.0, // Change as per your requirement
     child: ListView.builder(
       shrinkWrap: true,
-      itemCount: 5,
+      itemCount: 3,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
           title: Text('Gujarat, India'),
