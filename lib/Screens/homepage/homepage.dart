@@ -1741,16 +1741,22 @@ class HomepageState extends State<Homepage>
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    unawaited(Navigator.pushReplacement(
-                        this.context,
-                        MaterialPageRoute(
-                            builder: (newContext) => LoginScreen(
-                                  prefs: widget.prefs,
-                                  accountApprovalMessage: '',
-                                  isaccountapprovalbyadminneeded: false,
-                                  isblocknewlogins: false,
-                                  title: getTranslated(context, 'signin'),
-                                ))));
+                    print('length ::: ${arrMultiAccount.length}');
+                    if(arrMultiAccount.length <3) {
+                      unawaited(Navigator.pushReplacement(
+                          this.context,
+                          MaterialPageRoute(
+                              builder: (newContext) =>
+                                  LoginScreen(
+                                    prefs: widget.prefs,
+                                    accountApprovalMessage: '',
+                                    isaccountapprovalbyadminneeded: false,
+                                    isblocknewlogins: false,
+                                    title: getTranslated(context, 'signin'),
+                                  ))));
+                    }else{
+                      Prochat.toast('Maximum 3 User Add');
+                    }
                   },
                 ),
                 Container(
