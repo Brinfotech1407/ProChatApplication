@@ -30,4 +30,5 @@ class DbPaths {
   static final String collectiongroupChats = 'groupChats';
   static final String collectionbroadcasts = 'broadcasts';
   static final String collectionbroadcastsChats = 'broadcastChats';
+  static final String collectionLinksAccount = 'multiAccounts';
 }
