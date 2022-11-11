@@ -94,6 +94,7 @@ class HomepageState extends State<Homepage>
 
   bool isFetching = true;
   List phoneNumberVariants = [];
+
   // SharedPreferences? sharedPrefs;
 
   @override
@@ -1781,7 +1782,9 @@ class HomepageState extends State<Homepage>
       debugPrint('Datas::::$data');
 
       data.forEach((String key, dynamic value) {
-        arrMultiAccount.add(MultiAccount(phoneNo: key, uid: value as String));
+        if (widget.currentUserNo != key) {
+          arrMultiAccount.add(MultiAccount(phoneNo: key, uid: value as String));
+        }
       });
 
       debugPrint('arrMultiAccount::::$arrMultiAccount');
@@ -1808,6 +1811,8 @@ Widget setupAddDialogListing(
             title: Text(arrItem.phoneNo ?? ''),
           ),
           onTap: () async {
+            //Todo(user):needs to close dialog / home page
+            //Todo(user):open new Screen Waiting //Please wait we are setting up
             await getUserDetailsFromUID(
               uid: arrItem.uid,
               prefs: pref,
