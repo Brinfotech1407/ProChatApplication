@@ -25,7 +25,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
   void initState() {
     super.initState();
     getUserDetailsFromUID(
-      uid:widget.arrItem.uid,
+      uid: widget.arrItem.uid,
       prefs: widget.prefs,
       phoneNo: widget.arrItem.phoneNo,
     );
@@ -41,14 +41,16 @@ class _WaitingScreenState extends State<WaitingScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'Please wait we are setting up',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),
+              'Please wait we are setting up',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
-        SizedBox(height: 8),
-        CircularProgressIndicator(
-          color: Colors.white,
-        ),
+            SizedBox(height: 8),
+            CircularProgressIndicator(
+              color: Colors.white,
+            ),
           ],
         ),
       ),
