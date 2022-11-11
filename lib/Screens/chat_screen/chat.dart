@@ -2670,7 +2670,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   Widget buildMessage(BuildContext context, Map<String, dynamic> doc,
       {bool saved = false, List<Message>? savedMsgs}) {
     final observer = Provider.of<Observer>(context, listen: false);
-    print("ismine number :::: $currentUserNo");
     final bool isMe = doc[Dbkeys.from] == currentUserNo /*'9999999999'*/;
     bool isContinuing;
     if (savedMsgs == null)

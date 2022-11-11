@@ -36,6 +36,7 @@ import 'package:prochat/Screens/recent_chats/RecentChatsWithoutLastMessage.dart'
 import 'package:prochat/Screens/recent_chats/RecentsChats.dart';
 import 'package:prochat/Screens/sharing_intent/SelectContactToShare.dart';
 import 'package:prochat/Screens/splash_screen/splash_screen.dart';
+import 'package:prochat/Screens/splash_screen/waiting_screen.dart';
 import 'package:prochat/Screens/status/status.dart';
 import 'package:prochat/Services/Providers/AvailableContactsProvider.dart';
 import 'package:prochat/Services/Providers/Observer.dart';
@@ -150,6 +151,7 @@ class HomepageState extends State<Homepage>
   String? userPhotourl;
   String? userFullname;
   List<MultiAccount> arrMultiAccount = <MultiAccount>[];
+  ValueNotifier<bool> showWaitingScreen = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -238,6 +240,7 @@ class HomepageState extends State<Homepage>
                           child: Scaffold(
                               backgroundColor: Colors.white,
                               appBar: AppBar(
+                                  automaticallyImplyLeading: false,
                                   elevation: DESIGN_TYPE == Themetype.messenger
                                       ? 0.4
                                       : 1,
@@ -259,7 +262,7 @@ class HomepageState extends State<Homepage>
                                         ),
                                       ),
                                       onTap: () {
-                                        showAddAccountDialog();
+                                          showAddAccountDialog();
                                       },
                                     ),
                                   ),
@@ -1790,35 +1793,44 @@ class HomepageState extends State<Homepage>
       debugPrint('arrMultiAccount::::$arrMultiAccount');
     });
   }
-}
 
-Widget setupAddDialogListing(
-  List<MultiAccount> arrMultiAccount,
-  SharedPreferences pref,
-  BuildContext context,
-  DocumentSnapshot<Map<String, dynamic>>? doc,
-) {
-  return Container(
-    height: 150.0, // Change as per your requirement
-    width: 150.0, // Change as per your requirement
-    child: ListView.builder(
-      shrinkWrap: true,
-      itemCount: arrMultiAccount.length,
-      itemBuilder: (BuildContext context, int index) {
-        MultiAccount arrItem = arrMultiAccount[index];
-        return GestureDetector(
-          child: ListTile(
-            title: Text(arrItem.phoneNo ?? ''),
-          ),
-          onTap: () async {
-            //Todo(user):needs to close dialog and home page
-            //Todo(user):open new Screen Waiting //Please wait we are setting up
-            await getUserDetailsFromUID(
-              uid: arrItem.uid,
-              prefs: pref,
-              phoneNo: arrItem.phoneNo,
-            );
-            unawaited(
+  Widget setupAddDialogListing(
+    List<MultiAccount> arrMultiAccount,
+    SharedPreferences pref,
+    BuildContext context,
+    DocumentSnapshot<Map<String, dynamic>>? doc,
+  ) {
+    return Container(
+      height: 150.0, // Change as per your requirement
+      width: 200, // Change as per your requirement
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: arrMultiAccount.length,
+        itemBuilder: (BuildContext context, int index) {
+          MultiAccount arrItem = arrMultiAccount[index];
+          return GestureDetector(
+            child: ListTile(
+              title: Text(arrItem.phoneNo ?? ''),
+            ),
+            onTap: () async {
+              showWaitingScreen.value = true;
+              Navigator.push(
+                context,
+                MaterialPageRoute<Widget>(
+                  builder: (_) => WaitingScreen(
+                      arrItem: arrItem,
+                      prefs: pref,
+                      isShowWaitingScreen: showWaitingScreen.value),
+                ),
+              );
+              await getUserDetailsFromUID(
+                uid: arrItem.uid,
+                prefs: pref,
+                phoneNo: arrItem.phoneNo,
+              );
+              showWaitingScreen.value = false;
+              Navigator.pop(context);
+              unawaited(
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -1829,12 +1841,13 @@ Widget setupAddDialogListing(
                   ),
                 ),
               ),
-            );
-          },
-        );
-      },
-    ),
-  );
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
 }
 
 Future<void> getUserDetailsFromUID({
