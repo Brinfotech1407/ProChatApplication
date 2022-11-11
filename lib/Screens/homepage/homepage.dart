@@ -1811,7 +1811,7 @@ Widget setupAddDialogListing(
             title: Text(arrItem.phoneNo ?? ''),
           ),
           onTap: () async {
-            //Todo(user):needs to close dialog / home page
+            //Todo(user):needs to close dialog and home page
             //Todo(user):open new Screen Waiting //Please wait we are setting up
             await getUserDetailsFromUID(
               uid: arrItem.uid,
