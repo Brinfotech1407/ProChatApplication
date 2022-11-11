@@ -81,7 +81,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
   Widget build(BuildContext context) {
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+        scaffold: Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
             model: widget.model,
             child: ScopedModelDescendant<DataModel>(
                 builder: (context, child, model) {
@@ -131,7 +131,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                             final AvailableContactsProvider contactsProvider =
                                 Provider.of<AvailableContactsProvider>(context,
                                     listen: false);
-                            Fiberchat.toast(getTranslated(context, "loading"));
+                            Prochat.toast(getTranslated(context, "loading"));
                             contactsProvider.fetchContacts(
                                 context,
                                 widget.model,
@@ -293,7 +293,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                                     horizontal: 22.0,
                                                     vertical: 11.0),
                                             onTap: () {
-                                              Fiberchat.invite(context);
+                                              Prochat.invite(context);
                                             },
                                           ),
                                           ListTile(
@@ -436,7 +436,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                                                           false,
                                                                       state: Navigator.of(
                                                                           context),
-                                                                      type: Fiberchat.getAuthenticationType(
+                                                                      type: Prochat.getAuthenticationType(
                                                                           widget
                                                                               .biometricEnabled,
                                                                           model),
@@ -541,7 +541,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                                                         false,
                                                                     state: Navigator.of(
                                                                         context),
-                                                                    type: Fiberchat.getAuthenticationType(
+                                                                    type: Prochat.getAuthenticationType(
                                                                         widget
                                                                             .biometricEnabled,
                                                                         model),
@@ -652,7 +652,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                                                   fiberchatgreen,
                                                               radius: 22.5,
                                                               child: Text(
-                                                                Fiberchat
+                                                                Prochat
                                                                     .getInitials(
                                                                         user.value),
                                                                 style: TextStyle(
@@ -678,7 +678,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                                           onTap: () {
                                                             hidekeyboard(
                                                                 context);
-                                                            Fiberchat.invite(
+                                                            Prochat.invite(
                                                                 context);
                                                           },
                                                         ),
@@ -689,7 +689,7 @@ class _SmartContactsPageState extends State<SmartContactsPage> {
                                                               onTap: () {
                                                                 hidekeyboard(
                                                                     context);
-                                                                Fiberchat.invite(
+                                                                Prochat.invite(
                                                                     context);
                                                               },
                                                               child: Icon(

@@ -212,7 +212,7 @@ class _BroadcastDetailsState extends State<BroadcastDetails> {
 
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Consumer<List<BroadcastModel>>(
+        scaffold: Prochat.getNTPWrappedWidget(Consumer<List<BroadcastModel>>(
             builder: (context, broadcastList, _child) {
           final observer = Provider.of<Observer>(context, listen: false);
           Map<dynamic, dynamic> broadcastDoc = broadcastList.indexWhere(
@@ -456,7 +456,7 @@ class _BroadcastDetailsState extends State<BroadcastDetails> {
                                               ? SizedBox()
                                               : IconButton(
                                                   onPressed: () async {
-                                                    Fiberchat.toast(
+                                                    Prochat.toast(
                                                       getTranslated(
                                                           context, 'plswait'),
                                                     );

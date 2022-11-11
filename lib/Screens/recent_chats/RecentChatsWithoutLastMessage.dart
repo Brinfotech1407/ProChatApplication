@@ -75,7 +75,7 @@ class RecentChatsWithoutLastMessageState
   @override
   void initState() {
     super.initState();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final observer = Provider.of<Observer>(this.context, listen: false);
       if (IsBannerAdShow == true && observer.isadmobshow == true) {
@@ -161,7 +161,7 @@ class RecentChatsWithoutLastMessageState
                         style: TextStyle(color: Colors.red, fontSize: 18),
                       ),
                       onPressed: () async {
-                        String chatId = Fiberchat.getChatId(
+                        String chatId = Prochat.getChatId(
                             currentUserNo, targetUser[Dbkeys.phone]);
 
                         if (currentUserNo != null &&
@@ -213,7 +213,7 @@ class RecentChatsWithoutLastMessageState
                             //             ))));
                           });
                         } else {
-                          Fiberchat.toast('Error Occured. Could not delete !');
+                          Prochat.toast('Error Occured. Could not delete !');
                         }
                       },
                     )
@@ -515,7 +515,7 @@ class RecentChatsWithoutLastMessageState
                       leading:
                           customCircleAvatar(url: user['photoUrl'], radius: 22),
                       title: Text(
-                        Fiberchat.getNickname(user)!,
+                        Prochat.getNickname(user)!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -550,7 +550,7 @@ class RecentChatsWithoutLastMessageState
                                 getTranslated(context, 'auth_neededchat'),
                                 state: state,
                                 shouldPop: false,
-                                type: Fiberchat.getAuthenticationType(
+                                type: Prochat.getAuthenticationType(
                                     biometricEnabled, _cachedModel),
                                 prefs: widget.prefs, onSuccess: () {
                               state.pushReplacement(new MaterialPageRoute(
@@ -614,7 +614,7 @@ class RecentChatsWithoutLastMessageState
   }
 
   Stream<MessageData> getUnread(Map<String, dynamic> user) {
-    String chatId = Fiberchat.getChatId(currentUserNo, user[Dbkeys.phone]);
+    String chatId = Prochat.getChatId(currentUserNo, user[Dbkeys.phone]);
     var controller = StreamController<MessageData>.broadcast();
     unreadSubscriptions.add(FirebaseFirestore.instance
         .collection(DbPaths.collectionmessages)
@@ -1019,7 +1019,7 @@ class RecentChatsWithoutLastMessageState
   Widget build(BuildContext context) {
     final observer = Provider.of<Observer>(this.context, listen: false);
     setStatusBarColor();
-    return Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+    return Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
       model: getModel()!,
       child:
           ScopedModelDescendant<DataModel>(builder: (context, child, _model) {
@@ -1059,7 +1059,7 @@ class RecentChatsWithoutLastMessageState
                               onTapCreateBroadcast: () {
                                 if (observer.isAllowCreatingBroadcasts ==
                                     false) {
-                                  Fiberchat.showRationale(
+                                  Prochat.showRationale(
                                       getTranslated(this.context, 'disabled'));
                                 } else {
                                   Navigator.pushReplacement(
@@ -1079,7 +1079,7 @@ class RecentChatsWithoutLastMessageState
                               },
                               onTapCreateGroup: () {
                                 if (observer.isAllowCreatingGroups == false) {
-                                  Fiberchat.showRationale(
+                                  Prochat.showRationale(
                                       getTranslated(this.context, 'disabled'));
                                 } else {
                                   Navigator.pushReplacement(

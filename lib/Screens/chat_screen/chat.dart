@@ -200,7 +200,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     unread = widget.unread;
     // initAudioPlayer();
     // _load();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
 
     updateLocalUserData(_cachedModel);
 
@@ -408,7 +408,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       int crc = CRC32.compute(input);
       return '$encrypted${Dbkeys.crcSeperator}$crc';
     } catch (e) {
-      Fiberchat.toast(
+      Prochat.toast(
         getTranslated(this.context, 'waitingpeer'),
       );
       return false;
@@ -480,7 +480,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     } catch (e) {
       seenState!.value = false;
     }
-    chatId = Fiberchat.getChatId(currentUserNo, peerNo);
+    chatId = Prochat.getChatId(currentUserNo, peerNo);
     textEditingController.addListener(() {
       if (textEditingController.text.isNotEmpty && typing == false) {
         lastSeen = peerNo;
@@ -646,7 +646,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -790,7 +790,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -821,7 +821,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      Fiberchat.toast(
+      Prochat.toast(
           'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
       return Future.error('Location services are disabled.');
     }
@@ -831,7 +831,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.deniedForever) {
         // Permissions are denied forever, handle appropriately.
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
         return Future.error(
             'Location permissions are permanently denied, we cannot request permissions.');
@@ -843,14 +843,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
         return Future.error('Location permissions are denied');
       }
     }
     if (permission == LocationPermission.always ||
         permission == LocationPermission.whileInUse) {
-      Fiberchat.toast(
+      Prochat.toast(
         getTranslated(this.context, 'detectingloc'),
       );
     }
@@ -1005,7 +1005,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         }*/
       } on Exception catch (_) {
         // print('Exception caught!');
-        Fiberchat.toast("Exception: $_");
+        Prochat.toast("Exception: $_");
       }
     }
   }
@@ -1093,7 +1093,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () async {
-            Fiberchat.toast(getTranslated(contextForDialog, 'deleting'));
+            Prochat.toast(getTranslated(contextForDialog, 'deleting'));
             await FirebaseFirestore.instance
                 .collection(DbPaths.collectionmessages)
                 .doc(chatId)
@@ -1102,7 +1102,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 .get()
                 .then((chatDoc) async {
               if (!chatDoc.exists) {
-                Fiberchat.toast('Please reload this screen !');
+                Prochat.toast('Please reload this screen !');
               } else if (chatDoc.exists) {
                 Map<String, dynamic> realtimeDoc = chatDoc.data()!;
                 if (realtimeDoc[Dbkeys.hasRecipientDeleted] == true) {
@@ -1128,7 +1128,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       Navigator.maybePop(
                         contextForDialog,
                       );
-                      Fiberchat.toast(
+                      Prochat.toast(
                         getTranslated(contextForDialog, 'deleted'),
                       );
                       hidekeyboard(
@@ -1140,7 +1140,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     await deleteMsgMedia(realtimeDoc, chatId!)
                         .then((isDeleted) async {
                       if (isDeleted == false || isDeleted == null) {
-                        Fiberchat.toast('Could not delete. Please try again!');
+                        Prochat.toast('Could not delete. Please try again!');
                       } else {
                         await FirebaseFirestore.instance
                             .collection(DbPaths.collectionmessages)
@@ -1159,7 +1159,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           Navigator.maybePop(
                             contextForDialog,
                           );
-                          Fiberchat.toast(
+                          Prochat.toast(
                             getTranslated(contextForDialog, 'deleted'),
                           );
                           hidekeyboard(contextForDialog);
@@ -1193,7 +1193,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
                   Future.delayed(const Duration(milliseconds: 300), () {
                     Navigator.maybePop(contextForDialog);
-                    Fiberchat.toast(
+                    Prochat.toast(
                       getTranslated(contextForDialog, 'deleted'),
                     );
                     hidekeyboard(contextForDialog);
@@ -1231,19 +1231,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               });
               Future.delayed(const Duration(milliseconds: 300), () {
                 Navigator.maybePop(contextForDialog);
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(contextForDialog, 'deleted'),
                 );
                 hidekeyboard(contextForDialog);
               });
             } else {
               // -------Delete message completely for everyone
-              Fiberchat.toast(
+              Prochat.toast(
                 getTranslated(contextForDialog, 'deleting'),
               );
               await deleteMsgMedia(mssgDoc, chatId!).then((isDeleted) async {
                 if (isDeleted == false || isDeleted == null) {
-                  Fiberchat.toast('Could not delete. Please try again!');
+                  Prochat.toast('Could not delete. Please try again!');
                 } else {
                   await FirebaseFirestore.instance
                       .collection(DbPaths.collectionmessages)
@@ -1260,7 +1260,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   });
                   Future.delayed(const Duration(milliseconds: 300), () {
                     Navigator.maybePop(contextForDialog);
-                    Fiberchat.toast(
+                    Prochat.toast(
                       getTranslated(contextForDialog, 'deleted'),
                     );
                     hidekeyboard(contextForDialog);
@@ -1282,7 +1282,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () async {
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(contextForDialog, 'deleting'),
             );
             await FirebaseFirestore.instance
@@ -1293,7 +1293,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 .get()
                 .then((chatDoc) async {
               if (!chatDoc.exists) {
-                Fiberchat.toast('Please reload this screen !');
+                Prochat.toast('Please reload this screen !');
               } else if (chatDoc.exists) {
                 Map<String, dynamic> realtimeDoc = chatDoc.data()!;
                 if (realtimeDoc[Dbkeys.hasSenderDeleted] == true) {
@@ -1317,7 +1317,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     });
                     Future.delayed(const Duration(milliseconds: 300), () {
                       Navigator.maybePop(contextForDialog);
-                      Fiberchat.toast(
+                      Prochat.toast(
                         getTranslated(contextForDialog, 'deleted'),
                       );
                       hidekeyboard(contextForDialog);
@@ -1327,7 +1327,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     await deleteMsgMedia(realtimeDoc, chatId!)
                         .then((isDeleted) async {
                       if (isDeleted == false || isDeleted == null) {
-                        Fiberchat.toast('Could not delete. Please try again!');
+                        Prochat.toast('Could not delete. Please try again!');
                       } else {
                         await FirebaseFirestore.instance
                             .collection(DbPaths.collectionmessages)
@@ -1344,7 +1344,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         });
                         Future.delayed(const Duration(milliseconds: 300), () {
                           Navigator.maybePop(contextForDialog);
-                          Fiberchat.toast(
+                          Prochat.toast(
                             getTranslated(contextForDialog, 'deleted'),
                           );
                           hidekeyboard(contextForDialog);
@@ -1378,7 +1378,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   }
                   Future.delayed(const Duration(milliseconds: 300), () {
                     Navigator.maybePop(contextForDialog);
-                    Fiberchat.toast(
+                    Prochat.toast(
                       getTranslated(contextForDialog, 'deleted'),
                     );
                     hidekeyboard(contextForDialog);
@@ -1398,7 +1398,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(contextForDialog, 'plswait'),
             );
             Future.delayed(const Duration(milliseconds: 200), () {
@@ -1413,7 +1413,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               }).then((value) {
                 Navigator.pop(contextForDialog);
                 hidekeyboard(contextForDialog);
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(contextForDialog, 'blockedbroadcast'),
                 );
               }).catchError((error) {
@@ -1457,7 +1457,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             Clipboard.setData(ClipboardData(text: mssgDoc[Dbkeys.content]));
             Navigator.pop(contextForDialog);
             hidekeyboard(contextForDialog);
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(contextForDialog, 'copied'),
             );
           }));
@@ -1557,7 +1557,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             );
           }).then((value) async {
             if (index >= list.length - 1) {
-              Fiberchat.toast(
+              Prochat.toast(
                 getTranslated(this.context, 'sent'),
               );
               setStateIfMounted(() {
@@ -1573,7 +1573,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           setStateIfMounted(() {
             isgeneratingSomethingLoader = false;
           });
-          Fiberchat.toast('Failed to send $e');
+          Prochat.toast('Failed to send $e');
         }
       } else {
         try {
@@ -1589,7 +1589,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
           if (encrypted is String) {
             int timestamp2 = DateTime.now().millisecondsSinceEpoch;
-            var chatId = Fiberchat.getChatId(
+            var chatId = Prochat.getChatId(
                 widget.currentUserNo, list[index][Dbkeys.phone]);
             if (content.trim() != '') {
               Map<String, dynamic>? targetPeer =
@@ -1598,7 +1598,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 await ChatController.request(
                     currentUserNo,
                     list[index][Dbkeys.phone],
-                    Fiberchat.getChatId(
+                    Prochat.getChatId(
                         widget.currentUserNo, list[index][Dbkeys.phone]));
               }
 
@@ -1644,7 +1644,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     list[index][Dbkeys.phone], timestamp2, messaging);
               }).then((value) async {
                 if (index >= list.length - 1) {
-                  Fiberchat.toast(
+                  Prochat.toast(
                     getTranslated(this.context, 'sent'),
                   );
                   setStateIfMounted(() {
@@ -1661,13 +1661,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             setStateIfMounted(() {
               isgeneratingSomethingLoader = false;
             });
-            Fiberchat.toast('Nothing to send');
+            Prochat.toast('Nothing to send');
           }
         } catch (e) {
           setStateIfMounted(() {
             isgeneratingSomethingLoader = false;
           });
-          Fiberchat.toast('Failed to Forward message. Error:$e');
+          Prochat.toast('Failed to Forward message. Error:$e');
         }
       }
     }
@@ -1714,7 +1714,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
             Future.delayed(const Duration(milliseconds: 300), () {
               Navigator.maybePop(context);
-              Fiberchat.toast(
+              Prochat.toast(
                 getTranslated(this.context, 'deleted'),
               );
             });
@@ -1732,7 +1732,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           onTap: () {
             Clipboard.setData(ClipboardData(text: doc[Dbkeys.content]));
             Navigator.pop(context);
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(this.context, 'copied'),
             );
           }));
@@ -1747,7 +1747,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(this.context, 'plswait'),
             );
             Future.delayed(const Duration(milliseconds: 500), () {
@@ -1760,13 +1760,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 Dbkeys.broadcastBLACKLISTED:
                     FieldValue.arrayUnion([widget.currentUserNo]),
               }).then((value) {
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(this.context, 'blockedbroadcast'),
                 );
                 hidekeyboard(context);
                 Navigator.pop(context);
               }).catchError((error) {
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(this.context, 'blockedbroadcast'),
                 );
                 Navigator.pop(context);
@@ -1783,7 +1783,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   save(Map<String, dynamic> doc) async {
-    Fiberchat.toast(
+    Prochat.toast(
       getTranslated(this.context, 'saved'),
     );
     if (!_savedMessageDocs
@@ -2631,7 +2631,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
                 // ignore: unnecessary_null_comparison
                 if (isUser == null || isUser == false) {
-                  Fiberchat.toast(getTranslated(this.context, 'usernotjoined') +
+                  Prochat.toast(getTranslated(this.context, 'usernotjoined') +
                       ' $Appname');
                 }
               },
@@ -2802,7 +2802,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                             child: Text(
                               doc[Dbkeys.from] == currentUserNo
                                   ? getTranslated(this.context, 'you')
-                                  : Fiberchat.getNickname(peer!)!,
+                                  : Prochat.getNickname(peer!)!,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -3107,7 +3107,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                             child: Text(
                               replyDoc![Dbkeys.from] == currentUserNo
                                   ? getTranslated(this.context, 'you')
-                                  : Fiberchat.getNickname(peer!)!,
+                                  : Prochat.getNickname(peer!)!,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -3589,7 +3589,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                             File? selectedMedia =
                                 await pickVideoFromgallery(context)
                                     .catchError((err) {
-                              Fiberchat.toast(
+                              Prochat.toast(
                                   getTranslated(context, "invalidfile"));
                             });
 
@@ -3663,7 +3663,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                             },
                                             file: File(file.path))));
                               } else {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     "File type not supported. Please choose a valid .mp4, .mov. \n\nSelected file was $fileExtension ");
                               }
                             }
@@ -3837,7 +3837,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                     MessageType.location,
                                     DateTime.now().millisecondsSinceEpoch);
                                 setStateIfMounted(() {});
-                                Fiberchat.toast(
+                                Prochat.toast(
                                   getTranslated(this.context, 'sent'),
                                 );
                               },
@@ -4017,7 +4017,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -4188,7 +4188,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                               : observer.ismediamessagingallowed ==
                                                       false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'mediamssgnotallowed'));
@@ -4197,7 +4197,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                           ChatStatus
                                                               .blocked.index
                                                       ? () {
-                                                          Fiberchat.toast(
+                                                          Prochat.toast(
                                                               getTranslated(
                                                                   this.context,
                                                                   'unlck'));
@@ -4225,7 +4225,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                               : observer.ismediamessagingallowed ==
                                                       false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'mediamssgnotallowed'));
@@ -4234,7 +4234,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                           ChatStatus
                                                               .blocked.index
                                                       ? () {
-                                                          Fiberchat.toast(
+                                                          Prochat.toast(
                                                               getTranslated(
                                                                   this.context,
                                                                   'unlck'));
@@ -4303,7 +4303,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                 : observer.ismediamessagingallowed ==
                                                         false
                                                     ? () {
-                                                        Fiberchat.showRationale(
+                                                        Prochat.showRationale(
                                                             getTranslated(
                                                                 this.context,
                                                                 'mediamssgnotallowed'));
@@ -4395,7 +4395,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                     }
                                   : observer.istextmessagingallowed == false
                                       ? () {
-                                          Fiberchat.showRationale(getTranslated(
+                                          Prochat.showRationale(getTranslated(
                                               this.context,
                                               'textmssgnotallowed'));
                                         }
@@ -4408,7 +4408,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                               DateTime.now()
                                                   .millisecondsSinceEpoch)
                               : () {
-                                  Fiberchat.showRationale(getTranslated(
+                                  Prochat.showRationale(getTranslated(
                                       this.context, 'mediamssgnotallowed'));
                                 },
                       color: fiberchatWhite,
@@ -5337,13 +5337,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           onTap: observer.iscallsallowed == false
                               ? () {
                                   Navigator.of(this.context).pop();
-                                  Fiberchat.showRationale(getTranslated(
+                                  Prochat.showRationale(getTranslated(
                                       this.context, 'callnotallowed'));
                                 }
                               : hasPeerBlockedMe == true
                                   ? () {
                                       Navigator.of(this.context).pop();
-                                      Fiberchat.toast(
+                                      Prochat.toast(
                                         getTranslated(
                                             context, 'userhasblocked'),
                                       );
@@ -5363,7 +5363,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                           call(this.context, false);
                                         } else {
                                           Navigator.of(this.context).pop();
-                                          Fiberchat.showRationale(getTranslated(
+                                          Prochat.showRationale(getTranslated(
                                               this.context, 'pmc'));
                                           Navigator.push(
                                               context,
@@ -5372,7 +5372,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                       OpenSettings()));
                                         }
                                       }).catchError((onError) {
-                                        Fiberchat.showRationale(
+                                        Prochat.showRationale(
                                             getTranslated(this.context, 'pmc'));
                                         Navigator.push(
                                             context,
@@ -5409,13 +5409,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                             onTap: observer.iscallsallowed == false
                                 ? () {
                                     Navigator.of(this.context).pop();
-                                    Fiberchat.showRationale(getTranslated(
+                                    Prochat.showRationale(getTranslated(
                                         this.context, 'callnotallowed'));
                                   }
                                 : hasPeerBlockedMe == true
                                     ? () {
                                         Navigator.of(this.context).pop();
-                                        Fiberchat.toast(
+                                        Prochat.toast(
                                           getTranslated(
                                               context, 'userhasblocked'),
                                         );
@@ -5436,7 +5436,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                             call(this.context, true);
                                           } else {
                                             Navigator.of(this.context).pop();
-                                            Fiberchat.showRationale(
+                                            Prochat.showRationale(
                                                 getTranslated(
                                                     this.context, 'pmc'));
                                             Navigator.push(
@@ -5446,7 +5446,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                         OpenSettings()));
                                           }
                                         }).catchError((onError) {
-                                          Fiberchat.showRationale(getTranslated(
+                                          Prochat.showRationale(getTranslated(
                                               this.context, 'pmc'));
                                           Navigator.push(
                                               context,
@@ -5489,7 +5489,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
     return PickupLayout(
       prefs: widget.prefs,
-      scaffold: Fiberchat.getNTPWrappedWidget(WillPopScope(
+      scaffold: Prochat.getNTPWrappedWidget(WillPopScope(
           onWillPop: isgeneratingSomethingLoader == true
               ? () async {
                   return Future.value(false);
@@ -5608,16 +5608,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                       if (snapshot.hasData &&
                                                           snapshot.data !=
                                                               null) {
-                                                        return Fiberchat.avatar(
+                                                        return Prochat.avatar(
                                                             peer,
                                                             radius: 20,
                                                             predefinedinitials:
-                                                                Fiberchat.getInitials(
+                                                                Prochat.getInitials(
                                                                     snapshot.data![
                                                                         Dbkeys
                                                                             .nickname]));
                                                       }
-                                                      return Fiberchat.avatar(
+                                                      return Prochat.avatar(
                                                           peer,
                                                           radius: 20);
                                                     }),
@@ -5626,7 +5626,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                 padding:
                                                     const EdgeInsets.fromLTRB(
                                                         0, 7, 0, 7),
-                                                child: Fiberchat.avatar(peer,
+                                                child: Prochat.avatar(peer,
                                                     radius: 20),
                                               ),
                                         SizedBox(
@@ -5686,7 +5686,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                               );
                                                             }
                                                             return Text(
-                                                              Fiberchat
+                                                              Prochat
                                                                   .getNickname(
                                                                       peer!)!,
                                                               overflow:
@@ -5707,7 +5707,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                             );
                                                           })
                                                       : Text(
-                                                          Fiberchat.getNickname(
+                                                          Prochat.getNickname(
                                                               peer!)!,
                                                           overflow: TextOverflow
                                                               .ellipsis,
@@ -5801,14 +5801,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                   observer.iscallsallowed ==
                                                           false
                                                       ? () {
-                                                          Fiberchat.showRationale(
+                                                          Prochat.showRationale(
                                                               getTranslated(
                                                                   this.context,
                                                                   'callnotallowed'));
                                                         }
                                                       : hasPeerBlockedMe == true
                                                           ? () {
-                                                              Fiberchat.toast(
+                                                              Prochat.toast(
                                                                 getTranslated(
                                                                     context,
                                                                     'userhasblocked'),
@@ -6001,7 +6001,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                                                             'Individual Chat',
                                                                         'time':
                                                                             time.millisecondsSinceEpoch,
-                                                                        'id': Fiberchat.getChatId(
+                                                                        'id': Prochat.getChatId(
                                                                             currentUserNo,
                                                                             peerNo),
                                                                       };
@@ -6101,7 +6101,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                               FirebaseFirestore.instance
                                                   .collection(DbPaths
                                                       .collectionmessages)
-                                                  .doc(Fiberchat.getChatId(
+                                                  .doc(Prochat.getChatId(
                                                       currentUserNo, peerNo))
                                                   .update({
                                                 "$currentUserNo-muted":
@@ -6117,7 +6117,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                               FirebaseFirestore.instance
                                                   .collection(DbPaths
                                                       .collectionmessages)
-                                                  .doc(Fiberchat.getChatId(
+                                                  .doc(Prochat.getChatId(
                                                       currentUserNo, peerNo))
                                                   .update({
                                                 "$currentUserNo-muted":
@@ -6190,13 +6190,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                               // } else {
                                               ChatController.accept(
                                                   currentUserNo, peerNo);
-                                              Fiberchat.toast(getTranslated(
+                                              Prochat.toast(getTranslated(
                                                   this.context, 'unblocked'));
                                               // }
 
                                               break;
                                             case 'tutorial':
-                                              Fiberchat.toast(getTranslated(
+                                              Prochat.toast(getTranslated(
                                                   this.context, 'vsmsg'));
 
                                               break;

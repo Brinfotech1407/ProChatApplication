@@ -363,7 +363,7 @@ class _AllinOneCameraGalleryImageVideoPickerState
                           onPressed: () async {
                             File? selectedMedia =
                                 await pickMultiMedia(context).catchError((err) {
-                              Fiberchat.toast(
+                              Prochat.toast(
                                   getTranslated(context, "invalidfile"));
                             });
 
@@ -422,7 +422,7 @@ class _AllinOneCameraGalleryImageVideoPickerState
                                               videoQuality: 60,
                                             )));
                               } else {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     "File type not supported. Please choose a valid .mp4, .mov, .jpg, .jpeg, .png file. \n\nSelected file was $fileExtension ");
                               }
                             }

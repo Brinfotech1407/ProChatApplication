@@ -56,7 +56,7 @@ class MobileDownloadService implements DownloadService {
         : "${dir!.path}/$fileName");
     bool fileExists = await outputFile.exists();
     if (fileExists == true) {
-      Fiberchat.toast(getTranslated(context, "folder"));
+      Prochat.toast(getTranslated(context, "folder"));
     } else {
       final downloadinfo =
           Provider.of<DownloadInfoprovider>(context, listen: false);
@@ -132,7 +132,7 @@ class MobileDownloadService implements DownloadService {
         Navigator.of(keyloader!.currentContext!, rootNavigator: true).pop(); //
         downloadinfo.calculatedownloaded(0.00, 0);
         if (isOpenAfterDownload == true) {
-          Fiberchat.toast(getTranslated(context, "folder"));
+          Prochat.toast(getTranslated(context, "folder"));
           if (getDocumentType(fileName) != "") {
             Future.delayed(const Duration(milliseconds: 700), () {
               OpenFile.open(
@@ -143,13 +143,13 @@ class MobileDownloadService implements DownloadService {
             });
           }
         } else {
-          Fiberchat.toast(getTranslated(context, "folder"));
+          Prochat.toast(getTranslated(context, "folder"));
         }
       }).onError((err, er) {
         downloadinfo.calculatedownloaded(0.00, 0);
         print('ERROR OCCURED WHILE DOWNLOADING MEDIA: ' + err.toString());
         Navigator.of(keyloader!.currentContext!, rootNavigator: true).pop(); //
-        Fiberchat.toast(getTranslated(context, 'eps'));
+        Prochat.toast(getTranslated(context, 'eps'));
       });
     }
   }

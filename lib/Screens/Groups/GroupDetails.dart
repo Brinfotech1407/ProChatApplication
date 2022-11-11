@@ -182,7 +182,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                     setStateIfMounted(() {
                       isloading = false;
                     });
-                    Fiberchat.toast(
+                    Prochat.toast(
                         'Failed to set as Admin ! \nError occured -$onError');
                   });
                 },
@@ -252,7 +252,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                     setStateIfMounted(() {
                       isloading = false;
                     });
-                    Fiberchat.toast(
+                    Prochat.toast(
                         'Failed to set as Admin ! \nError occured -$onError');
                   });
                 },
@@ -389,7 +389,7 @@ class _GroupDetailsState extends State<GroupDetails> {
     final observer = Provider.of<Observer>(context, listen: false);
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(
+        scaffold: Prochat.getNTPWrappedWidget(
             Consumer<List<GroupModel>>(builder: (context, groupList, _child) {
           Map<dynamic, dynamic> groupDoc = groupList.indexWhere((element) =>
                       element.docmap[Dbkeys.groupID] == widget.groupID) <
@@ -665,7 +665,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                           widget.currentUserno)
                                                   ? IconButton(
                                                       onPressed: () async {
-                                                        Fiberchat.toast(
+                                                        Prochat.toast(
                                                             getTranslated(
                                                                 context,
                                                                 'plswait'));

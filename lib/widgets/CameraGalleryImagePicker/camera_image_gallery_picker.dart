@@ -293,7 +293,7 @@ class _CameraImageGalleryPickerState extends State<CameraImageGalleryPicker>
                             // Navigator.of(context).pop();
                             File? selectedMedia = await pickSingleImage(context)
                                 .catchError((err) {
-                              Fiberchat.toast(
+                              Prochat.toast(
                                   "Invalid file. Cannot Select this file !");
                             });
 
@@ -329,7 +329,7 @@ class _CameraImageGalleryPickerState extends State<CameraImageGalleryPicker>
                                                   File(file.path),
                                             )));
                               } else {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     "File type not supported. Please choose a .jpg, .jpeg, .png file. \n\nSelected file was $fileExtension ");
                               }
                             }

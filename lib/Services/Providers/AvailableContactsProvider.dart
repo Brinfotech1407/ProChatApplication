@@ -84,7 +84,7 @@ class AvailableContactsProvider with ChangeNotifier {
       this.contactsBookContactList = c;
     });
 
-    Fiberchat.checkAndRequestPermission(Permission.contacts).then((res) {
+    Prochat.checkAndRequestPermission(Permission.contacts).then((res) {
       if (res) {
         storage.ready.then((ready) async {
           if (ready) {
@@ -119,12 +119,12 @@ class AvailableContactsProvider with ChangeNotifier {
           // }
         });
       } else {
-        Fiberchat.showRationale(getTranslated(context, 'perm_contact'));
+        Prochat.showRationale(getTranslated(context, 'perm_contact'));
         Navigator.pushReplacement(context,
             new MaterialPageRoute(builder: (context) => OpenSettings()));
       }
     }).catchError((onError) {
-      Fiberchat.showRationale('Error occured: $onError');
+      Prochat.showRationale('Error occured: $onError');
     });
     notifyListeners();
     return completer.future;
@@ -243,7 +243,7 @@ class AvailableContactsProvider with ChangeNotifier {
                     '97. SEARCH COMPLETED - NO NEED TO SEARCH _ LAST KEY COMPLETED  , ${alreadyJoinedUsersPhoneNameAsInServer.length} CONTACTS EXISTS IN DATABASE');
               } else if (contactsBookContactList!.length == 0) {
                 searchingcontactsindatabase = false;
-                Fiberchat.toast('Contact Book Empty');
+                Prochat.toast('Contact Book Empty');
                 notifyListeners();
                 final StatusProvider statusProvider =
                     Provider.of<StatusProvider>(context, listen: false);

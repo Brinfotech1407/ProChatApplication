@@ -80,7 +80,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
 
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+        scaffold: Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
             model: widget.model!,
             child: ScopedModelDescendant<DataModel>(
                 builder: (context, child, model) {
@@ -463,7 +463,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
                                                                                   iscreatinggroup = false;
                                                                                 });
 
-                                                                                Fiberchat.toast('Error Creating group. $err');
+                                                                                Prochat.toast('Error Creating group. $err');
                                                                                 print('Error Creating group: $err');
                                                                               });
                                                                             });
@@ -578,7 +578,7 @@ class _AddContactsToGroupState extends State<AddContactsToGroup>
                                                         iscreatinggroup = false;
                                                       });
 
-                                                      Fiberchat.toast(getTranslated(
+                                                      Prochat.toast(getTranslated(
                                                           this.context,
                                                           'errorcreatinggroup'));
                                                     });

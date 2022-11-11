@@ -109,7 +109,7 @@ class _SelectContactsToForwardState extends State<SelectContactsToForward>
     // Fiberchat.toast(widget.contentPeerNo.toString());
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+        scaffold: Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
             model: widget.model!,
             child: ScopedModelDescendant<DataModel>(
                 builder: (context, child, model) {
@@ -504,7 +504,7 @@ class _SelectContactsToForwardState extends State<SelectContactsToForward>
                                                                       .length >
                                                               observer.maxNoOfContactsSelectForForward -
                                                                   1) {
-                                                            Fiberchat.toast(
+                                                            Prochat.toast(
                                                                 getTranslated(
                                                                         context,
                                                                         'maxallowed') +
@@ -652,7 +652,7 @@ class _SelectContactsToForwardState extends State<SelectContactsToForward>
                                                                           } else {
                                                                             if (selectedDynamicListFORUSERS.length + selectedDynamicListFORGROUPS.length >
                                                                                 observer.maxNoOfContactsSelectForForward - 1) {
-                                                                              Fiberchat.toast(getTranslated(context, 'maxallowed') + ' : ${observer.maxNoOfContactsSelectForForward}');
+                                                                              Prochat.toast(getTranslated(context, 'maxallowed') + ' : ${observer.maxNoOfContactsSelectForForward}');
                                                                             } else {
                                                                               selectedDynamicListFORUSERS.add(snapshot.data!);
                                                                               setStateIfMounted(() {});

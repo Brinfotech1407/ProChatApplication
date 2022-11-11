@@ -82,7 +82,7 @@ class _AudioRecordState extends State<AudioRecord> {
       var status = await Permissions.getMicrophonePermission();
 
       if (status != PermissionStatus.granted) {
-        Fiberchat.showRationale(getTranslated(this.context, 'pm'));
+        Prochat.showRationale(getTranslated(this.context, 'pm'));
         Navigator.push(context,
             new MaterialPageRoute(builder: (context) => OpenSettings()));
       } else {
@@ -348,13 +348,13 @@ class _AudioRecordState extends State<AudioRecord> {
                                     listen: false);
                                 if (recordedfile!.lengthSync() / 1000000 >
                                     observer.maxFileSizeAllowedInMB) {
-                                  Fiberchat.toast(
+                                  Prochat.toast(
                                       '${getTranslated(this.context, 'maxfilesize')} ${observer.maxFileSizeAllowedInMB}MB\n\n${getTranslated(this.context, 'selectedfilesize')} ${(recordedfile!.lengthSync() / 1000000).round()}MB');
                                 } else {
                                   setStateIfMounted(() {
                                     isLoading = true;
                                   });
-                                  Fiberchat.toast(getTranslated(
+                                  Prochat.toast(getTranslated(
                                       this.context, 'sendingrecord'));
                                   widget
                                       .callback(recordedfile)

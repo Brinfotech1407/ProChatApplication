@@ -149,7 +149,7 @@ class _AddunsavedNumberState extends State<AddunsavedNumber> {
 
                       getUser(phoneCode! + _phone);
                     } else {
-                      Fiberchat.toast(
+                      Prochat.toast(
                           widget.currentUserNo != phoneCode! + _phone
                               ? getTranslated(context, 'validnum')
                               : getTranslated(context, 'validnum'));
@@ -191,7 +191,7 @@ class _AddunsavedNumberState extends State<AddunsavedNumber> {
   Widget build(BuildContext context) {
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+        scaffold: Prochat.getNTPWrappedWidget(Scaffold(
           appBar: AppBar(
               elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,
               leading: IconButton(
@@ -258,7 +258,7 @@ class _AddunsavedNumberState extends State<AddunsavedNumber> {
                                   style: TextStyle(color: fiberchatWhite),
                                 ),
                                 onPressed: () {
-                                  Fiberchat.invite(context);
+                                  Prochat.invite(context);
                                 },
                               ),
                             ])

@@ -120,7 +120,7 @@ class RecentChatsState extends State<RecentChats> {
   @override
   void initState() {
     super.initState();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final observer = Provider.of<Observer>(this.context, listen: false);
       if (IsBannerAdShow == true && observer.isadmobshow == true) {
@@ -165,7 +165,7 @@ class RecentChatsState extends State<RecentChats> {
     Map<String, dynamic> realTimePeerData,
   ) {
     String chatId =
-        Fiberchat.getChatId(currentUserNo, realTimePeerData[Dbkeys.phone]);
+        Prochat.getChatId(currentUserNo, realTimePeerData[Dbkeys.phone]);
     return streamLoad(
         stream: FirebaseFirestore.instance
             .collection(DbPaths.collectionmessages)
@@ -533,7 +533,7 @@ class RecentChatsState extends State<RecentChats> {
   Widget build(BuildContext context) {
     final observer = Provider.of<Observer>(this.context, listen: false);
     setStatusBarColor();
-    return Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+    return Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
       model: getModel()!,
       child:
           ScopedModelDescendant<DataModel>(builder: (context, child, _model) {
@@ -571,7 +571,7 @@ class RecentChatsState extends State<RecentChats> {
                           builder: (context) => new SmartContactsPage(
                               onTapCreateGroup: () {
                                 if (observer.isAllowCreatingGroups == false) {
-                                  Fiberchat.showRationale(
+                                  Prochat.showRationale(
                                       getTranslated(this.context, 'disabled'));
                                 } else {
                                   Navigator.pushReplacement(
@@ -592,7 +592,7 @@ class RecentChatsState extends State<RecentChats> {
                               onTapCreateBroadcast: () {
                                 if (observer.isAllowCreatingBroadcasts ==
                                     false) {
-                                  Fiberchat.showRationale(
+                                  Prochat.showRationale(
                                       getTranslated(this.context, 'disabled'));
                                 } else {
                                   Navigator.pushReplacement(

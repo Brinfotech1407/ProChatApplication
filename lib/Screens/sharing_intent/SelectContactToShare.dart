@@ -105,7 +105,7 @@ class _SelectContactToShareState extends State<SelectContactToShare>
 
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+        scaffold: Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
             model: widget.model,
             child: ScopedModelDescendant<DataModel>(
                 builder: (context, child, model) {

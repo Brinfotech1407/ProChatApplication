@@ -280,7 +280,7 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
   @override
   Widget build(BuildContext context) {
     final observer = Provider.of<Observer>(this.context, listen: false);
-    return Fiberchat.getNTPWrappedWidget(WillPopScope(
+    return Prochat.getNTPWrappedWidget(WillPopScope(
       child: Scaffold(
         backgroundColor:
             DESIGN_TYPE == Themetype.whatsapp ? fiberchatBlack : fiberchatWhite,
@@ -336,12 +336,12 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
                                     final observer = Provider.of<Observer>(
                                         this.context,
                                         listen: false);
-                                    Fiberchat.toast(getTranslated(
+                                    Prochat.toast(getTranslated(
                                             context, 'filesizeexceeded') +
                                         ': ${observer.maxFileSizeAllowedInMB}MB');
                                   })
                             : () {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     '${getTranslated(this.context, 'maxnooffiles')}: ${observer.maxNoOfFilesInMultiSharing}');
                               }),
                     SizedBox(
@@ -421,12 +421,12 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
                   Icons.photo_library,
                   checkTotalNoOfFilesIfExceeded() == false
                       ? () {
-                          Fiberchat.checkAndRequestPermission(Permission.photos)
+                          Prochat.checkAndRequestPermission(Permission.photos)
                               .then((res) {
                             if (res == true) {
                               captureMultiPageImage(false);
                             } else if (res == false) {
-                              Fiberchat.showRationale(
+                              Prochat.showRationale(
                                   getTranslated(context, 'pgi'));
                               Navigator.pushReplacement(
                                   context,
@@ -436,7 +436,7 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
                           });
                         }
                       : () {
-                          Fiberchat.toast(
+                          Prochat.toast(
                               '${getTranslated(this.context, 'maxnooffiles')}: ${observer.maxNoOfFilesInMultiSharing}');
                         }),
               selectedImages.length < 1
@@ -446,13 +446,13 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
                       Icons.add,
                       checkTotalNoOfFilesIfExceeded() == false
                           ? () {
-                              Fiberchat.checkAndRequestPermission(
+                              Prochat.checkAndRequestPermission(
                                       Permission.photos)
                                   .then((res) {
                                 if (res == true) {
                                   captureMultiPageImage(true);
                                 } else if (res == false) {
-                                  Fiberchat.showRationale(
+                                  Prochat.showRationale(
                                       getTranslated(context, 'pgi'));
                                   Navigator.pushReplacement(
                                       context,
@@ -463,7 +463,7 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
                               });
                             }
                           : () {
-                              Fiberchat.toast(
+                              Prochat.toast(
                                   '${getTranslated(this.context, 'maxnooffiles')}: ${observer.maxNoOfFilesInMultiSharing}');
                             }),
               _buildActionButton(
@@ -471,7 +471,7 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
                   Icons.photo_camera,
                   checkTotalNoOfFilesIfExceeded() == false
                       ? () {
-                          Fiberchat.checkAndRequestPermission(Permission.camera)
+                          Prochat.checkAndRequestPermission(Permission.camera)
                               .then((res) {
                             if (res == true) {
                               captureSingleImage(ImageSource.camera);
@@ -485,7 +485,7 @@ class _MultiImagePickerState extends State<MultiImagePicker> {
                           });
                         }
                       : () {
-                          Fiberchat.toast(
+                          Prochat.toast(
                               '${getTranslated(this.context, 'maxnooffiles')}: ${observer.maxNoOfFilesInMultiSharing}');
                         }),
             ]));

@@ -67,7 +67,7 @@ class SearchChatsState extends State<SearchChats> {
   @override
   void initState() {
     super.initState();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final observer = Provider.of<Observer>(this.context, listen: false);
       if (IsBannerAdShow == true && observer.isadmobshow == true) {
@@ -129,7 +129,7 @@ class SearchChatsState extends State<SearchChats> {
                           customCircleAvatar(url: user['photoUrl'], radius: 22),
                       title: IsShowUserFullNameAsSavedInYourContacts == false
                           ? Text(
-                              Fiberchat.getNickname(user) ?? "",
+                              Prochat.getNickname(user) ?? "",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -161,7 +161,7 @@ class SearchChatsState extends State<SearchChats> {
                                       );
                                     }
                                     return Text(
-                                      Fiberchat.getNickname(user) ?? "",
+                                      Prochat.getNickname(user) ?? "",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -190,7 +190,7 @@ class SearchChatsState extends State<SearchChats> {
                               getTranslated(context, 'auth_neededchat'),
                               state: state,
                               shouldPop: false,
-                              type: Fiberchat.getAuthenticationType(
+                              type: Prochat.getAuthenticationType(
                                   biometricEnabled, _cachedModel),
                               prefs: widget.prefs, onSuccess: () {
                             state.pushReplacement(new MaterialPageRoute(
@@ -270,7 +270,7 @@ class SearchChatsState extends State<SearchChats> {
   }
 
   Stream<MessageData> getUnread(Map<String, dynamic> user) {
-    String chatId = Fiberchat.getChatId(currentUserNo, user[Dbkeys.phone]);
+    String chatId = Prochat.getChatId(currentUserNo, user[Dbkeys.phone]);
     var controller = StreamController<MessageData>.broadcast();
     unreadSubscriptions.add(FirebaseFirestore.instance
         .collection(DbPaths.collectionmessages)
@@ -444,7 +444,7 @@ class SearchChatsState extends State<SearchChats> {
   @override
   Widget build(BuildContext context) {
     final observer = Provider.of<Observer>(this.context, listen: false);
-    return Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+    return Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
       model: getModel()!,
       child:
           ScopedModelDescendant<DataModel>(builder: (context, child, _model) {

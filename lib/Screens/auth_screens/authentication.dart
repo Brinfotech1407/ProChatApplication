@@ -73,7 +73,7 @@ class _AuthenticateState extends State<Authenticate> {
     else {
       child = Container();
     }
-    return Fiberchat.getNTPWrappedWidget(child);
+    return Prochat.getNTPWrappedWidget(child);
   }
 
   bool passcodeVisible() {
@@ -91,7 +91,7 @@ class _AuthenticateState extends State<Authenticate> {
   _onPasscodeEntered(String enteredPasscode) {
     if (enteredPasscode.length == 4) {
       bool isValid =
-          Fiberchat.getHashedAnswer(enteredPasscode) == widget.passcode;
+          Prochat.getHashedAnswer(enteredPasscode) == widget.passcode;
       _verificationNotifier.add(isValid);
       if (isValid) {
         widget.prefs.setInt(Dbkeys.passcodeTries, 0); // reset tries
@@ -102,9 +102,9 @@ class _AuthenticateState extends State<Authenticate> {
         widget.prefs
             .setInt(Dbkeys.lastAttempt, DateTime.now().millisecondsSinceEpoch);
         if (passcodeTries > 3) {
-          Fiberchat.toast(
+          Prochat.toast(
               'Try after ${math.pow(2, passcodeTries - 3)} minutes');
-          Fiberchat.toast(getTranslated(this.context, 'authfailed'));
+          Prochat.toast(getTranslated(this.context, 'authfailed'));
           widget.state.pop();
         }
       }
@@ -141,7 +141,7 @@ class _AuthenticateState extends State<Authenticate> {
         if (widget.shouldPop) widget.state.pop();
         widget.onSuccess();
       } else
-        Fiberchat.toast(getTranslated(this.context, 'authfailed'));
+        Prochat.toast(getTranslated(this.context, 'authfailed'));
     }).catchError((e) {
       return Future.value(null);
     });

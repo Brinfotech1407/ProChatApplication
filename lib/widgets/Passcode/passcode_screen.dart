@@ -118,7 +118,7 @@ class _PasscodeScreenState extends State<PasscodeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Fiberchat.getNTPWrappedWidget(Scaffold(
+    return Prochat.getNTPWrappedWidget(Scaffold(
       appBar: widget.wait
           ? AppBar(
               leading: IconButton(

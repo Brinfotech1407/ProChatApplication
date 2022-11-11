@@ -80,7 +80,7 @@ class _SingleImagePickerState extends State<SingleImagePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Fiberchat.getNTPWrappedWidget(WillPopScope(
+    return Prochat.getNTPWrappedWidget(WillPopScope(
       child: Scaffold(
         backgroundColor:
             DESIGN_TYPE == Themetype.whatsapp ? fiberchatBlack : fiberchatWhite,
@@ -169,12 +169,12 @@ class _SingleImagePickerState extends State<SingleImagePicker> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               _buildActionButton(new Key('retake'), Icons.photo_library, () {
-                Fiberchat.checkAndRequestPermission(Permission.photos)
+                Prochat.checkAndRequestPermission(Permission.photos)
                     .then((res) {
                   if (res) {
                     captureImage(ImageSource.gallery);
                   } else {
-                    Fiberchat.showRationale(getTranslated(context, 'pgi'));
+                    Prochat.showRationale(getTranslated(context, 'pgi'));
                     Navigator.pushReplacement(
                         context,
                         new MaterialPageRoute(
@@ -183,7 +183,7 @@ class _SingleImagePickerState extends State<SingleImagePicker> {
                 });
               }),
               _buildActionButton(new Key('upload'), Icons.photo_camera, () {
-                Fiberchat.checkAndRequestPermission(Permission.camera)
+                Prochat.checkAndRequestPermission(Permission.camera)
                     .then((res) {
                   if (res) {
                     captureImage(ImageSource.camera);

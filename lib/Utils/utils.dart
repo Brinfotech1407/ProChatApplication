@@ -18,7 +18,7 @@ import 'dart:convert';
 import 'package:prochat/Configs/Enum.dart';
 import 'package:share/share.dart';
 
-class Fiberchat {
+class Prochat {
   static String? getNickname(Map<String, dynamic> user) =>
       user[Dbkeys.aliasName] ?? user[Dbkeys.nickname];
 
@@ -32,11 +32,11 @@ class Fiberchat {
   static void internetLookUp() async {
     try {
       await InternetAddress.lookup('google.com').catchError((e) {
-        Fiberchat.toast(
+        Prochat.toast(
             'No internet connection. Please check your Internet Connection.');
       });
     } catch (err) {
-      Fiberchat.toast(
+      Prochat.toast(
           'No internet connection. Please check your Internet Connection.');
     }
   }
@@ -73,7 +73,7 @@ class Fiberchat {
                 backgroundColor: fiberchatgreen,
                 foregroundColor: Colors.white,
                 child: Text(predefinedinitials ??
-                    getInitials(Fiberchat.getNickname(user)!)),
+                    getInitials(Prochat.getNickname(user)!)),
                 radius: radius,
               );
       return CircleAvatar(
@@ -113,7 +113,7 @@ class Fiberchat {
   }
 
   static void showRationale(rationale) async {
-    Fiberchat.toast(rationale);
+    Prochat.toast(rationale);
     // await Future.delayed(Duration(seconds: 2));
     // Fiberchat.toast(
     //     'If you change your mind, you can grant the permission through App Settings > Permissions');

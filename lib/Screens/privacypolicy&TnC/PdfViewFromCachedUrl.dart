@@ -61,7 +61,7 @@ class PDFViewerCachedFromUrl extends StatelessWidget {
           )
         : PickupLayout(
             prefs: prefs,
-            scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+            scaffold: Prochat.getNTPWrappedWidget(Scaffold(
               appBar: AppBar(
                 elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,
                 leading: IconButton(

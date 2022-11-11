@@ -78,7 +78,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
       setState(() {
         showPlayingLoader = false;
       });
-      Fiberchat.toast('This message is deleted by sender');
+      Prochat.toast('This message is deleted by sender');
     }
   }
 
@@ -142,7 +142,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
       setState(() {
         showPlayingLoader = false;
       });
-      Fiberchat.toast('This message is deleted by sender');
+      Prochat.toast('This message is deleted by sender');
     }
   }
 

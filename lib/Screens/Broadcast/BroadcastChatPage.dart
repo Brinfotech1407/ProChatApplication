@@ -315,7 +315,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR Sending File: $onError');
       });
     } else {
@@ -456,7 +456,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -496,7 +496,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
 
     unawaited(realtime.animateTo(0.0,
         duration: Duration(milliseconds: 300), curve: Curves.easeOut));
-    Fiberchat.toast(
+    Prochat.toast(
         '${getTranslated(context, 'senttorecp')} ${recipientList.length}');
     setStatusBarColor();
     if (type == MessageType.doc ||
@@ -612,7 +612,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -872,7 +872,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                                       .ismediamessagingallowed ==
                                                   false
                                               ? () {
-                                                  Fiberchat.showRationale(
+                                                  Prochat.showRationale(
                                                       getTranslated(
                                                           this.context,
                                                           'mediamssgnotallowed'));
@@ -900,7 +900,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                               observer.ismediamessagingallowed ==
                                                       false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'mediamssgnotallowed'));
@@ -1034,7 +1034,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                                         .ismediamessagingallowed ==
                                                     false
                                                 ? () {
-                                                    Fiberchat.showRationale(
+                                                    Prochat.showRationale(
                                                         getTranslated(
                                                             this.context,
                                                             'mediamssgnotallowed'));
@@ -1132,7 +1132,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                 }
                               : observer.istextmessagingallowed == false
                                   ? () {
-                                      Fiberchat.showRationale(getTranslated(
+                                      Prochat.showRationale(getTranslated(
                                           this.context, 'textmssgnotallowed'));
                                     }
                                   : () => onSendMessage(
@@ -1148,7 +1148,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                               widget.broadcastID)
                                           .docmap[Dbkeys.broadcastMEMBERSLIST])
                           : () {
-                              Fiberchat.showRationale(getTranslated(
+                              Prochat.showRationale(getTranslated(
                                   this.context, 'mediamssgnotallowed'));
                             },
                       color: fiberchatWhite,
@@ -1332,7 +1332,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                 .doc(
                     '${doc[Dbkeys.broadcastmsgTIME]}--${doc[Dbkeys.broadcastmsgSENDBY]}')
                 .delete();
-            Fiberchat.toast(getTranslated(this.context, 'deleted'));
+            Prochat.toast(getTranslated(this.context, 'deleted'));
           }));
     }
 
@@ -1791,7 +1791,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      Fiberchat.toast(
+      Prochat.toast(
           'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
       return Future.error('Location services are disabled.');
     }
@@ -1801,21 +1801,21 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.deniedForever) {
         // Permissions are denied forever, handle appropriately.
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
         return Future.error(
             'Location permissions are permanently denied, we cannot request permissions.');
       }
 
       if (permission == LocationPermission.denied) {
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
         return Future.error('Location permissions are denied');
       }
     }
     if (permission == LocationPermission.always ||
         permission == LocationPermission.whileInUse) {
-      Fiberchat.toast(getTranslated(this.context, 'detectingloc'));
+      Prochat.toast(getTranslated(this.context, 'detectingloc'));
     }
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
@@ -1909,7 +1909,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                           callback: getFileData,
                                         ))).then((url) async {
                               if (url != null) {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                   getTranslated(this.context, 'plswait'),
                                 );
 
@@ -1969,7 +1969,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                             File? selectedMedia =
                                 await pickVideoFromgallery(context)
                                     .catchError((err) {
-                              Fiberchat.toast(
+                              Prochat.toast(
                                   getTranslated(context, "invalidfile"));
                             });
 
@@ -2043,7 +2043,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                                               widget
                                                                   .broadcastID)
                                                           .docmap[Dbkeys.broadcastMEMBERSLIST]);
-                                                  Fiberchat.toast(getTranslated(
+                                                  Prochat.toast(getTranslated(
                                                       this.context, 'sent'));
                                                   file.delete();
                                                   thumnailFile.delete();
@@ -2052,7 +2052,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                             },
                                             file: File(file.path))));
                               } else {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     "File type not supported. Please choose a valid .mp4, .mov file. \n\nSelected file was $fileExtension ");
                               }
                             }
@@ -2269,7 +2269,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
                                             widget.broadcastID)
                                         .docmap[Dbkeys.broadcastMEMBERSLIST]);
                                 setStateIfMounted(() {});
-                                Fiberchat.toast(
+                                Prochat.toast(
                                   getTranslated(this.context, 'sent'),
                                 );
                               },
@@ -2394,7 +2394,7 @@ class _BroadcastChatPageState extends State<BroadcastChatPage>
     var _keyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Consumer<List<BroadcastModel>>(
+        scaffold: Prochat.getNTPWrappedWidget(Consumer<List<BroadcastModel>>(
             builder: (context, broadcastList, _child) => WillPopScope(
                   onWillPop: isgeneratingThumbnail == true
                       ? () async {

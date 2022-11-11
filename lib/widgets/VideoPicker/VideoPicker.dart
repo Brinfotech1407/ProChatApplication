@@ -111,14 +111,14 @@ class _HybridVideoPickerState extends State<HybridVideoPicker> {
             children: <Widget>[
               _buildActionButton(new Key('retake'), Icons.video_library_rounded,
                   () {
-                Fiberchat.checkAndRequestPermission(Platform.isIOS
+                Prochat.checkAndRequestPermission(Platform.isIOS
                         ? Permission.mediaLibrary
                         : Permission.storage)
                     .then((res) {
                   if (res) {
                     _pickVideo();
                   } else {
-                    Fiberchat.showRationale(
+                    Prochat.showRationale(
                       getTranslated(context, 'pgv'),
                     );
                     Navigator.pushReplacement(
@@ -129,12 +129,12 @@ class _HybridVideoPickerState extends State<HybridVideoPicker> {
                 });
               }),
               _buildActionButton(new Key('upload'), Icons.photo_camera, () {
-                Fiberchat.checkAndRequestPermission(Permission.camera)
+                Prochat.checkAndRequestPermission(Permission.camera)
                     .then((res) {
                   if (res) {
                     _pickVideoFromCamera();
                   } else {
-                    Fiberchat.showRationale(
+                    Prochat.showRationale(
                       getTranslated(context, 'pcv'),
                     );
                     Navigator.pushReplacement(

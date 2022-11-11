@@ -61,7 +61,7 @@ class _AllNotificationsState extends State<AllNotifications> {
   Widget build(BuildContext context) {
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+        scaffold: Prochat.getNTPWrappedWidget(Scaffold(
             appBar: AppBar(
               elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,
               leading: IconButton(

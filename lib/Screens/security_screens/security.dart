@@ -45,7 +45,7 @@ class _SecurityState extends State<Security> {
 
   @override
   Widget build(BuildContext context) {
-    return Fiberchat.getNTPWrappedWidget(Stack(children: [
+    return Prochat.getNTPWrappedWidget(Stack(children: [
       Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -85,7 +85,7 @@ class _SecurityState extends State<Security> {
                   onPressed: () {
                     if (widget.setPasscode) {
                       if (_passCode == null)
-                        Fiberchat.toast(
+                        Prochat.toast(
                             getTranslated(this.context, 'setpasscode'));
                       if (
                           // ignore: todo
@@ -99,7 +99,7 @@ class _SecurityState extends State<Security> {
                           // QUESTION: _question.text,
                           // ANSWER:
                           //     Fiberchat.getHashedAnswer(_answer.text),
-                          Dbkeys.passcode: Fiberchat.getHashedString(_passCode!)
+                          Dbkeys.passcode: Prochat.getHashedString(_passCode!)
                         };
                         setState(() {
                           isLoading = true;

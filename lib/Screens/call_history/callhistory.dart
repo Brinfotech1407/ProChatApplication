@@ -67,7 +67,7 @@ class _CallHistoryState extends State<CallHistory> {
   @override
   void initState() {
     super.initState();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final observer = Provider.of<Observer>(this.context, listen: false);
       if (IsBannerAdShow == true && observer.isadmobshow == true) {
@@ -127,7 +127,7 @@ class _CallHistoryState extends State<CallHistory> {
                                   onTapCreateGroup: () {
                                     if (observer.isAllowCreatingGroups ==
                                         false) {
-                                      Fiberchat.showRationale(getTranslated(
+                                      Prochat.showRationale(getTranslated(
                                           this.context, 'disabled'));
                                     } else {
                                       Navigator.pushReplacement(
@@ -148,7 +148,7 @@ class _CallHistoryState extends State<CallHistory> {
                                   onTapCreateBroadcast: () {
                                     if (observer.isAllowCreatingBroadcasts ==
                                         false) {
-                                      Fiberchat.showRationale(getTranslated(
+                                      Prochat.showRationale(getTranslated(
                                           this.context, 'disabled'));
                                     } else {
                                       Navigator.pushReplacement(
@@ -214,7 +214,7 @@ class _CallHistoryState extends State<CallHistory> {
                                 ),
                                 onPressed: () async {
                                   Navigator.of(context).pop();
-                                  Fiberchat.toast(
+                                  Prochat.toast(
                                       getTranslated(context, 'plswait'));
                                   FirebaseFirestore.instance
                                       .collection(DbPaths.collectionusers)
@@ -293,7 +293,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                   DbPaths.collectioncallhistory)
                                               .doc(dc['TIME'].toString())
                                               .delete();
-                                          Fiberchat.toast('Deleted!');
+                                          Prochat.toast('Deleted!');
                                           firestoreDataProvider
                                               .deleteSingle(dc);
                                         }));
@@ -438,7 +438,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                   : observer.iscallsallowed ==
                                                           false
                                                       ? () {
-                                                          Fiberchat.showRationale(
+                                                          Prochat.showRationale(
                                                               getTranslated(
                                                                   this.context,
                                                                   'callnotallowed'));
@@ -456,7 +456,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                                 call(context,
                                                                     true, user);
                                                               } else {
-                                                                Fiberchat
+                                                                Prochat
                                                                     .showRationale(
                                                                   getTranslated(
                                                                       context,
@@ -471,7 +471,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                               }
                                                             }).catchError(
                                                                     (onError) {
-                                                              Fiberchat
+                                                              Prochat
                                                                   .showRationale(
                                                                 getTranslated(
                                                                     context,
@@ -499,7 +499,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                                     false,
                                                                     user);
                                                               } else {
-                                                                Fiberchat
+                                                                Prochat
                                                                     .showRationale(
                                                                   getTranslated(
                                                                       context,
@@ -514,7 +514,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                               }
                                                             }).catchError(
                                                                     (onError) {
-                                                              Fiberchat
+                                                              Prochat
                                                                   .showRationale(
                                                                 getTranslated(
                                                                     context,
@@ -546,7 +546,7 @@ class _CallHistoryState extends State<CallHistory> {
                                       ),
                                       onTap: () async {
                                         Navigator.of(context).pop();
-                                        Fiberchat.toast(
+                                        Prochat.toast(
                                             getTranslated(context, 'plswait'));
                                         FirebaseFirestore.instance
                                             .collection(DbPaths.collectionusers)
@@ -555,7 +555,7 @@ class _CallHistoryState extends State<CallHistory> {
                                                 DbPaths.collectioncallhistory)
                                             .doc(dc['TIME'].toString())
                                             .delete();
-                                        Fiberchat.toast('Deleted!');
+                                        Prochat.toast('Deleted!');
                                         firestoreDataProvider.deleteSingle(dc);
                                       }));
 

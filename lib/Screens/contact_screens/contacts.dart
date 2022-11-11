@@ -138,7 +138,7 @@ class _ContactsState extends State<Contacts>
       }
     });
 
-    Fiberchat.checkAndRequestPermission(Permission.contacts).then((res) {
+    Prochat.checkAndRequestPermission(Permission.contacts).then((res) {
       if (res) {
         storage.ready.then((ready) async {
           if (ready) {
@@ -176,12 +176,12 @@ class _ContactsState extends State<Contacts>
           // }
         });
       } else {
-        Fiberchat.showRationale(getTranslated(context, 'perm_contact'));
+        Prochat.showRationale(getTranslated(context, 'perm_contact'));
         Navigator.pushReplacement(context,
             new MaterialPageRoute(builder: (context) => OpenSettings()));
       }
     }).catchError((onError) {
-      Fiberchat.showRationale('Error occured: $onError');
+      Prochat.showRationale('Error occured: $onError');
     });
 
     return completer.future;
@@ -256,7 +256,7 @@ class _ContactsState extends State<Contacts>
 
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+        scaffold: Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
             model: widget.model!,
             child: ScopedModelDescendant<DataModel>(
                 builder: (context, child, model) {
@@ -366,7 +366,7 @@ class _ContactsState extends State<Contacts>
                                                                     radius:
                                                                         22.5,
                                                                     child: Text(
-                                                                      Fiberchat.getInitials(
+                                                                      Prochat.getInitials(
                                                                           userDoc[
                                                                               Dbkeys.nickname]),
                                                                       style: TextStyle(
@@ -420,7 +420,7 @@ class _ContactsState extends State<Contacts>
                                                                           false,
                                                                       state: Navigator.of(
                                                                           context),
-                                                                      type: Fiberchat.getAuthenticationType(
+                                                                      type: Prochat.getAuthenticationType(
                                                                           widget
                                                                               .biometricEnabled,
                                                                           model),
@@ -479,7 +479,7 @@ class _ContactsState extends State<Contacts>
                                                                   fiberchatgreen,
                                                               radius: 22.5,
                                                               child: Text(
-                                                                Fiberchat
+                                                                Prochat
                                                                     .getInitials(
                                                                         user.value),
                                                                 style: TextStyle(
@@ -533,7 +533,7 @@ class _ContactsState extends State<Contacts>
                                                                         false,
                                                                     state: Navigator.of(
                                                                         context),
-                                                                    type: Fiberchat.getAuthenticationType(
+                                                                    type: Prochat.getAuthenticationType(
                                                                         widget
                                                                             .biometricEnabled,
                                                                         model),

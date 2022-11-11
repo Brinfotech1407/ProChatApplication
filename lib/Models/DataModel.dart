@@ -113,7 +113,7 @@ class DataModel extends Model {
   getChatOrder(List<String> chatsWith, String? currentUserNo) {
     List<Stream<QuerySnapshot>> messages = [];
     chatsWith.forEach((otherNo) {
-      String chatId = Fiberchat.getChatId(currentUserNo, otherNo);
+      String chatId = Prochat.getChatId(currentUserNo, otherNo);
       messages.add(FirebaseFirestore.instance
           .collection(DbPaths.collectionmessages)
           .doc(chatId)

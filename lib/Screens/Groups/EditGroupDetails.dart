@@ -57,7 +57,7 @@ class EditGroupDetailsState extends State<EditGroupDetails> {
   @override
   void initState() {
     super.initState();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     groupDesc = widget.groupDesc;
     groupTitle = widget.groupName;
     groupType = widget.groupType;
@@ -117,7 +117,7 @@ class EditGroupDetailsState extends State<EditGroupDetails> {
         isLoading = false;
       });
 
-      Fiberchat.toast(err.toString());
+      Prochat.toast(err.toString());
     });
   }
 
@@ -140,7 +140,7 @@ class EditGroupDetailsState extends State<EditGroupDetails> {
     final observer = Provider.of<Observer>(this.context, listen: false);
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+        scaffold: Prochat.getNTPWrappedWidget(Scaffold(
             backgroundColor: fiberchatWhite,
             appBar: new AppBar(
               elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,

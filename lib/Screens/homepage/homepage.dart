@@ -161,7 +161,7 @@ class HomepageState extends State<Homepage>
     controllerIfcallNotallowed = TabController(length: 2, vsync: this);
     controllerIfcallNotallowed!.index = 0;
 
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     WidgetsBinding.instance.addObserver(this);
 
     LocalAuthentication().canCheckBiometrics.then((res) {
@@ -227,7 +227,7 @@ class HomepageState extends State<Homepage>
                     : PickupLayout(
                         prefs: widget.prefs!,
                         currentUserNo: widget.currentUserNo,
-                        scaffold: Fiberchat.getNTPWrappedWidget(WillPopScope(
+                        scaffold: Prochat.getNTPWrappedWidget(WillPopScope(
                           onWillPop: onWillPop,
                           child: Scaffold(
                               backgroundColor: Colors.white,
@@ -444,7 +444,7 @@ class HomepageState extends State<Homepage>
                                                                           builder: (context) => ProfileSetting(
                                                                                 prefs: widget.prefs!,
                                                                                 biometricEnabled: biometricEnabled,
-                                                                                type: Fiberchat.getAuthenticationType(biometricEnabled, _cachedModel),
+                                                                                type: Prochat.getAuthenticationType(biometricEnabled, _cachedModel),
                                                                               )));
                                                                 },
                                                                 currentUserNo:
@@ -452,7 +452,7 @@ class HomepageState extends State<Homepage>
                                                                         .currentUserNo!,
                                                                 biometricEnabled:
                                                                     biometricEnabled,
-                                                                type: Fiberchat
+                                                                type: Prochat
                                                                     .getAuthenticationType(
                                                                         biometricEnabled,
                                                                         _cachedModel),
@@ -463,7 +463,7 @@ class HomepageState extends State<Homepage>
                                               if (observer
                                                       .isAllowCreatingGroups ==
                                                   false) {
-                                                Fiberchat.showRationale(
+                                                Prochat.showRationale(
                                                     getTranslated(this.context,
                                                         'disabled'));
                                               } else {
@@ -502,7 +502,7 @@ class HomepageState extends State<Homepage>
                                               if (observer
                                                       .isAllowCreatingBroadcasts ==
                                                   false) {
-                                                Fiberchat.showRationale(
+                                                Prochat.showRationale(
                                                     getTranslated(this.context,
                                                         'disabled'));
                                               } else {
@@ -831,7 +831,7 @@ class HomepageState extends State<Homepage>
                   sharedText: _sharedText)));
     } else if (_sharedFiles != null) {
       if (_sharedFiles!.length > observer.maxNoOfFilesInMultiSharing) {
-        Fiberchat.toast(getTranslated(context, 'maxnooffiles') +
+        Prochat.toast(getTranslated(context, 'maxnooffiles') +
             ' ' +
             '${observer.maxNoOfFilesInMultiSharing}');
       } else {
@@ -1021,7 +1021,7 @@ class HomepageState extends State<Homepage>
           message.data['title'] != 'Incoming Audio Call...' &&
           message.data['title'] != 'Incoming Call ended' &&
           message.data['title'] != 'New message in Group') {
-        Fiberchat.toast(getTranslated(this.context, 'newnotifications'));
+        Prochat.toast(getTranslated(this.context, 'newnotifications'));
       } else {
         if (message.data['title'] == 'New message in Group') {
           // var currentpeer =
@@ -1683,7 +1683,7 @@ class HomepageState extends State<Homepage>
     DateTime now = DateTime.now();
     if (now.difference(currentBackPressTime!) > Duration(seconds: 3)) {
       currentBackPressTime = now;
-      Fiberchat.toast('Double Tap To Go Back');
+      Prochat.toast('Double Tap To Go Back');
       return Future.value(false);
     } else {
       if (!isAuthenticating) setLastSeen();

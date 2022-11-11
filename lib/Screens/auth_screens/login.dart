@@ -149,7 +149,7 @@ class LoginScreenState extends State<LoginScreen>
       print(
           'Authentication failed -ERROR: ${authException.message}. Try again later.');
 
-      Fiberchat.toast('Authentication failed - ${authException.message}');
+      Prochat.toast('Authentication failed - ${authException.message}');
     };
 
     final PhoneCodeSent codeSent =
@@ -182,7 +182,7 @@ class LoginScreenState extends State<LoginScreen>
         });
       }
 
-      Fiberchat.toast('Authentication failed Timeout. please try again.');
+      Prochat.toast('Authentication failed Timeout. please try again.');
     };
     print('Verify phone triggered');
     // try {
@@ -398,7 +398,7 @@ class LoginScreenState extends State<LoginScreen>
                 this.context,
                 new MaterialPageRoute(
                     builder: (context) => FiberchatWrapper())));
-            Fiberchat.toast("Failed to Login ! Please try again. ");
+            Prochat.toast("Failed to Login ! Please try again. ");
           }
         } else {
           String? fcmToken = await FirebaseMessaging.instance.getToken();
@@ -488,17 +488,17 @@ class LoginScreenState extends State<LoginScreen>
                           currentUserNo: phoneNo,
                           prefs: widget.prefs,
                         ))));
-            Fiberchat.toast(getTranslated(this.context, 'welcomeback'));
+            Prochat.toast(getTranslated(this.context, 'welcomeback'));
           } else {
             unawaited(Navigator.pushReplacement(
                 this.context,
                 new MaterialPageRoute(
                     builder: (context) => FiberchatWrapper())));
-            Fiberchat.toast("Failed to Login ! Please try again. ");
+            Prochat.toast("Failed to Login ! Please try again. ");
           }
         }
       } else {
-        Fiberchat.toast(getTranslated(this.context, 'failedlogin'));
+        Prochat.toast(getTranslated(this.context, 'failedlogin'));
       }
     } catch (e) {
       setState(() {
@@ -516,7 +516,7 @@ class LoginScreenState extends State<LoginScreen>
       if (e.toString().contains('invalid') ||
           e.toString().contains('code') ||
           e.toString().contains('verification')) {
-        Fiberchat.toast(getTranslated(this.context, 'makesureotp'));
+        Prochat.toast(getTranslated(this.context, 'makesureotp'));
       }
     }
   }
@@ -767,7 +767,7 @@ class LoginScreenState extends State<LoginScreen>
                           buttontext: getTranslated(this.context, 'sendverf'),
                           onpressed: widget.isblocknewlogins == true
                               ? () {
-                                  Fiberchat.toast(
+                                  Prochat.toast(
                                     getTranslated(
                                         this.context, 'logindisabled'),
                                   );
@@ -807,13 +807,13 @@ class LoginScreenState extends State<LoginScreen>
                                         verifyPhoneNumber();
                                       }
                                     } else {
-                                      Fiberchat.toast(
+                                      Prochat.toast(
                                         getTranslated(
                                             this.context, 'entervalidmob'),
                                       );
                                     }
                                   } else {
-                                    Fiberchat.toast(
+                                    Prochat.toast(
                                         getTranslated(this.context, 'nameem'));
                                   }
                                 },
@@ -1037,7 +1037,7 @@ class LoginScreenState extends State<LoginScreen>
                     });
                     handleSignIn();
                   } else {
-                    Fiberchat.toast(getTranslated(this.context, 'correctotp'));
+                    Prochat.toast(getTranslated(this.context, 'correctotp'));
                   }
                 },
                 onCodeChanged: (code) {
@@ -1084,7 +1084,7 @@ class LoginScreenState extends State<LoginScreen>
                         });
                         handleSignIn();
                       } else
-                        Fiberchat.toast(
+                        Prochat.toast(
                             getTranslated(this.context, 'correctotp'));
                     },
                   ),
@@ -1366,7 +1366,7 @@ class LoginScreenState extends State<LoginScreen>
     var w = MediaQuery.of(this.context).size.width;
     var h = MediaQuery.of(this.context).size.height;
 
-    return Fiberchat.getNTPWrappedWidget(Scaffold(
+    return Prochat.getNTPWrappedWidget(Scaffold(
       backgroundColor: DESIGN_TYPE == Themetype.whatsapp
           ? fiberchatDeepBlue
           : fiberchatWhite,

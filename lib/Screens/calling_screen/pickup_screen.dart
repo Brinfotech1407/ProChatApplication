@@ -309,7 +309,7 @@ class PickupScreen extends StatelessWidget {
                                       ),
                                     );
                                   } else {
-                                    Fiberchat.showRationale(
+                                    Prochat.showRationale(
                                         getTranslated(context, 'pmc'));
                                     Navigator.push(
                                         context,
@@ -318,7 +318,7 @@ class PickupScreen extends StatelessWidget {
                                                 OpenSettings()));
                                   }
                                 }).catchError((onError) {
-                                  Fiberchat.showRationale(
+                                  Prochat.showRationale(
                                       getTranslated(context, 'pmc'));
                                   Navigator.push(
                                       context,
@@ -505,7 +505,7 @@ class PickupScreen extends StatelessWidget {
                                       ),
                                     );
                                   } else {
-                                    Fiberchat.showRationale(
+                                    Prochat.showRationale(
                                         getTranslated(context, 'pmc'));
                                     Navigator.push(
                                         context,
@@ -514,7 +514,7 @@ class PickupScreen extends StatelessWidget {
                                                 OpenSettings()));
                                   }
                                 }).catchError((onError) {
-                                  Fiberchat.showRationale(
+                                  Prochat.showRationale(
                                       getTranslated(context, 'pmc'));
                                   Navigator.push(
                                       context,

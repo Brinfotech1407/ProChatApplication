@@ -192,10 +192,10 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
     unread = widget.unread;
     // initAudioPlayer();
     // _load();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     listenToBlock();
     updateLocalUserData(_cachedModel);
-    chatId = Fiberchat.getChatId(widget.currentUserNo, widget.peerNo);
+    chatId = Prochat.getChatId(widget.currentUserNo, widget.peerNo);
     print('CHAT ID IS $chatId');
     firestoreChatquery = FirebaseFirestore.instance
         .collection(DbPaths.collectionmessages)
@@ -517,7 +517,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
           }
           // _playPopSound();
         } else {
-          Fiberchat.toast('Nothing to encrypt');
+          Prochat.toast('Nothing to encrypt');
         }
       } on Exception catch (_) {
         print('Exception caught!');
@@ -642,7 +642,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -755,7 +755,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -1039,7 +1039,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                               observer.ismediamessagingallowed ==
                                                       false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'mediamssgnotallowed'));
@@ -1066,7 +1066,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                               observer.ismediamessagingallowed ==
                                                       false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'mediamssgnotallowed'));
@@ -1124,7 +1124,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                                         .ismediamessagingallowed ==
                                                     false
                                                 ? () {
-                                                    Fiberchat.showRationale(
+                                                    Prochat.showRationale(
                                                         getTranslated(
                                                             this.context,
                                                             'mediamssgnotallowed'));
@@ -1184,7 +1184,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                       ),
                       onPressed: observer.istextmessagingallowed == false
                           ? () {
-                              Fiberchat.showRationale(getTranslated(
+                              Prochat.showRationale(getTranslated(
                                   this.context, 'textmssgnotallowed'));
                             }
                           : chatStatus == ChatStatus.blocked.index
@@ -1357,7 +1357,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
       int crc = CRC32.compute(input);
       return '$encrypted${Dbkeys.crcSeperator}$crc';
     } catch (e) {
-      Fiberchat.toast('Error occured while encrypting !');
+      Prochat.toast('Error occured while encrypting !');
       return false;
     }
   }
@@ -1372,7 +1372,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      Fiberchat.toast(
+      Prochat.toast(
           'Location permissions are denied. Please go to settings & allow location tracking permission.');
       return Future.error('Location services are disabled.');
     }
@@ -1382,21 +1382,21 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.deniedForever) {
         // Permissions are denied forever, handle appropriately.
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are denied. Please go to settings & allow location tracking permission.');
         return Future.error(
             'Location permissions are permanently denied, we cannot request permissions.');
       }
 
       if (permission == LocationPermission.denied) {
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
         return Future.error('Location permissions are denied');
       }
     }
     if (permission == LocationPermission.always ||
         permission == LocationPermission.whileInUse) {
-      Fiberchat.toast(
+      Prochat.toast(
         getTranslated(this.context, 'detectingloc'),
       );
     }
@@ -1509,7 +1509,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () async {
-            Fiberchat.toast(getTranslated(contextForDialog, 'deleting'));
+            Prochat.toast(getTranslated(contextForDialog, 'deleting'));
             await FirebaseFirestore.instance
                 .collection(DbPaths.collectionmessages)
                 .doc(chatId)
@@ -1518,7 +1518,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                 .get()
                 .then((chatDoc) async {
               if (!chatDoc.exists) {
-                Fiberchat.toast('Please reload this screen !');
+                Prochat.toast('Please reload this screen !');
               } else if (chatDoc.exists) {
                 Map<String, dynamic> realtimeDoc = chatDoc.data()!;
                 if (realtimeDoc[Dbkeys.hasRecipientDeleted] == true) {
@@ -1539,7 +1539,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                       Navigator.maybePop(
                         contextForDialog,
                       );
-                      Fiberchat.toast(
+                      Prochat.toast(
                         getTranslated(contextForDialog, 'deleted'),
                       );
                       hidekeyboard(
@@ -1551,7 +1551,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                     await deleteMsgMedia(realtimeDoc, chatId!)
                         .then((isDeleted) async {
                       if (isDeleted == false || isDeleted == null) {
-                        Fiberchat.toast('Could not delete. Please try again!');
+                        Prochat.toast('Could not delete. Please try again!');
                       } else {
                         await FirebaseFirestore.instance
                             .collection(DbPaths.collectionmessages)
@@ -1565,7 +1565,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                           Navigator.maybePop(
                             contextForDialog,
                           );
-                          Fiberchat.toast(
+                          Prochat.toast(
                             getTranslated(contextForDialog, 'deleted'),
                           );
                           hidekeyboard(contextForDialog);
@@ -1592,7 +1592,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
 
                   Future.delayed(const Duration(milliseconds: 300), () {
                     Navigator.maybePop(contextForDialog);
-                    Fiberchat.toast(
+                    Prochat.toast(
                       getTranslated(contextForDialog, 'deleted'),
                     );
                     hidekeyboard(contextForDialog);
@@ -1625,19 +1625,19 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
 
               Future.delayed(const Duration(milliseconds: 300), () {
                 Navigator.maybePop(contextForDialog);
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(contextForDialog, 'deleted'),
                 );
                 hidekeyboard(contextForDialog);
               });
             } else {
               // -------Delete message completely for everyone
-              Fiberchat.toast(
+              Prochat.toast(
                 getTranslated(contextForDialog, 'deleting'),
               );
               await deleteMsgMedia(mssgDoc, chatId!).then((isDeleted) async {
                 if (isDeleted == false || isDeleted == null) {
-                  Fiberchat.toast('Could not delete. Please try again!');
+                  Prochat.toast('Could not delete. Please try again!');
                 } else {
                   await FirebaseFirestore.instance
                       .collection(DbPaths.collectionmessages)
@@ -1649,7 +1649,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
 
                   Future.delayed(const Duration(milliseconds: 300), () {
                     Navigator.maybePop(contextForDialog);
-                    Fiberchat.toast(
+                    Prochat.toast(
                       getTranslated(contextForDialog, 'deleted'),
                     );
                     hidekeyboard(contextForDialog);
@@ -1671,7 +1671,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () async {
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(contextForDialog, 'deleting'),
             );
             await FirebaseFirestore.instance
@@ -1682,7 +1682,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                 .get()
                 .then((chatDoc) async {
               if (!chatDoc.exists) {
-                Fiberchat.toast('Please reload this screen !');
+                Prochat.toast('Please reload this screen !');
               } else if (chatDoc.exists) {
                 Map<String, dynamic> realtimeDoc = chatDoc.data()!;
                 if (realtimeDoc[Dbkeys.hasSenderDeleted] == true) {
@@ -1701,7 +1701,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
 
                     Future.delayed(const Duration(milliseconds: 300), () {
                       Navigator.maybePop(contextForDialog);
-                      Fiberchat.toast(
+                      Prochat.toast(
                         getTranslated(contextForDialog, 'deleted'),
                       );
                       hidekeyboard(contextForDialog);
@@ -1711,7 +1711,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                     await deleteMsgMedia(realtimeDoc, chatId!)
                         .then((isDeleted) async {
                       if (isDeleted == false || isDeleted == null) {
-                        Fiberchat.toast('Could not delete. Please try again!');
+                        Prochat.toast('Could not delete. Please try again!');
                       } else {
                         await FirebaseFirestore.instance
                             .collection(DbPaths.collectionmessages)
@@ -1723,7 +1723,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
 
                         Future.delayed(const Duration(milliseconds: 300), () {
                           Navigator.maybePop(contextForDialog);
-                          Fiberchat.toast(
+                          Prochat.toast(
                             getTranslated(contextForDialog, 'deleted'),
                           );
                           hidekeyboard(contextForDialog);
@@ -1751,7 +1751,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                   }
                   Future.delayed(const Duration(milliseconds: 300), () {
                     Navigator.maybePop(contextForDialog);
-                    Fiberchat.toast(
+                    Prochat.toast(
                       getTranslated(contextForDialog, 'deleted'),
                     );
                     hidekeyboard(contextForDialog);
@@ -1771,7 +1771,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(contextForDialog, 'plswait'),
             );
             Future.delayed(const Duration(milliseconds: 200), () {
@@ -1786,7 +1786,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
               }).then((value) {
                 Navigator.pop(contextForDialog);
                 hidekeyboard(contextForDialog);
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(contextForDialog, 'blockedbroadcast'),
                 );
               }).catchError((error) {
@@ -1811,7 +1811,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
             Clipboard.setData(ClipboardData(text: mssgDoc[Dbkeys.content]));
             Navigator.pop(contextForDialog);
             hidekeyboard(contextForDialog);
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(contextForDialog, 'copied'),
             );
           }));
@@ -1951,7 +1951,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
           }).then((value) {
             if (list.last[Dbkeys.groupID] ==
                 list[tempSendIndex][Dbkeys.groupID]) {
-              Fiberchat.toast(
+              Prochat.toast(
                 getTranslated(this.context, 'sent'),
               );
               setStateIfMounted(() {
@@ -1967,7 +1967,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
           setStateIfMounted(() {
             isgeneratingSomethingLoader = false;
           });
-          Fiberchat.toast('Failed to send');
+          Prochat.toast('Failed to send');
         }
       } else {
         try {
@@ -1982,7 +1982,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
           final encrypted = encryptWithCRC(content);
           if (encrypted is String) {
             int timestamp2 = DateTime.now().millisecondsSinceEpoch;
-            var chatId = Fiberchat.getChatId(
+            var chatId = Prochat.getChatId(
                 widget.currentUserNo, list[tempSendIndex][Dbkeys.phone]);
             if (content.trim() != '') {
               Map<String, dynamic>? targetPeer =
@@ -1991,7 +1991,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                 await ChatController.request(
                     widget.currentUserNo,
                     list[tempSendIndex][Dbkeys.phone],
-                    Fiberchat.getChatId(widget.currentUserNo,
+                    Prochat.getChatId(widget.currentUserNo,
                         list[tempSendIndex][Dbkeys.phone]));
               }
 
@@ -2037,7 +2037,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
               }).then((value) {
                 if (list.last[Dbkeys.phone] ==
                     list[tempSendIndex][Dbkeys.phone]) {
-                  Fiberchat.toast(
+                  Prochat.toast(
                     getTranslated(this.context, 'sent'),
                   );
                   setStateIfMounted(() {
@@ -2054,13 +2054,13 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
             setStateIfMounted(() {
               isgeneratingSomethingLoader = false;
             });
-            Fiberchat.toast('Nothing to send');
+            Prochat.toast('Nothing to send');
           }
         } catch (e) {
           setStateIfMounted(() {
             isgeneratingSomethingLoader = false;
           });
-          Fiberchat.toast('Failed to Forward message. Error:$e');
+          Prochat.toast('Failed to Forward message. Error:$e');
         }
       }
     }
@@ -2087,7 +2087,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
 
             Future.delayed(const Duration(milliseconds: 300), () {
               Navigator.maybePop(context);
-              Fiberchat.toast(
+              Prochat.toast(
                 getTranslated(this.context, 'deleted'),
               );
             });
@@ -2105,7 +2105,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
           onTap: () {
             Clipboard.setData(ClipboardData(text: doc[Dbkeys.content]));
             Navigator.pop(context);
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(this.context, 'copied'),
             );
           }));
@@ -2120,7 +2120,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Fiberchat.toast(
+            Prochat.toast(
               getTranslated(this.context, 'plswait'),
             );
             Future.delayed(const Duration(milliseconds: 500), () {
@@ -2133,13 +2133,13 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                 Dbkeys.broadcastBLACKLISTED:
                     FieldValue.arrayUnion([widget.currentUserNo]),
               }).then((value) {
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(this.context, 'blockedbroadcast'),
                 );
                 hidekeyboard(context);
                 Navigator.pop(context);
               }).catchError((error) {
-                Fiberchat.toast(
+                Prochat.toast(
                   getTranslated(this.context, 'blockedbroadcast'),
                 );
                 Navigator.pop(context);
@@ -2169,10 +2169,10 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
         }
       }
     } on FormatException {
-      Fiberchat.toast(getTranslated(this.context, 'msgnotload'));
+      Prochat.toast(getTranslated(this.context, 'msgnotload'));
       return '';
     }
-    Fiberchat.toast(getTranslated(this.context, 'msgnotload'));
+    Prochat.toast(getTranslated(this.context, 'msgnotload'));
     return '';
   }
 
@@ -2969,7 +2969,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
 
                 // ignore: unnecessary_null_comparison
                 if (isUser == null || isUser == false) {
-                  Fiberchat.toast(getTranslated(this.context, 'usernotjoined') +
+                  Prochat.toast(getTranslated(this.context, 'usernotjoined') +
                       ' $Appname');
                 }
               },
@@ -3026,7 +3026,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                             child: Text(
                               doc[Dbkeys.from] == widget.currentUserNo
                                   ? getTranslated(this.context, 'you')
-                                  : Fiberchat.getNickname(peer!)!,
+                                  : Prochat.getNickname(peer!)!,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -3332,7 +3332,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                             child: Text(
                               replyDoc![Dbkeys.from] == widget.currentUserNo
                                   ? getTranslated(this.context, 'you')
-                                  : Fiberchat.getNickname(peer!)!,
+                                  : Prochat.getNickname(peer!)!,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -3797,7 +3797,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                           callback: getFileData,
                                         ))).then((url) async {
                               if (url != null) {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                   getTranslated(this.context, 'plswait'),
                                 );
                                 String thumbnailurl = await getThumbnail(url);
@@ -3810,7 +3810,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                         videometadata,
                                     MessageType.video,
                                     thumnailtimestamp);
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     getTranslated(this.context, 'sent'));
                               } else {}
                             });
@@ -3974,7 +3974,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                     MessageType.location,
                                     DateTime.now().millisecondsSinceEpoch);
                                 setStateIfMounted(() {});
-                                Fiberchat.toast(
+                                Prochat.toast(
                                   getTranslated(this.context, 'sent'),
                                 );
                               },
@@ -4096,13 +4096,13 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                           onTap: observer.iscallsallowed == false
                               ? () {
                                   Navigator.of(this.context).pop();
-                                  Fiberchat.showRationale(getTranslated(
+                                  Prochat.showRationale(getTranslated(
                                       this.context, 'callnotallowed'));
                                 }
                               : hasPeerBlockedMe == true
                                   ? () {
                                       Navigator.of(this.context).pop();
-                                      Fiberchat.toast(
+                                      Prochat.toast(
                                         getTranslated(
                                             context, 'userhasblocked'),
                                       );
@@ -4122,7 +4122,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                           call(this.context, false);
                                         } else {
                                           Navigator.of(this.context).pop();
-                                          Fiberchat.showRationale(getTranslated(
+                                          Prochat.showRationale(getTranslated(
                                               this.context, 'pmc'));
                                           Navigator.push(
                                               context,
@@ -4131,7 +4131,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                                       OpenSettings()));
                                         }
                                       }).catchError((onError) {
-                                        Fiberchat.showRationale(
+                                        Prochat.showRationale(
                                             getTranslated(this.context, 'pmc'));
                                         Navigator.push(
                                             context,
@@ -4168,13 +4168,13 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                             onTap: observer.iscallsallowed == false
                                 ? () {
                                     Navigator.of(this.context).pop();
-                                    Fiberchat.showRationale(getTranslated(
+                                    Prochat.showRationale(getTranslated(
                                         this.context, 'callnotallowed'));
                                   }
                                 : hasPeerBlockedMe == true
                                     ? () {
                                         Navigator.of(this.context).pop();
-                                        Fiberchat.toast(
+                                        Prochat.toast(
                                           getTranslated(
                                               context, 'userhasblocked'),
                                         );
@@ -4195,7 +4195,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                             call(this.context, true);
                                           } else {
                                             Navigator.of(this.context).pop();
-                                            Fiberchat.showRationale(
+                                            Prochat.showRationale(
                                                 getTranslated(
                                                     this.context, 'pmc'));
                                             Navigator.push(
@@ -4205,7 +4205,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                                         OpenSettings()));
                                           }
                                         }).catchError((onError) {
-                                          Fiberchat.showRationale(getTranslated(
+                                          Prochat.showRationale(getTranslated(
                                               this.context, 'pmc'));
                                           Navigator.push(
                                               context,
@@ -4317,7 +4317,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
     final observer = Provider.of<Observer>(context, listen: true);
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Consumer<List<GroupModel>>(
+        scaffold: Prochat.getNTPWrappedWidget(Consumer<List<GroupModel>>(
             builder: (context, groupList, _child) => WillPopScope(
                   onWillPop: isgeneratingSomethingLoader == true
                       ? () async {
@@ -4389,7 +4389,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 7, 0, 7),
-                                    child: Fiberchat.avatar(peer, radius: 20),
+                                    child: Prochat.avatar(peer, radius: 20),
                                   ),
                                   SizedBox(
                                     width: 7,
@@ -4404,7 +4404,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                                 .width /
                                             2.3,
                                         child: Text(
-                                          Fiberchat.getNickname(peer!)!,
+                                          Prochat.getNickname(peer!)!,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: DESIGN_TYPE ==
@@ -4462,14 +4462,14 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                           onPressed:
                                               observer.iscallsallowed == false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'callnotallowed'));
                                                     }
                                                   : hasPeerBlockedMe == true
                                                       ? () {
-                                                          Fiberchat.toast(
+                                                          Prochat.toast(
                                                             getTranslated(
                                                                 context,
                                                                 'userhasblocked'),
@@ -4651,7 +4651,7 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                                                         'Individual Chat',
                                                                     'time': time
                                                                         .millisecondsSinceEpoch,
-                                                                    'id': Fiberchat.getChatId(
+                                                                    'id': Prochat.getChatId(
                                                                         widget
                                                                             .currentUserNo,
                                                                         widget
@@ -4824,13 +4824,13 @@ class _LazyLoadingChatState extends State<LazyLoadingChat>
                                           ChatController.accept(
                                               widget.currentUserNo,
                                               widget.peerNo);
-                                          Fiberchat.toast(getTranslated(
+                                          Prochat.toast(getTranslated(
                                               this.context, 'unblocked'));
                                           // }
 
                                           break;
                                         case 'tutorial':
-                                          Fiberchat.toast(getTranslated(
+                                          Prochat.toast(getTranslated(
                                               this.context, 'vsmsg'));
 
                                           break;

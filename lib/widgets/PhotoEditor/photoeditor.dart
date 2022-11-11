@@ -415,7 +415,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
       Navigator.of(context).pop();
       widget.onImageEdit(File(filePath!));
     } catch (e) {
-      Fiberchat.toast("Failed. ERROR: $e");
+      Prochat.toast("Failed. ERROR: $e");
     }
 
     //Navigator.of(context).pop();

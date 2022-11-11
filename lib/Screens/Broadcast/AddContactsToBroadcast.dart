@@ -83,7 +83,7 @@ class _AddContactsToBroadcastState extends State<AddContactsToBroadcast>
 
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+        scaffold: Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
             model: widget.model!,
             child: ScopedModelDescendant<DataModel>(
                 builder: (context, child, model) {
@@ -431,7 +431,7 @@ class _AddContactsToBroadcastState extends State<AddContactsToBroadcast>
                                                                                 iscreatingbroadcast = false;
                                                                               });
 
-                                                                              Fiberchat.toast('Error Creating Broadcast. $err');
+                                                                              Prochat.toast('Error Creating Broadcast. $err');
                                                                               print('Error Creating Broadcast. $err');
                                                                             });
                                                                           });
@@ -522,7 +522,7 @@ class _AddContactsToBroadcastState extends State<AddContactsToBroadcast>
                                                             false;
                                                       });
 
-                                                      Fiberchat.toast(
+                                                      Prochat.toast(
                                                         getTranslated(context,
                                                             'erroraddingbroadcast'),
                                                       );

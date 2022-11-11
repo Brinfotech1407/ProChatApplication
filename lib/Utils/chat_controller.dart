@@ -70,7 +70,7 @@ class ChatController {
         .set({'$peerNo': ChatStatus.blocked.index}, SetOptions(merge: true));
     FirebaseFirestore.instance
         .collection(DbPaths.collectionmessages)
-        .doc(Fiberchat.getChatId(currentUserNo, peerNo))
+        .doc(Prochat.getChatId(currentUserNo, peerNo))
         .set({'$currentUserNo': DateTime.now().millisecondsSinceEpoch},
             SetOptions(merge: true));
     // Fiberchat.toast('Blocked.');

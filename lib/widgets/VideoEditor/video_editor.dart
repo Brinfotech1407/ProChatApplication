@@ -98,7 +98,7 @@ class _VideoEditorState extends State<VideoEditor> {
                 .catchError((err) {
               _exportText = "Error on export video :( \n\nERROR: $err";
               Navigator.of(context).pop();
-              Fiberchat.toast(_exportText);
+              Prochat.toast(_exportText);
             });
           } else if (_controller.selectedCoverVal!.timeMs == 0) {
             _controller
@@ -111,7 +111,7 @@ class _VideoEditorState extends State<VideoEditor> {
                 .catchError((err) {
               _exportText = "Error on export video :( \n\nERROR: $err";
               Navigator.of(context).pop();
-              Fiberchat.toast(_exportText);
+              Prochat.toast(_exportText);
             });
           } else {
             // File thumbnailFile =
@@ -130,7 +130,7 @@ class _VideoEditorState extends State<VideoEditor> {
         } else {
           _exportText = "Error on export video :(";
           Navigator.of(context).pop();
-          Fiberchat.toast(_exportText);
+          Prochat.toast(_exportText);
         }
       },
     );
@@ -165,7 +165,7 @@ class _VideoEditorState extends State<VideoEditor> {
     DateTime now = DateTime.now();
     if (now.difference(currentBackPressTime!) > Duration(seconds: 3)) {
       currentBackPressTime = now;
-      Fiberchat.toast('Double Tap To Close Editor');
+      Prochat.toast('Double Tap To Close Editor');
       return Future.value(false);
     } else {
       return Future.value(true);

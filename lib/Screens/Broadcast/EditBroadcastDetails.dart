@@ -54,7 +54,7 @@ class EditBroadcastDetailsState extends State<EditBroadcastDetails> {
   @override
   void initState() {
     super.initState();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     broadcastDesc = widget.broadcastDesc;
     broadcastTitle = widget.broadcastName;
     controllerName!.text = broadcastTitle!;
@@ -112,7 +112,7 @@ class EditBroadcastDetailsState extends State<EditBroadcastDetails> {
         isLoading = false;
       });
 
-      Fiberchat.toast(err.toString());
+      Prochat.toast(err.toString());
     });
   }
 
@@ -129,7 +129,7 @@ class EditBroadcastDetailsState extends State<EditBroadcastDetails> {
     final observer = Provider.of<Observer>(this.context, listen: false);
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+        scaffold: Prochat.getNTPWrappedWidget(Scaffold(
             backgroundColor: fiberchatWhite,
             appBar: new AppBar(
               elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,

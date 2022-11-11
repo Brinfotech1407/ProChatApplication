@@ -67,7 +67,7 @@ Widget getPersonalMessageTile(
 
           FirebaseFirestore.instance
               .collection(DbPaths.collectionmessages)
-              .doc(Fiberchat.getChatId(currentUserNo, peer[Dbkeys.phone]))
+              .doc(Prochat.getChatId(currentUserNo, peer[Dbkeys.phone]))
               .update({
             "$currentUserNo-muted": !isMuted,
           });
@@ -105,11 +105,11 @@ Widget getPersonalMessageTile(
                         style: TextStyle(color: Colors.red, fontSize: 18),
                       ),
                       onPressed: () async {
-                        String chatId = Fiberchat.getChatId(
+                        String chatId = Prochat.getChatId(
                             currentUserNo, targetUser[Dbkeys.phone]);
 
                         if (targetUser[Dbkeys.phone] != null) {
-                          Fiberchat.toast(getTranslated(context, 'plswait'));
+                          Prochat.toast(getTranslated(context, 'plswait'));
                           await FirebaseFirestore.instance
                               .collection(DbPaths.collectionmessages)
                               .doc(chatId)
@@ -157,7 +157,7 @@ Widget getPersonalMessageTile(
                             //             ))));
                           });
                         } else {
-                          Fiberchat.toast('Error Occured. Could not delete !');
+                          Prochat.toast('Error Occured. Could not delete !');
                         }
                       },
                     )
@@ -329,7 +329,7 @@ Widget getPersonalMessageTile(
                   padding: const EdgeInsets.only(bottom: 4),
                   child: IsShowUserFullNameAsSavedInYourContacts == false
                       ? Text(
-                          Fiberchat.getNickname(peer) ?? "",
+                          Prochat.getNickname(peer) ?? "",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -361,7 +361,7 @@ Widget getPersonalMessageTile(
                                   );
                                 }
                                 return Text(
-                                  Fiberchat.getNickname(peer) ?? "",
+                                  Prochat.getNickname(peer) ?? "",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -397,7 +397,7 @@ Widget getPersonalMessageTile(
                         state: state,
                         shouldPop: false,
                         type:
-                            Fiberchat.getAuthenticationType(false, cachedModel),
+                            Prochat.getAuthenticationType(false, cachedModel),
                         prefs: prefs, onSuccess: () {
                       state.pushReplacement(new MaterialPageRoute(
                           builder: (context) => new ChatScreen(

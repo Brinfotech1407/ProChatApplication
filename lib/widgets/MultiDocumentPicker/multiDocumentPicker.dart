@@ -100,7 +100,7 @@ class _MultiDocumentPickerState extends State<MultiDocumentPicker> {
         }
       }
     } catch (e) {
-      Fiberchat.toast('Cannot Send this Document type');
+      Prochat.toast('Cannot Send this Document type');
       Navigator.of(this.context).pop();
     }
   }
@@ -293,7 +293,7 @@ class _MultiDocumentPickerState extends State<MultiDocumentPicker> {
   @override
   Widget build(BuildContext context) {
     final observer = Provider.of<Observer>(this.context, listen: false);
-    return Fiberchat.getNTPWrappedWidget(WillPopScope(
+    return Prochat.getNTPWrappedWidget(WillPopScope(
       child: Scaffold(
         backgroundColor:
             DESIGN_TYPE == Themetype.whatsapp ? fiberchatBlack : fiberchatWhite,
@@ -349,12 +349,12 @@ class _MultiDocumentPickerState extends State<MultiDocumentPicker> {
                                     final observer = Provider.of<Observer>(
                                         this.context,
                                         listen: false);
-                                    Fiberchat.toast(getTranslated(
+                                    Prochat.toast(getTranslated(
                                             context, 'filesizeexceeded') +
                                         ': ${observer.maxFileSizeAllowedInMB}MB');
                                   })
                             : () {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     '${getTranslated(this.context, 'maxnooffiles')}: ${observer.maxNoOfFilesInMultiSharing}');
                               }),
                     SizedBox(
@@ -434,12 +434,12 @@ class _MultiDocumentPickerState extends State<MultiDocumentPicker> {
                   Icons.add,
                   checkTotalNoOfFilesIfExceeded() == false
                       ? () {
-                          Fiberchat.checkAndRequestPermission(Permission.photos)
+                          Prochat.checkAndRequestPermission(Permission.photos)
                               .then((res) {
                             if (res == true) {
                               captureMultiPageDoc(false);
                             } else if (res == false) {
-                              Fiberchat.showRationale(
+                              Prochat.showRationale(
                                   getTranslated(this.context, 'pgi'));
                               Navigator.pushReplacement(
                                   this.context,
@@ -449,7 +449,7 @@ class _MultiDocumentPickerState extends State<MultiDocumentPicker> {
                           });
                         }
                       : () {
-                          Fiberchat.toast(
+                          Prochat.toast(
                               '${getTranslated(this.context, 'maxnooffiles')}: ${observer.maxNoOfFilesInMultiSharing}');
                         }),
             ]));

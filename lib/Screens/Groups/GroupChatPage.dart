@@ -434,7 +434,7 @@ class _GroupChatPageState extends State<GroupChatPage>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING MEDIA: $onError');
       });
     } else {
@@ -581,7 +581,7 @@ class _GroupChatPageState extends State<GroupChatPage>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -692,7 +692,7 @@ class _GroupChatPageState extends State<GroupChatPage>
           }).toString();
         });
       }).catchError((onError) {
-        Fiberchat.toast('Sending failed !');
+        Prochat.toast('Sending failed !');
         print('ERROR SENDING FILE: $onError');
       });
     } else {
@@ -1037,7 +1037,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                               observer.ismediamessagingallowed ==
                                                       false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'mediamssgnotallowed'));
@@ -1064,7 +1064,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                               observer.ismediamessagingallowed ==
                                                       false
                                                   ? () {
-                                                      Fiberchat.showRationale(
+                                                      Prochat.showRationale(
                                                           getTranslated(
                                                               this.context,
                                                               'mediamssgnotallowed'));
@@ -1171,7 +1171,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                                         .ismediamessagingallowed ==
                                                     false
                                                 ? () {
-                                                    Fiberchat.showRationale(
+                                                    Prochat.showRationale(
                                                         getTranslated(
                                                             this.context,
                                                             'mediamssgnotallowed'));
@@ -1253,7 +1253,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                 }
                               : observer.istextmessagingallowed == false
                                   ? () {
-                                      Fiberchat.showRationale(getTranslated(
+                                      Prochat.showRationale(getTranslated(
                                           this.context, 'textmssgnotallowed'));
                                     }
                                   : () => onSendMessage(
@@ -1264,7 +1264,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                         type: MessageType.text,
                                       )
                           : () {
-                              Fiberchat.showRationale(getTranslated(
+                              Prochat.showRationale(getTranslated(
                                   this.context, 'mediamssgnotallowed'));
                             },
                       color: fiberchatWhite,
@@ -2466,7 +2466,7 @@ class _GroupChatPageState extends State<GroupChatPage>
             );
           }).then((value) async {
             if (index >= list.length - 1) {
-              Fiberchat.toast(
+              Prochat.toast(
                 getTranslated(this.context, 'sent'),
               );
               setStateIfMounted(() {
@@ -2482,7 +2482,7 @@ class _GroupChatPageState extends State<GroupChatPage>
           setStateIfMounted(() {
             isgeneratingSomethingLoader = false;
           });
-          Fiberchat.toast('Failed to send');
+          Prochat.toast('Failed to send');
         }
       } else {
         try {
@@ -2503,10 +2503,10 @@ class _GroupChatPageState extends State<GroupChatPage>
                 await ChatController.request(
                     widget.currentUserno,
                     list[index][Dbkeys.phone],
-                    Fiberchat.getChatId(
+                    Prochat.getChatId(
                         widget.currentUserno, list[index][Dbkeys.phone]));
               }
-              var chatId = Fiberchat.getChatId(
+              var chatId = Prochat.getChatId(
                   widget.currentUserno, list[index][Dbkeys.phone]);
               await FirebaseFirestore.instance
                   .collection(DbPaths.collectionmessages)
@@ -2550,7 +2550,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                     list[index][Dbkeys.phone], timestamp2, messaging);
               }).then((value) async {
                 if (index >= list.length - 1) {
-                  Fiberchat.toast(
+                  Prochat.toast(
                     getTranslated(this.context, 'sent'),
                   );
                   setStateIfMounted(() {
@@ -2567,13 +2567,13 @@ class _GroupChatPageState extends State<GroupChatPage>
             setStateIfMounted(() {
               isgeneratingSomethingLoader = false;
             });
-            Fiberchat.toast('Nothing to send');
+            Prochat.toast('Nothing to send');
           }
         } catch (e) {
           setStateIfMounted(() {
             isgeneratingSomethingLoader = false;
           });
-          Fiberchat.toast('Failed to Forward message. Error:$e');
+          Prochat.toast('Failed to Forward message. Error:$e');
         }
       }
     }
@@ -3680,7 +3680,7 @@ class _GroupChatPageState extends State<GroupChatPage>
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      Fiberchat.toast(
+      Prochat.toast(
           'Location permissions are denied. Please go to settings & allow location tracking permission.');
       return Future.error('Location services are disabled.');
     }
@@ -3690,21 +3690,21 @@ class _GroupChatPageState extends State<GroupChatPage>
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.deniedForever) {
         // Permissions are denied forever, handle appropriately.
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are denied. Please go to settings & allow location tracking permission.');
         return Future.error(
             'Location permissions are permanently denied, we cannot request permissions.');
       }
 
       if (permission == LocationPermission.denied) {
-        Fiberchat.toast(
+        Prochat.toast(
             'Location permissions are pdenied. Please go to settings & allow location tracking permission.');
         return Future.error('Location permissions are denied');
       }
     }
     if (permission == LocationPermission.always ||
         permission == LocationPermission.whileInUse) {
-      Fiberchat.toast(
+      Prochat.toast(
         getTranslated(this.context, 'detectingloc'),
       );
     }
@@ -3850,7 +3850,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                             File? selectedMedia =
                                 await pickVideoFromgallery(context)
                                     .catchError((err) {
-                              Fiberchat.toast(
+                              Prochat.toast(
                                   getTranslated(context, "invalidfile"));
                             });
 
@@ -3922,7 +3922,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                             },
                                             file: File(file.path))));
                               } else {
-                                Fiberchat.toast(
+                                Prochat.toast(
                                     "File type not supported. Please choose a valid .mp4, .mov file. \n\nSelected file was $fileExtension ");
                               }
                             }
@@ -4098,7 +4098,7 @@ class _GroupChatPageState extends State<GroupChatPage>
                                   type: MessageType.location,
                                 );
                                 setStateIfMounted(() {});
-                                Fiberchat.toast(
+                                Prochat.toast(
                                   getTranslated(this.context, 'sent'),
                                 );
                               },
@@ -4216,7 +4216,7 @@ class _GroupChatPageState extends State<GroupChatPage>
 
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Consumer<List<GroupModel>>(
+        scaffold: Prochat.getNTPWrappedWidget(Consumer<List<GroupModel>>(
             builder: (context, groupList, _child) => WillPopScope(
                   onWillPop: isgeneratingSomethingLoader == true
                       ? () async {

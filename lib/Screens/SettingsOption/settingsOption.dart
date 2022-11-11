@@ -60,7 +60,7 @@ class _SettingsOptionState extends State<SettingsOption> {
     final observer = Provider.of<Observer>(context, listen: false);
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+        scaffold: Prochat.getNTPWrappedWidget(Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,
@@ -873,7 +873,7 @@ class _SettingsOptionState extends State<SettingsOption> {
               ),
               ListTile(
                 onTap: () {
-                  Fiberchat.invite(context);
+                  Prochat.invite(context);
                 },
                 contentPadding: EdgeInsets.fromLTRB(30, 3, 10, 3),
                 leading: Icon(

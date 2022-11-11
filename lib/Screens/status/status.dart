@@ -304,7 +304,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
     final observer = Provider.of<Observer>(context, listen: true);
     final contactsProvider =
         Provider.of<AvailableContactsProvider>(context, listen: true);
-    return Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+    return Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
         model: widget.model!,
         child:
             ScopedModelDescendant<DataModel>(builder: (context, child, model) {
@@ -329,7 +329,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                             size: 23.0, color: Colors.blueGrey[700]),
                         onPressed: observer.isAllowCreatingStatus == false
                             ? () {
-                                Fiberchat.showRationale(
+                                Prochat.showRationale(
                                     getTranslated(this.context, 'disabled'));
                               }
                             : () {
@@ -352,7 +352,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                     ),
                     onPressed: observer.isAllowCreatingStatus == false
                         ? () {
-                            Fiberchat.showRationale(
+                            Prochat.showRationale(
                                 getTranslated(this.context, 'disabled'));
                           }
                         : () async {
@@ -678,7 +678,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                                                             observer.isAllowCreatingStatus ==
                                                                     false
                                                                 ? () {
-                                                                    Fiberchat.showRationale(getTranslated(
+                                                                    Prochat.showRationale(getTranslated(
                                                                         this.context,
                                                                         'disabled'));
                                                                   }
@@ -881,7 +881,7 @@ class _StatusState extends State<Status> with AutomaticKeepAliveClientMixin {
                                                       observer.isAllowCreatingStatus ==
                                                               false
                                                           ? () {
-                                                              Fiberchat.showRationale(
+                                                              Prochat.showRationale(
                                                                   getTranslated(
                                                                       this.context,
                                                                       'disabled'));

@@ -20,7 +20,7 @@ class _OpenSettingsState extends State<OpenSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Fiberchat.getNTPWrappedWidget(Material(
+    return Prochat.getNTPWrappedWidget(Material(
         color: fiberchatDeepBlue,
         child: Center(
             child: Column(

@@ -33,7 +33,7 @@ class PhotoViewWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Fiberchat.getNTPWrappedWidget(Scaffold(
+    return Prochat.getNTPWrappedWidget(Scaffold(
         backgroundColor: Colors.black,
         key: _scaffoldd,
         appBar: AppBar(

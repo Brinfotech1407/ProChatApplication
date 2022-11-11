@@ -111,7 +111,7 @@ class _ContactsSelectState extends State<ContactsSelect>
       }
     });
 
-    Fiberchat.checkAndRequestPermission(Permission.contacts).then((res) {
+    Prochat.checkAndRequestPermission(Permission.contacts).then((res) {
       if (res) {
         storage.ready.then((ready) async {
           if (ready) {
@@ -149,12 +149,12 @@ class _ContactsSelectState extends State<ContactsSelect>
           // }
         });
       } else {
-        Fiberchat.showRationale(getTranslated(context, 'perm_contact'));
+        Prochat.showRationale(getTranslated(context, 'perm_contact'));
         Navigator.pushReplacement(context,
             new MaterialPageRoute(builder: (context) => OpenSettings()));
       }
     }).catchError((onError) {
-      Fiberchat.showRationale('Error occured: $onError');
+      Prochat.showRationale('Error occured: $onError');
     });
 
     return completer.future;
@@ -168,7 +168,7 @@ class _ContactsSelectState extends State<ContactsSelect>
 
     return PickupLayout(
         prefs: widget.prefs!,
-        scaffold: Fiberchat.getNTPWrappedWidget(ScopedModel<DataModel>(
+        scaffold: Prochat.getNTPWrappedWidget(ScopedModel<DataModel>(
             model: widget.model!,
             child: ScopedModelDescendant<DataModel>(
                 builder: (context, child, model) {
@@ -250,7 +250,7 @@ class _ContactsSelectState extends State<ContactsSelect>
                                                           fiberchatgreen,
                                                       radius: 22.5,
                                                       child: Text(
-                                                        Fiberchat.getInitials(
+                                                        Prochat.getInitials(
                                                             userDoc[Dbkeys
                                                                 .nickname]),
                                                         style: TextStyle(
@@ -283,7 +283,7 @@ class _ContactsSelectState extends State<ContactsSelect>
                                                         fiberchatgreen,
                                                     radius: 22.5,
                                                     child: Text(
-                                                      Fiberchat.getInitials(
+                                                      Prochat.getInitials(
                                                           user.value),
                                                       style: TextStyle(
                                                           color:

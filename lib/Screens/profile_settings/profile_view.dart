@@ -162,12 +162,12 @@ class _ProfileViewState extends State<ProfileView> {
                             : IconButton(
                                 onPressed: observer.iscallsallowed == false
                                     ? () {
-                                        Fiberchat.showRationale(getTranslated(
+                                        Prochat.showRationale(getTranslated(
                                             context, 'callnotallowed'));
                                       }
                                     : hasPeerBlockedMe == true
                                         ? () {
-                                            Fiberchat.toast(
+                                            Prochat.toast(
                                               getTranslated(
                                                   context, 'userhasblocked'),
                                             );
@@ -179,7 +179,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               if (isgranted == true) {
                                                 call(context, false);
                                               } else {
-                                                Fiberchat.showRationale(
+                                                Prochat.showRationale(
                                                     getTranslated(
                                                         context, 'pmc'));
                                                 Navigator.push(
@@ -189,7 +189,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                             OpenSettings()));
                                               }
                                             }).catchError((onError) {
-                                              Fiberchat.showRationale(
+                                              Prochat.showRationale(
                                                   getTranslated(
                                                       context, 'pmc'));
                                               Navigator.push(
@@ -209,12 +209,12 @@ class _ProfileViewState extends State<ProfileView> {
                             : IconButton(
                                 onPressed: observer.iscallsallowed == false
                                     ? () {
-                                        Fiberchat.showRationale(getTranslated(
+                                        Prochat.showRationale(getTranslated(
                                             context, 'callnotallowed'));
                                       }
                                     : hasPeerBlockedMe == true
                                         ? () {
-                                            Fiberchat.toast(
+                                            Prochat.toast(
                                               getTranslated(
                                                   context, 'userhasblocked'),
                                             );
@@ -226,7 +226,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               if (isgranted == true) {
                                                 call(context, true);
                                               } else {
-                                                Fiberchat.showRationale(
+                                                Prochat.showRationale(
                                                     getTranslated(
                                                         context, 'pmc'));
                                                 Navigator.push(
@@ -236,7 +236,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                             OpenSettings()));
                                               }
                                             }).catchError((onError) {
-                                              Fiberchat.showRationale(
+                                              Prochat.showRationale(
                                                   getTranslated(
                                                       context, 'pmc'));
                                               Navigator.push(
@@ -335,7 +335,7 @@ class _ProfileViewState extends State<ProfileView> {
     var w = MediaQuery.of(context).size.width;
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+        scaffold: Prochat.getNTPWrappedWidget(Scaffold(
           bottomSheet: IsBannerAdShow == true &&
                   observer.isadmobshow == true &&
                   adWidget != null

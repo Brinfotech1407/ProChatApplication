@@ -83,7 +83,7 @@ class FirebaseBroadcastServices {
             if (encrypted is String) {
               int timestamp2 = DateTime.now().millisecondsSinceEpoch;
               if (content.trim() != '') {
-                var chatId = Fiberchat.getChatId(currentUserNo, peer);
+                var chatId = Prochat.getChatId(currentUserNo, peer);
                 await FirebaseFirestore.instance
                     .collection(DbPaths.collectionbroadcasts)
                     .doc(broadcastId)
@@ -139,17 +139,17 @@ class FirebaseBroadcastServices {
                 });
               }
             } else {
-              Fiberchat.toast('Nothing to send');
+              Prochat.toast('Nothing to send');
             }
           } catch (e) {
-            Fiberchat.toast('Failed to Send message. Error:$e');
+            Prochat.toast('Failed to Send message. Error:$e');
           }
         }).catchError(((e) {
-          Fiberchat.toast('Failed to Send message. Error:$e');
+          Prochat.toast('Failed to Send message. Error:$e');
         }));
       });
     } else {
-      Fiberchat.toast('Nothing to Send !');
+      Prochat.toast('Nothing to Send !');
     }
   }
 }

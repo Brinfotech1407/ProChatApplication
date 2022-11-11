@@ -25,7 +25,7 @@ class _AliasFormState extends State<AliasForm> {
   void initState() {
     super.initState();
     _alias =
-        new TextEditingController(text: Fiberchat.getNickname(widget.user));
+        new TextEditingController(text: Prochat.getNickname(widget.user));
   }
 
   Future getImage(File image) {
@@ -37,7 +37,7 @@ class _AliasFormState extends State<AliasForm> {
 
   @override
   Widget build(BuildContext context) {
-    String? name = Fiberchat.getNickname(widget.user);
+    String? name = Prochat.getNickname(widget.user);
     return AlertDialog(
       actions: <Widget>[
         // ignore: deprecated_member_use
@@ -77,7 +77,7 @@ class _AliasFormState extends State<AliasForm> {
               height: 120,
               child: Stack(children: [
                 Center(
-                    child: Fiberchat.avatar(widget.user,
+                    child: Prochat.avatar(widget.user,
                         image: _imageFile, radius: 50)),
               ])),
           TextFormField(

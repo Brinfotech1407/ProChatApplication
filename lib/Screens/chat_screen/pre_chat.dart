@@ -135,12 +135,12 @@ class _PreChatState extends State<PreChat> {
                               peerNo: peer[Dbkeys.phone])));
             } else {
               Navigator.of(context).pop();
-              Fiberchat.toast(
+              Prochat.toast(
                   "This User is private. You are not in User Contact List");
             }
           } else {
             Navigator.of(context).pop();
-            Fiberchat.toast(
+            Prochat.toast(
                 "This User is private. You are not in User Contact List");
           }
         } else {
@@ -213,12 +213,12 @@ class _PreChatState extends State<PreChat> {
                                   peerNo: peer[Dbkeys.phone])));
                 } else {
                   Navigator.of(context).pop();
-                  Fiberchat.toast(
+                  Prochat.toast(
                       "This User is private. You are not in User Contact List");
                 }
               } else {
                 Navigator.of(context).pop();
-                Fiberchat.toast(
+                Prochat.toast(
                     "This User is private. You are not in User Contact List");
               }
             } else {
@@ -264,7 +264,7 @@ class _PreChatState extends State<PreChat> {
 
   @override
   Widget build(BuildContext context) {
-    return Fiberchat.getNTPWrappedWidget(Scaffold(
+    return Prochat.getNTPWrappedWidget(Scaffold(
       appBar: AppBar(
           elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,
           leading: IconButton(
@@ -330,7 +330,7 @@ class _PreChatState extends State<PreChat> {
                                 ),
                               ),
                               onPressed: () {
-                                Fiberchat.invite(context);
+                                Prochat.invite(context);
                               },
                             )
                           ])

@@ -59,7 +59,7 @@ class ProfileSettingState extends State<ProfileSetting> {
   @override
   void initState() {
     super.initState();
-    Fiberchat.internetLookUp();
+    Prochat.internetLookUp();
     readLocal();
     _type = widget.type;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -140,7 +140,7 @@ class ProfileSettingState extends State<ProfileSetting> {
       setState(() {
         isLoading = false;
       });
-      Fiberchat.toast(getTranslated(this.context, 'saved'));
+      Prochat.toast(getTranslated(this.context, 'saved'));
       Navigator.of(this.context).pop();
       Navigator.of(this.context).pop();
     }).catchError((err) {
@@ -148,7 +148,7 @@ class ProfileSettingState extends State<ProfileSetting> {
         isLoading = false;
       });
 
-      Fiberchat.toast(err.toString());
+      Prochat.toast(err.toString());
     });
   }
 
@@ -166,7 +166,7 @@ class ProfileSettingState extends State<ProfileSetting> {
     final observer = Provider.of<Observer>(context, listen: false);
     return PickupLayout(
         prefs: widget.prefs,
-        scaffold: Fiberchat.getNTPWrappedWidget(Scaffold(
+        scaffold: Prochat.getNTPWrappedWidget(Scaffold(
             backgroundColor: fiberchatWhite,
             appBar: new AppBar(
               elevation: DESIGN_TYPE == Themetype.messenger ? 0.4 : 1,
@@ -305,7 +305,7 @@ class ProfileSettingState extends State<ProfileSetting> {
                                                 isLoading = false;
                                               });
 
-                                              Fiberchat.toast(err.toString());
+                                              Prochat.toast(err.toString());
                                             });
                                           }
                                         });

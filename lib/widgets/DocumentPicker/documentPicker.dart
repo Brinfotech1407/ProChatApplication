@@ -63,7 +63,7 @@ class _HybridDocumentPickerState extends State<HybridDocumentPicker> {
         } else {}
       }
     } catch (e) {
-      Fiberchat.toast('Cannot Send this Document type');
+      Prochat.toast('Cannot Send this Document type');
       Navigator.of(this.context).pop();
     }
   }
@@ -103,7 +103,7 @@ class _HybridDocumentPickerState extends State<HybridDocumentPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Fiberchat.getNTPWrappedWidget(WillPopScope(
+    return Prochat.getNTPWrappedWidget(WillPopScope(
       child: Scaffold(
         backgroundColor:
             DESIGN_TYPE == Themetype.whatsapp ? fiberchatBlack : fiberchatWhite,
@@ -191,14 +191,14 @@ class _HybridDocumentPickerState extends State<HybridDocumentPicker> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               _buildActionButton(new Key('retake'), Icons.add, () {
-                Fiberchat.checkAndRequestPermission(Platform.isIOS
+                Prochat.checkAndRequestPermission(Platform.isIOS
                         ? Permission.mediaLibrary
                         : Permission.storage)
                     .then((res) {
                   if (res) {
                     captureFile();
                   } else {
-                    Fiberchat.showRationale(
+                    Prochat.showRationale(
                       getTranslated(this.context, 'psac'),
                     );
                     Navigator.pushReplacement(
