@@ -1733,7 +1733,7 @@ class HomepageState extends State<Homepage>
                   child: Divider(color: Colors.grey, height: 1.0),
                   margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
                 ),
-                setupAlertDialogContainer(),
+                setupAddDialogListing(),
               ],
             ),
           );
@@ -1741,7 +1741,7 @@ class HomepageState extends State<Homepage>
   }
 }
 
-Widget setupAlertDialogContainer() {
+Widget setupAddDialogListing() {
   return Container(
     height: 300.0, // Change as per your requirement
     width: 300.0, // Change as per your requirement
