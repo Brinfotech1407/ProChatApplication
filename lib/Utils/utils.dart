@@ -3,7 +3,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info/device_info.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:prochat/Configs/Dbkeys.dart';
+import 'package:prochat/Configs/Dbpaths.dart';
 import 'package:prochat/Configs/app_constants.dart';
 import 'package:prochat/Services/Providers/Observer.dart';
 import 'package:prochat/Services/localization/language_constants.dart';
@@ -183,5 +187,71 @@ class Prochat {
     var bytes = utf8.encode(str); // data being hashed
     Digest digest = sha1.convert(bytes);
     return digest.toString();
+  }
+
+  static Future<String> getDeviceID() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid == true) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id + androidInfo.androidId;
+    }else{
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.systemName + iosInfo.model + iosInfo.systemVersion;
+    }
+  }
+
+
+  static subscribeToNotification(String currentUserNo, bool isFreshNewAccount) async {
+    await FirebaseMessaging.instance
+        .subscribeToTopic(
+        '${currentUserNo.replaceFirst(new RegExp(r'\+'), '')}')
+        .catchError((err) {
+      print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
+    });
+    await FirebaseMessaging.instance
+        .subscribeToTopic(Dbkeys.topicUSERS)
+        .catchError((err) {
+      print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
+    });
+    await FirebaseMessaging.instance
+        .subscribeToTopic(Platform.isAndroid
+        ? Dbkeys.topicUSERSandroid
+        : Platform.isIOS
+        ? Dbkeys.topicUSERSios
+        : Dbkeys.topicUSERSweb)
+        .catchError((err) {
+      print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
+    });
+
+    if (isFreshNewAccount == false) {
+      await FirebaseFirestore.instance
+          .collection(DbPaths.collectiongroups)
+          .where(Dbkeys.groupMEMBERSLIST, arrayContains: currentUserNo)
+          .get()
+          .then((query) async {
+        if (query.docs.length > 0) {
+          query.docs.forEach((doc) async {
+            if (doc.data().containsKey(Dbkeys.groupMUTEDMEMBERS)) {
+              if (doc[Dbkeys.groupMUTEDMEMBERS].contains(currentUserNo)) {
+              } else {
+                await FirebaseMessaging.instance
+                    .subscribeToTopic(
+                    "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
+                    .catchError((err) {
+                  print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
+                });
+              }
+            } else {
+              await FirebaseMessaging.instance
+                  .subscribeToTopic(
+                  "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
+                  .catchError((err) {
+                print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
+              });
+            }
+          });
+        }
+      });
+    }
   }
 }

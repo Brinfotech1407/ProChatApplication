@@ -22,6 +22,7 @@ import 'package:prochat/Configs/Enum.dart';
 import 'package:prochat/Configs/app_constants.dart';
 import 'package:prochat/Configs/optional_constants.dart';
 import 'package:prochat/Models/DataModel.dart';
+import 'package:prochat/Models/multiAccountData.dart';
 import 'package:prochat/Screens/Broadcast/AddContactsToBroadcast.dart';
 import 'package:prochat/Screens/Groups/AddContactsToGroup.dart';
 import 'package:prochat/Screens/SettingsOption/settingsOption.dart';
@@ -93,6 +94,7 @@ class HomepageState extends State<Homepage>
 
   bool isFetching = true;
   List phoneNumberVariants = [];
+  // SharedPreferences? sharedPrefs;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -146,6 +148,7 @@ class HomepageState extends State<Homepage>
   String? accountactionmessage;
   String? userPhotourl;
   String? userFullname;
+  List<MultiAccount> arrMultiAccount = <MultiAccount>[];
 
   @override
   void initState() {
@@ -190,6 +193,8 @@ class HomepageState extends State<Homepage>
         }
       });
     });
+
+    getUsersMultiAccountDetails();
   }
 
   // detectLocale() async {
@@ -1735,42 +1740,120 @@ class HomepageState extends State<Homepage>
                     unawaited(Navigator.pushReplacement(
                         this.context,
                         MaterialPageRoute(
-                            builder: (newContext) =>LoginScreen(
-                              prefs: widget.prefs,
-                              accountApprovalMessage: '',
-                              isaccountapprovalbyadminneeded: false,
-                              isblocknewlogins: false,
-                              title: getTranslated(context, 'signin'),
-                            ))));
-
+                            builder: (newContext) => LoginScreen(
+                                  prefs: widget.prefs,
+                                  accountApprovalMessage: '',
+                                  isaccountapprovalbyadminneeded: false,
+                                  isblocknewlogins: false,
+                                  title: getTranslated(context, 'signin'),
+                                ))));
                   },
                 ),
                 Container(
                   child: Divider(color: Colors.grey, height: 1.0),
                   margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
                 ),
-                setupAddDialogListing(),
+                setupAddDialogListing(
+                  arrMultiAccount,
+                  widget.prefs!,
+                  context,
+                  widget.doc,
+                ),
               ],
             ),
           );
         });
   }
+
+  Future<void> getUsersMultiAccountDetails() async {
+    String deviceID = await Prochat.getDeviceID();
+
+    arrMultiAccount.clear();
+
+    debugPrint('prefs::::${widget.prefs}');
+
+    FirebaseFirestore.instance
+        .collection(DbPaths.collectionLinksAccount)
+        .doc(deviceID)
+        .get()
+        .then((DocumentSnapshot<Map<String, dynamic>> value) {
+      final Map<String, dynamic> data = value.data() as Map<String, dynamic>;
+      debugPrint('Datas::::$data');
+
+      data.forEach((String key, dynamic value) {
+        arrMultiAccount.add(MultiAccount(phoneNo: key, uid: value as String));
+      });
+
+      debugPrint('arrMultiAccount::::$arrMultiAccount');
+    });
+  }
 }
 
-Widget setupAddDialogListing() {
+Widget setupAddDialogListing(
+  List<MultiAccount> arrMultiAccount,
+  SharedPreferences pref,
+  BuildContext context,
+  DocumentSnapshot<Map<String, dynamic>>? doc,
+) {
   return Container(
     height: 150.0, // Change as per your requirement
     width: 150.0, // Change as per your requirement
     child: ListView.builder(
       shrinkWrap: true,
-      itemCount: 3,
+      itemCount: arrMultiAccount.length,
       itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text('Gujarat, India'),
+        MultiAccount arrItem = arrMultiAccount[index];
+        return GestureDetector(
+          child: ListTile(
+            title: Text(arrItem.phoneNo ?? ''),
+          ),
+          onTap: () async {
+            await getUserDetailsFromUID(
+              uid: arrItem.uid,
+              prefs: pref,
+              phoneNo: arrItem.phoneNo,
+            );
+            unawaited(
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (newContext) => Homepage(
+                    doc: doc,
+                    currentUserNo: arrItem.phoneNo,
+                    prefs: pref,
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     ),
   );
+}
+
+Future<void> getUserDetailsFromUID({
+  String? uid,
+  String? phoneNo,
+  SharedPreferences? prefs,
+}) async {
+  if (uid != null) {
+    final QuerySnapshot result = await FirebaseFirestore.instance
+        .collection(DbPaths.collectionusers)
+        .where(Dbkeys.id, isEqualTo: uid)
+        .get();
+    final List documents = result.docs;
+
+    await prefs?.setString(Dbkeys.id, documents[0][Dbkeys.id]);
+    await prefs?.setString(
+        Dbkeys.nickname, documents[0][Dbkeys.nickname] ?? '');
+    await prefs?.setString(
+        Dbkeys.photoUrl, documents[0][Dbkeys.photoUrl] ?? '');
+    await prefs?.setString(Dbkeys.aboutMe, documents[0][Dbkeys.aboutMe] ?? '');
+    await prefs?.setString(Dbkeys.phone, documents[0][Dbkeys.phone]);
+
+    await Prochat.subscribeToNotification(documents[0][Dbkeys.phone], false);
+  }
 }
 
 Future<dynamic> myBackgroundMessageHandlerAndroid(RemoteMessage message) async {
