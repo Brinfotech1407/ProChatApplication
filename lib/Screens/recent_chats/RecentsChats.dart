@@ -266,8 +266,7 @@ class RecentChatsState extends State<RecentChats> {
         });
   }
 
-  _chats(Map<String?, Map<String, dynamic>?> _userData,
-      Map<String, dynamic>? currentUser) {
+  _chats(Map<String?, Map<String, dynamic>?> _userData, Map<String, dynamic>? currentUser) {
     return Consumer<List<GroupModel>>(
         builder: (context, groupList, _child) => Consumer<List<BroadcastModel>>(
                 builder: (context, broadcastList, _child) {

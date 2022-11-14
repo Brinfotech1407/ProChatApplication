@@ -262,7 +262,7 @@ class HomepageState extends State<Homepage>
                                         ),
                                       ),
                                       onTap: () {
-                                          showAddAccountDialog();
+                                        showAddAccountDialog();
                                       },
                                     ),
                                   ),
@@ -1742,19 +1742,9 @@ class HomepageState extends State<Homepage>
                   onTap: () {
                     Navigator.pop(context);
                     print('length ::: ${arrMultiAccount.length}');
-                    if(arrMultiAccount.length <3) {
-                      unawaited(Navigator.pushReplacement(
-                          this.context,
-                          MaterialPageRoute(
-                              builder: (newContext) =>
-                                  LoginScreen(
-                                    prefs: widget.prefs,
-                                    accountApprovalMessage: '',
-                                    isaccountapprovalbyadminneeded: false,
-                                    isblocknewlogins: false,
-                                    title: getTranslated(context, 'signin'),
-                                  ))));
-                    }else{
+                    if (arrMultiAccount.length < 3) {
+                      linkNewUser(context);
+                    } else {
                       Prochat.toast('Maximum 3 User Add');
                     }
                   },
@@ -1773,6 +1763,23 @@ class HomepageState extends State<Homepage>
             ),
           );
         });
+  }
+
+  void linkNewUser(BuildContext context) {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    firebaseAuth.signOut();
+
+    widget.prefs?.clear();
+
+    unawaited(
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext context) => FiberchatWrapper(),
+        ),
+            (Route route) => false,
+      ),
+    );
   }
 
   Future<void> getUsersMultiAccountDetails() async {
@@ -1837,16 +1844,12 @@ class HomepageState extends State<Homepage>
               showWaitingScreen.value = false;
               Navigator.pop(context);
               unawaited(
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (newContext) => Homepage(
-                    doc: doc,
-                    currentUserNo: arrItem.phoneNo,
-                    prefs: pref,
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => FiberchatWrapper(),
                   ),
+                      (Route route) => false,
                 ),
-              ),
               );
             },
           );
