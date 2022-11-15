@@ -123,7 +123,10 @@ class Prochat {
 
   Future<void> getFilterImage(BuildContext context,
       {required File imageFileSelected,
-      required Function(File finalEditedimage) onImageEdit,
+       Function(File finalEditedimage)? onImageEdit,
+        Function(String str, File file)? onStatusImageEdit,
+         bool isConversationScreenToOpen =false,
+        String statusCaption = '',
       required Uint8List memoryImage}) async {
     String fileName = '';
     File imageFile;
@@ -146,9 +149,15 @@ class Prochat {
       ),
     );
     if (imagefile != null && imagefile.containsKey('image_filtered')) {
-      Navigator.of(context).pop();
+      if(isConversationScreenToOpen) {
+        Navigator.of(context).pop();
+      }
       imageFile = imagefile['image_filtered'];
-      onImageEdit(imageFile);
+      if(isConversationScreenToOpen) {
+        onImageEdit!(imageFile);
+      }else{
+        onStatusImageEdit!(statusCaption,imageFile);
+      }
       memoryImage = imageFile.readAsBytesSync();
     } else {
       print('Empty image return');

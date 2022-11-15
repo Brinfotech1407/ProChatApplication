@@ -32,6 +32,7 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
   ImagePicker picker = ImagePicker();
   bool isLoading = false;
   String? error;
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +40,7 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
 
   final TextEditingController textEditingController =
       new TextEditingController();
+
   void captureImage(ImageSource captureMode) async {
     final observer = Provider.of<Observer>(this.context, listen: false);
     error = null;
@@ -109,20 +111,34 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
                 DESIGN_TYPE == Themetype.whatsapp ? Colors.black : Colors.black,
             actions: _imageFile != null
                 ? <Widget>[
-                    IconButton(
-                        icon: Icon(
-                          Icons.check,
-                          color: DESIGN_TYPE == Themetype.whatsapp
-                              ? fiberchatWhite
-                              : fiberchatWhite,
-                        ),
-                        onPressed: () {
-                          widget.callback(
-                              textEditingController.text.isEmpty
-                                  ? ''
-                                  : textEditingController.text,
-                              _imageFile!);
-                        }),
+                    Row(
+                      children: [
+                        IconButton(
+                            icon: Icon(
+                              Icons.filter,
+                              color: DESIGN_TYPE == Themetype.whatsapp
+                                  ? fiberchatWhite
+                                  : fiberchatWhite,
+                            ),
+                            onPressed: () {
+                              _filterImage(context);
+                            }),
+                        IconButton(
+                            icon: Icon(
+                              Icons.check,
+                              color: DESIGN_TYPE == Themetype.whatsapp
+                                  ? fiberchatWhite
+                                  : fiberchatWhite,
+                            ),
+                            onPressed: () {
+                              widget.callback(
+                                  textEditingController.text.isEmpty
+                                      ? ''
+                                      : textEditingController.text,
+                                  _imageFile!);
+                            }),
+                      ],
+                    ),
                     SizedBox(
                       width: 8.0,
                     )
@@ -199,6 +215,13 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
     ));
   }
 
+  _filterImage(BuildContext context) {
+    Prochat().getFilterImage(context,
+        imageFileSelected: _imageFile!,
+        memoryImage: _imageFile!.readAsBytesSync(),
+        onStatusImageEdit: widget.callback,statusCaption: textEditingController.text);
+  }
+
   Widget _buildButtons() {
     return new ConstrainedBox(
         constraints: BoxConstraints.expand(height: 80.0),
@@ -245,9 +268,10 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
           child: Icon(icon, size: 30.0),
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color>(fiberchatWhite),
-            backgroundColor:
-            MaterialStateProperty.all<Color>(
-                DESIGN_TYPE == Themetype.whatsapp ? Colors.black : fiberchatgreen),
+            backgroundColor: MaterialStateProperty.all<Color>(
+                DESIGN_TYPE == Themetype.whatsapp
+                    ? Colors.black
+                    : fiberchatgreen),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(),
             ),

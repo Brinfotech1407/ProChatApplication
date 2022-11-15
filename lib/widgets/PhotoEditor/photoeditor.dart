@@ -101,7 +101,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                       icon: const Icon(Icons.filter),
                       onPressed: () async {
                         Prochat().getFilterImage(context,imageFileSelected: widget.imageFilePreSelected!,
-                        memoryImage: _memoryImage!,onImageEdit: widget.onImageEdit);
+                        memoryImage: _memoryImage!,onImageEdit: widget.onImageEdit,isConversationScreenToOpen: true);
                       },
                     ),
                     IconButton(
