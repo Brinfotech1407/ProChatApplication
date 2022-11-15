@@ -139,10 +139,13 @@ class Prochat {
       context,
       new MaterialPageRoute(
         builder: (context) => new PhotoFilterSelector(
-          title: Text("Photo Filter Example"),
+          title: Text("Photo Filter"),
           image: image!,
           filters: presetFiltersList,
           filename: fileName,
+          appBarColor:  DESIGN_TYPE == Themetype.whatsapp
+            ? fiberchatDeepBlue
+            : fiberchatWhite,
           loader: Center(child: CircularProgressIndicator()),
           fit: BoxFit.contain,
         ),
