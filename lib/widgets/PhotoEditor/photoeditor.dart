@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:extended_image/extended_image.dart';
+import 'package:path/path.dart' as p;
+import 'package:photofilters/filters/filters.dart';
+import 'package:photofilters/filters/preset_filters.dart';
+import 'package:photofilters/widgets/photo_filter.dart';
 import 'package:prochat/Utils/utils.dart';
 import 'package:prochat/widgets/PhotoEditor/widgets/common_widget.dart';
 import 'package:prochat/widgets/PhotoEditor/widgets/crop_editor_helper.dart';
@@ -10,6 +13,7 @@ import 'package:prochat/widgets/PhotoEditor/widgets/image_picker/image_picker.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as imageLib;
 
 class PhotoEditor extends StatefulWidget {
   final File? imageFilePreSelected;
@@ -23,6 +27,7 @@ class PhotoEditor extends StatefulWidget {
       required this.onImageEdit,
       required this.isPNG})
       : super(key: key);
+
   @override
   _PhotoEditorState createState() => _PhotoEditorState();
 }
@@ -63,6 +68,10 @@ class _PhotoEditorState extends State<PhotoEditor> {
     setState(() {});
   }
 
+  String fileName = '';
+  List<Filter?> filters = presetFiltersList;
+  late File imageFile;
+
   @override
   Widget build(BuildContext context) {
     Color bottomIconColor = Colors.white70;
@@ -86,16 +95,26 @@ class _PhotoEditorState extends State<PhotoEditor> {
         actions: <Widget>[
           _memoryImage == null
               ? SizedBox()
-              : IconButton(
-                  icon: const Icon(Icons.done),
-                  onPressed: () async {
-                    if (kIsWeb) {
-                      _cropImage(false);
-                    } else {
-                      // _showCropDialog(context);
-                      _cropImage(true);
-                    }
-                  },
+              : Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.filter),
+                      onPressed: () async {
+                         getImage(context);
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.done),
+                      onPressed: () async {
+                        if (kIsWeb) {
+                          _cropImage(false);
+                        } else {
+                          // _showCropDialog(context);
+                          _cropImage(true);
+                        }
+                      },
+                    ),
+                  ],
                 ),
         ],
       ),
@@ -383,6 +402,37 @@ class _PhotoEditorState extends State<PhotoEditor> {
 
           ),
     );
+  }
+
+  Future<void> getImage(context) async {
+    imageFile = widget.imageFilePreSelected!;
+     fileName = widget.imageFilePreSelected!.path;
+    var image = imageLib.decodeImage(widget.imageFilePreSelected!.readAsBytesSync());
+    fileName = p.basename(imageFile.path);
+    image = imageLib.copyResize(image!, width: 600);
+      var imagefile = await Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) =>
+          new PhotoFilterSelector(
+            title: Text("Photo Filter Example"),
+            image: image!,
+            filters: presetFiltersList,
+            filename: fileName,
+            loader: Center(child: CircularProgressIndicator()),
+            fit: BoxFit.contain,
+          ),
+        ),
+      );
+      if (imagefile != null && imagefile.containsKey('image_filtered')) {
+        setState(() {
+          imageFile = imagefile['image_filtered'];
+          widget.onImageEdit(imageFile);
+          Navigator.pop(context);
+        });
+      }else{
+        print('Empty image return');
+      }
   }
 
   Future<void> _cropImage(bool useNative) async {
