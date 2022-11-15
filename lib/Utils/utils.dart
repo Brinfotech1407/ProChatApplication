@@ -6,6 +6,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
+import 'package:photofilters/filters/preset_filters.dart';
+import 'package:photofilters/widgets/photo_filter.dart';
 import 'package:prochat/Configs/Dbkeys.dart';
 import 'package:prochat/Configs/Dbpaths.dart';
 import 'package:prochat/Configs/app_constants.dart';
@@ -21,6 +24,8 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:prochat/Configs/Enum.dart';
 import 'package:share/share.dart';
+import 'package:path/path.dart' as p;
+import 'package:image/image.dart' as imageLib;
 
 class Prochat {
   static String? getNickname(Map<String, dynamic> user) =>
@@ -116,6 +121,40 @@ class Prochat {
         });
   }
 
+  Future<void> getFilterImage(BuildContext context,
+      {required File imageFileSelected,
+      required Function(File finalEditedimage) onImageEdit,
+      required Uint8List memoryImage}) async {
+    String fileName = '';
+    File imageFile;
+    imageFile = imageFileSelected;
+    fileName = imageFileSelected.path;
+    var image = imageLib.decodeImage(imageFileSelected.readAsBytesSync());
+    fileName = p.basename(imageFile.path);
+    image = imageLib.copyResize(image!, width: 600);
+    var imagefile = await Navigator.push(
+      context,
+      new MaterialPageRoute(
+        builder: (context) => new PhotoFilterSelector(
+          title: Text("Photo Filter Example"),
+          image: image!,
+          filters: presetFiltersList,
+          filename: fileName,
+          loader: Center(child: CircularProgressIndicator()),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+    if (imagefile != null && imagefile.containsKey('image_filtered')) {
+      Navigator.of(context).pop();
+      imageFile = imagefile['image_filtered'];
+      onImageEdit(imageFile);
+      memoryImage = imageFile.readAsBytesSync();
+    } else {
+      print('Empty image return');
+    }
+  }
+
   static void showRationale(rationale) async {
     Prochat.toast(rationale);
     // await Future.delayed(Duration(seconds: 2));
@@ -194,17 +233,17 @@ class Prochat {
     if (Platform.isAndroid == true) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       return androidInfo.id + androidInfo.androidId;
-    }else{
+    } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       return iosInfo.systemName + iosInfo.model + iosInfo.systemVersion;
     }
   }
 
-
-  static subscribeToNotification(String currentUserNo, bool isFreshNewAccount) async {
+  static subscribeToNotification(
+      String currentUserNo, bool isFreshNewAccount) async {
     await FirebaseMessaging.instance
         .subscribeToTopic(
-        '${currentUserNo.replaceFirst(new RegExp(r'\+'), '')}')
+            '${currentUserNo.replaceFirst(new RegExp(r'\+'), '')}')
         .catchError((err) {
       print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
     });
@@ -215,10 +254,10 @@ class Prochat {
     });
     await FirebaseMessaging.instance
         .subscribeToTopic(Platform.isAndroid
-        ? Dbkeys.topicUSERSandroid
-        : Platform.isIOS
-        ? Dbkeys.topicUSERSios
-        : Dbkeys.topicUSERSweb)
+            ? Dbkeys.topicUSERSandroid
+            : Platform.isIOS
+                ? Dbkeys.topicUSERSios
+                : Dbkeys.topicUSERSweb)
         .catchError((err) {
       print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
     });
@@ -236,7 +275,7 @@ class Prochat {
               } else {
                 await FirebaseMessaging.instance
                     .subscribeToTopic(
-                    "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
+                        "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
                     .catchError((err) {
                   print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
                 });
@@ -244,7 +283,7 @@ class Prochat {
             } else {
               await FirebaseMessaging.instance
                   .subscribeToTopic(
-                  "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
+                      "GROUP${doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').substring(1, doc[Dbkeys.groupID].replaceAll(RegExp('-'), '').toString().length)}")
                   .catchError((err) {
                 print('ERROR SUBSCRIBING NOTIFICATION' + err.toString());
               });

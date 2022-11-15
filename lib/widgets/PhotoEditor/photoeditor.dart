@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:path/path.dart' as p;
-import 'package:photofilters/filters/filters.dart';
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
 import 'package:prochat/Utils/utils.dart';
@@ -68,9 +67,10 @@ class _PhotoEditorState extends State<PhotoEditor> {
     setState(() {});
   }
 
-  String fileName = '';
-  List<Filter?> filters = presetFiltersList;
-  late File imageFile;
+
+
+  File? croppedImage;
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,8 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     IconButton(
                       icon: const Icon(Icons.filter),
                       onPressed: () async {
-                         getImage(context);
+                        Prochat().getFilterImage(context,imageFileSelected: widget.imageFilePreSelected!,
+                        memoryImage: _memoryImage!,onImageEdit: widget.onImageEdit);
                       },
                     ),
                     IconButton(
@@ -111,6 +112,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                         } else {
                           // _showCropDialog(context);
                           _cropImage(true);
+
                         }
                       },
                     ),
@@ -404,36 +406,6 @@ class _PhotoEditorState extends State<PhotoEditor> {
     );
   }
 
-  Future<void> getImage(context) async {
-    imageFile = widget.imageFilePreSelected!;
-     fileName = widget.imageFilePreSelected!.path;
-    var image = imageLib.decodeImage(widget.imageFilePreSelected!.readAsBytesSync());
-    fileName = p.basename(imageFile.path);
-    image = imageLib.copyResize(image!, width: 600);
-      var imagefile = await Navigator.push(
-        context,
-        new MaterialPageRoute(
-          builder: (context) =>
-          new PhotoFilterSelector(
-            title: Text("Photo Filter Example"),
-            image: image!,
-            filters: presetFiltersList,
-            filename: fileName,
-            loader: Center(child: CircularProgressIndicator()),
-            fit: BoxFit.contain,
-          ),
-        ),
-      );
-      if (imagefile != null && imagefile.containsKey('image_filtered')) {
-        setState(() {
-          imageFile = imagefile['image_filtered'];
-          widget.onImageEdit(imageFile);
-          Navigator.pop(context);
-        });
-      }else{
-        print('Empty image return');
-      }
-  }
 
   Future<void> _cropImage(bool useNative) async {
     // if (_cropping) {
@@ -442,11 +414,11 @@ class _PhotoEditorState extends State<PhotoEditor> {
     try {
       //await showBusyingDialog();
 
-      Uint8List? fileData;
+      Uint8List? cropFileData;
 
       /// native library
       if (useNative) {
-        fileData = await cropImageDataWithNativeLibrary(
+        cropFileData = await cropImageDataWithNativeLibrary(
             state: editorKey.currentState!);
       } else {
         ///delay due to cropImageDataWithDartLibrary is time consuming on main thread
@@ -455,15 +427,16 @@ class _PhotoEditorState extends State<PhotoEditor> {
         //await Future.delayed(Duration(milliseconds: 200));
 
         ///if you don't want to block ui, use compute/isolate,but it costs more time.
-        fileData =
+        cropFileData =
             await cropImageDataWithDartLibrary(state: editorKey.currentState!);
       }
       final String? filePath = await ImageSaver.save(
-          '${DateTime.now().millisecondsSinceEpoch}.jpg', fileData!);
+          '${DateTime.now().millisecondsSinceEpoch}.jpg', cropFileData!);
       // var filePath = await ImagePickerSaver.saveFile(fileData: fileData);
 
+      croppedImage = File(filePath!);
       Navigator.of(context).pop();
-      widget.onImageEdit(File(filePath!));
+      widget.onImageEdit(File(filePath));
     } catch (e) {
       Prochat.toast("Failed. ERROR: $e");
     }
@@ -482,6 +455,40 @@ class _PhotoEditorState extends State<PhotoEditor> {
         });
       }
     });
+  }
+
+  Future<void> getFilterImage(context) async {
+    String fileName = '';
+    File imageFile;
+    imageFile =  widget.imageFilePreSelected!;
+    fileName = widget.imageFilePreSelected!.path;
+    var image = imageLib.decodeImage(widget.imageFilePreSelected!.readAsBytesSync());
+    fileName = p.basename(imageFile.path);
+    image = imageLib.copyResize(image!, width: 600);
+    var imagefile = await Navigator.push(
+      context,
+      new MaterialPageRoute(
+        builder: (context) =>
+        new PhotoFilterSelector(
+          title: Text("Photo Filter Example"),
+          image: image!,
+          filters: presetFiltersList,
+          filename: fileName,
+          loader: Center(child: CircularProgressIndicator()),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+    if (imagefile != null && imagefile.containsKey('image_filtered')) {
+      setState(() {
+        Navigator.of(context).pop();
+        imageFile = imagefile['image_filtered'];
+       widget.onImageEdit(imageFile);
+        _memoryImage =imageFile.readAsBytesSync();
+      });
+    }else{
+      print('Empty image return');
+    }
   }
 }
 
