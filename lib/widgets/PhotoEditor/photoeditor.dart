@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
 import 'package:prochat/Utils/utils.dart';
@@ -97,28 +96,18 @@ class _PhotoEditorState extends State<PhotoEditor> {
         actions: <Widget>[
           _memoryImage == null
               ? SizedBox()
-              : Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.filter),
-                      onPressed: () async {
-                        filterImageView(context);
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.done),
-                      onPressed: () async {
-                        if (kIsWeb) {
-                          _cropImage(false);
-                        } else {
-                          // _showCropDialog(context);
-                          _cropImage(true);
+              : IconButton(
+                icon: const Icon(Icons.done),
+                onPressed: () async {
+                  if (kIsWeb) {
+                    _cropImage(false);
+                  } else {
+                    // _showCropDialog(context);
+                    _cropImage(true);
 
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                  }
+                },
+              ),
         ],
       ),
       body: Column(children: <Widget>[
@@ -234,6 +223,17 @@ class _PhotoEditorState extends State<PhotoEditor> {
                             ],
                           );
                         });
+                  },
+                ),
+                FlatButtonWithIcon(
+                  icon: Icon(Icons.filter, color: bottomIconColor),
+                  label: Text(
+                    'Filter',
+                    style: TextStyle(fontSize: 10.0, color: bottomIconColor),
+                  ),
+                  textColor: Colors.white70,
+                  onPressed: () {
+                    filterImageView(context);
                   },
                 ),
                 FlatButtonWithIcon(
@@ -410,7 +410,6 @@ class _PhotoEditorState extends State<PhotoEditor> {
   Future<void> filterImageView(BuildContext context) async {
     Prochat().getFilterImage(context,
         imageFileSelected: updatedImage!,
-        memoryImage:_memoryImage!,
         onUpdatedImage: (file) {
           setState(() {
             updatedImage!.delete();

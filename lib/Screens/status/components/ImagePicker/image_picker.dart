@@ -36,7 +36,6 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
   @override
   void initState() {
     super.initState();
-    print(' _imageFile ${_imageFile}');
   }
 
   final TextEditingController textEditingController =
@@ -219,7 +218,6 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
   filterImage(BuildContext context) async {
     Prochat().getFilterImage(context,
         imageFileSelected: _imageFile!,
-        memoryImage: _imageFile!.readAsBytesSync(),
         onUpdatedImage: (file) {
           setState(() {
             _imageFile!.delete();

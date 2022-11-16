@@ -102,10 +102,14 @@ class _CameraImageGalleryPickerState extends State<CameraImageGalleryPicker>
 
   @override
   void dispose() {
-    _ambiguate(WidgetsBinding.instance)?.removeObserver(this);
-    controller!.dispose();
-    _flashModeControlRowAnimationController.dispose();
-    _exposureModeControlRowAnimationController.dispose();
+    try {
+      _ambiguate(WidgetsBinding.instance)?.removeObserver(this);
+      controller!.dispose();
+      _flashModeControlRowAnimationController.dispose();
+      _exposureModeControlRowAnimationController.dispose();
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+    }
     super.dispose();
   }
 

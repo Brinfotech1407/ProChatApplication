@@ -6,8 +6,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
 import 'package:prochat/Configs/Dbkeys.dart';
@@ -122,10 +120,11 @@ class Prochat {
         });
   }
 
-   getFilterImage(BuildContext context,
-      {required File imageFileSelected,
-        required Function(File file) onUpdatedImage,
-      required Uint8List memoryImage}) async {
+  getFilterImage(
+    BuildContext context, {
+    required File imageFileSelected,
+    required Function(File file) onUpdatedImage,
+  }) async {
     String fileName = '';
     File imageFile;
     imageFile = imageFileSelected;
@@ -133,7 +132,7 @@ class Prochat {
     var image = imageLib.decodeImage(imageFileSelected.readAsBytesSync());
     fileName = p.basename(imageFile.path);
     image = imageLib.copyResize(image!, width: 600);
-    Map imagefile =   await Navigator.push(
+    Map? mapUpdatedFile = await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new PhotoFilterSelector(
@@ -141,17 +140,18 @@ class Prochat {
           image: image!,
           filters: presetFiltersList,
           filename: fileName,
-          appBarColor:  DESIGN_TYPE == Themetype.whatsapp
-            ? fiberchatDeepBlue
-            : fiberchatWhite,
+          appBarColor: DESIGN_TYPE == Themetype.whatsapp
+              ? fiberchatDeepBlue
+              : fiberchatWhite,
           loader: Center(child: CircularProgressIndicator()),
           fit: BoxFit.contain,
         ),
       ),
     );
 
-    if (imagefile.containsKey('image_filtered')) {
-      onUpdatedImage(imagefile['image_filtered']);
+
+    if (mapUpdatedFile!=null && mapUpdatedFile.containsKey('image_filtered')) {
+      onUpdatedImage(mapUpdatedFile['image_filtered']);
     }
   }
 
