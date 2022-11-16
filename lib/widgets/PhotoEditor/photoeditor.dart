@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
 import 'package:prochat/Utils/utils.dart';
@@ -64,12 +65,13 @@ class _PhotoEditorState extends State<PhotoEditor> {
   convertFileToImage() async {
     Uint8List bytes = widget.imageFilePreSelected!.readAsBytesSync();
     _memoryImage = bytes;
+    updatedImage=widget.imageFilePreSelected!;
     setState(() {});
   }
 
 
 
-  File? croppedImage;
+  File? updatedImage;
 
 
   @override
@@ -100,8 +102,7 @@ class _PhotoEditorState extends State<PhotoEditor> {
                     IconButton(
                       icon: const Icon(Icons.filter),
                       onPressed: () async {
-                        Prochat().getFilterImage(context,imageFileSelected: widget.imageFilePreSelected!,
-                        memoryImage: _memoryImage!,onImageEdit: widget.onImageEdit,isConversationScreenToOpen: true);
+                        filterImageView(context);
                       },
                     ),
                     IconButton(
@@ -406,6 +407,20 @@ class _PhotoEditorState extends State<PhotoEditor> {
     );
   }
 
+  Future<void> filterImageView(BuildContext context) async {
+    Prochat().getFilterImage(context,
+        imageFileSelected: updatedImage!,
+        memoryImage:_memoryImage!,
+        onUpdatedImage: (file) {
+          setState(() {
+            updatedImage!.delete();
+            updatedImage =file;
+            _memoryImage=file.readAsBytesSync();
+          });
+
+        });
+  }
+
 
   Future<void> _cropImage(bool useNative) async {
     // if (_cropping) {
@@ -434,9 +449,13 @@ class _PhotoEditorState extends State<PhotoEditor> {
           '${DateTime.now().millisecondsSinceEpoch}.jpg', cropFileData!);
       // var filePath = await ImagePickerSaver.saveFile(fileData: fileData);
 
-      croppedImage = File(filePath!);
+      setState(() {
+        updatedImage = File(filePath!);
+      });
       Navigator.of(context).pop();
-      widget.onImageEdit(File(filePath));
+      if(filePath!=null) {
+        widget.onImageEdit(updatedImage!);
+      }
     } catch (e) {
       Prochat.toast("Failed. ERROR: $e");
     }

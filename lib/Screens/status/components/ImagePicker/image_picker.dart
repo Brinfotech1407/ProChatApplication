@@ -36,6 +36,7 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
   @override
   void initState() {
     super.initState();
+    print(' _imageFile ${_imageFile}');
   }
 
   final TextEditingController textEditingController =
@@ -121,7 +122,7 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
                                   : fiberchatWhite,
                             ),
                             onPressed: () {
-                              _filterImage(context);
+                              filterImage(context);
                             }),
                         IconButton(
                             icon: Icon(
@@ -215,11 +216,17 @@ class _StatusImageEditorState extends State<StatusImageEditor> {
     ));
   }
 
-  _filterImage(BuildContext context) {
+  filterImage(BuildContext context) async {
     Prochat().getFilterImage(context,
         imageFileSelected: _imageFile!,
         memoryImage: _imageFile!.readAsBytesSync(),
-        onStatusImageEdit: widget.callback,statusCaption: textEditingController.text);
+        onUpdatedImage: (file) {
+          setState(() {
+            _imageFile!.delete();
+            _imageFile =file;
+          });
+
+        });
   }
 
   Widget _buildButtons() {

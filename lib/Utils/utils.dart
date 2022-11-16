@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
 import 'package:prochat/Configs/Dbkeys.dart';
@@ -121,12 +122,9 @@ class Prochat {
         });
   }
 
-  Future<void> getFilterImage(BuildContext context,
+   getFilterImage(BuildContext context,
       {required File imageFileSelected,
-       Function(File finalEditedimage)? onImageEdit,
-        Function(String str, File file)? onStatusImageEdit,
-         bool isConversationScreenToOpen =false,
-        String statusCaption = '',
+        required Function(File file) onUpdatedImage,
       required Uint8List memoryImage}) async {
     String fileName = '';
     File imageFile;
@@ -135,7 +133,7 @@ class Prochat {
     var image = imageLib.decodeImage(imageFileSelected.readAsBytesSync());
     fileName = p.basename(imageFile.path);
     image = imageLib.copyResize(image!, width: 600);
-    var imagefile = await Navigator.push(
+    Map imagefile =   await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new PhotoFilterSelector(
@@ -151,19 +149,9 @@ class Prochat {
         ),
       ),
     );
-    if (imagefile != null && imagefile.containsKey('image_filtered')) {
-      if(isConversationScreenToOpen) {
-        Navigator.of(context).pop();
-      }
-      imageFile = imagefile['image_filtered'];
-      if(isConversationScreenToOpen) {
-        onImageEdit!(imageFile);
-      }else{
-        onStatusImageEdit!(statusCaption,imageFile);
-      }
-      memoryImage = imageFile.readAsBytesSync();
-    } else {
-      print('Empty image return');
+
+    if (imagefile.containsKey('image_filtered')) {
+      onUpdatedImage(imagefile['image_filtered']);
     }
   }
 
