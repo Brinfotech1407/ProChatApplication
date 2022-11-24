@@ -279,7 +279,6 @@ class HomepageState extends State<Homepage>
                                     IconButton(
                                       onPressed: () {},
                                       icon: RotatedBox(
-                                        //  angle: 60 * math.pi / 60,
                                           quarterTurns: 1,
                                           child: Icon(Icons.airplanemode_on)),
                                       color: DESIGN_TYPE ==

@@ -5783,6 +5783,18 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                   }),
                                 ),
                                 actions: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: RotatedBox(
+                                        quarterTurns: 1,
+                                        child: Icon(Icons.airplanemode_on)),
+                                    color: DESIGN_TYPE ==
+                                        Themetype.whatsapp
+                                        ? fiberchatWhite
+                                        : fiberchatBlack,
+                                    padding: EdgeInsets.zero,
+                                    constraints: BoxConstraints(),
+                                  ),
                                   observer.isCallFeatureTotallyHide == true ||
                                           observer.isOngoingCall
                                       ? SizedBox()

@@ -4278,43 +4278,45 @@ class _GroupChatPageState extends State<GroupChatPage>
                                             groupID: widget.groupID)));
                               },
                               child: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Padding(
                                       padding:
-                                          const EdgeInsets.fromLTRB(0, 7, 0, 7),
+                                      const EdgeInsets.fromLTRB(0, 7, 0, 7),
                                       child: customCircleAvatarGroup(
                                           radius: 20,
                                           url: groupList
                                               .lastWhere((element) =>
-                                                  element
-                                                      .docmap[Dbkeys.groupID] ==
-                                                  widget.groupID)
+                                          element
+                                              .docmap[Dbkeys.groupID] ==
+                                              widget.groupID)
                                               .docmap[Dbkeys.groupPHOTOURL])),
                                   SizedBox(
                                     width: 7,
                                   ),
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Text(
                                             groupList
                                                 .lastWhere((element) =>
-                                                    element.docmap[
-                                                        Dbkeys.groupID] ==
-                                                    widget.groupID)
+                                            element.docmap[
+                                            Dbkeys.groupID] ==
+                                                widget.groupID)
                                                 .docmap[Dbkeys.groupNAME],
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
                                             style: TextStyle(
                                                 color: DESIGN_TYPE ==
-                                                        Themetype.whatsapp
+                                                    Themetype.whatsapp
                                                     ? fiberchatWhite
                                                     : fiberchatBlack,
                                                 fontSize: 17.0,
@@ -4322,20 +4324,20 @@ class _GroupChatPageState extends State<GroupChatPage>
                                           ),
                                           isCurrentUserMuted
                                               ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 5.0),
-                                                  child: Icon(
-                                                    Icons.volume_off,
-                                                    color: DESIGN_TYPE ==
-                                                            Themetype.whatsapp
-                                                        ? fiberchatWhite
-                                                            .withOpacity(0.5)
-                                                        : fiberchatBlack
-                                                            .withOpacity(0.5),
-                                                    size: 17,
-                                                  ),
-                                                )
+                                            padding:
+                                            const EdgeInsets.only(
+                                                left: 5.0),
+                                            child: Icon(
+                                              Icons.volume_off,
+                                              color: DESIGN_TYPE ==
+                                                  Themetype.whatsapp
+                                                  ? fiberchatWhite
+                                                  .withOpacity(0.5)
+                                                  : fiberchatBlack
+                                                  .withOpacity(0.5),
+                                              size: 17,
+                                            ),
+                                          )
                                               : SizedBox(),
                                         ],
                                       ),
@@ -4344,16 +4346,17 @@ class _GroupChatPageState extends State<GroupChatPage>
                                       ),
                                       SizedBox(
                                         width:
-                                            MediaQuery.of(context).size.width /
-                                                1.7,
+                                        MediaQuery.of(context).size.width /
+                                            1.7,
                                         child: Text(
                                           getTranslated(
                                               context, 'tapherefrgrpinfo'),
                                           maxLines: 1,
+                                          softWrap: true,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: DESIGN_TYPE ==
-                                                      Themetype.whatsapp
+                                                  Themetype.whatsapp
                                                   ? fiberchatWhite
                                                   : fiberchatGrey,
                                               fontSize: 12,
@@ -4366,6 +4369,18 @@ class _GroupChatPageState extends State<GroupChatPage>
                               ),
                             ),
                             actions: [
+                            /*  IconButton(
+                                onPressed: () {},
+                                icon: RotatedBox(
+                                    quarterTurns: 1,
+                                    child: Icon(Icons.airplanemode_on)),
+                                color: DESIGN_TYPE ==
+                                    Themetype.whatsapp
+                                    ? fiberchatWhite
+                                    : fiberchatBlack,
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                              ),*/
                               Container(
                                 margin: EdgeInsets.only(right: 15, left: 15),
                                 width: 25,
