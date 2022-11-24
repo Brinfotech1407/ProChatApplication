@@ -266,17 +266,27 @@ class HomepageState extends State<Homepage>
                                       },
                                     ),
                                   ),
-                                  /*title: Align(
-                     alignment: Alignment.centerLeft,
-                     child: Image.asset(
-                         'assets/images/applogo.png',
-                         height: 80,
-                         width: 140,
-                         fit: BoxFit.fitHeight),
-                   ),*/
                                   titleSpacing: 14,
                                   actions: <Widget>[
-//
+                                    IconButton(
+                                      onPressed: () {},
+                                    icon: Icon(Icons.search),
+                                      color: DESIGN_TYPE ==
+                                          Themetype.whatsapp
+                                          ? fiberchatWhite
+                                          : fiberchatBlack,
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: RotatedBox(
+                                        //  angle: 60 * math.pi / 60,
+                                          quarterTurns: 1,
+                                          child: Icon(Icons.airplanemode_on)),
+                                      color: DESIGN_TYPE ==
+                                          Themetype.whatsapp
+                                          ? fiberchatWhite
+                                          : fiberchatBlack,
+                                    ),
                                     Language.languageList().length < 2
                                         ? SizedBox()
                                         : Container(
