@@ -152,6 +152,7 @@ class HomepageState extends State<Homepage>
   String? userFullname;
   List<MultiAccount> arrMultiAccount = <MultiAccount>[];
   ValueNotifier<bool> showWaitingScreen = ValueNotifier<bool>(false);
+  bool isFlightModeOn = false;
 
   @override
   void initState() {
@@ -276,16 +277,25 @@ class HomepageState extends State<Homepage>
                                           ? fiberchatWhite
                                           : fiberchatBlack,
                                     ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: RotatedBox(
-                                          quarterTurns: 1,
-                                          child: Icon(Icons.airplanemode_on)),
-                                      color: DESIGN_TYPE ==
-                                          Themetype.whatsapp
-                                          ? fiberchatWhite
-                                          : fiberchatBlack,
-                                    ),
+                            InkWell(
+                              onTap: () {
+                                setState((){
+                                  isFlightModeOn =!isFlightModeOn;
+                                });
+                              },
+                              child: Container(
+                                width: 20,
+                                height: 23,
+                                child: Image.asset(
+                                  isFlightModeOn ? 'assets/images/flight.png' : 'assets/images/flight_outline.png',
+                                  fit: BoxFit.contain,
+                                  color: DESIGN_TYPE ==
+                                    Themetype.whatsapp
+                                    ? fiberchatWhite
+                                    : fiberchatBlack,
+                                ),
+                              ),
+                            ),
                                     Language.languageList().length < 2
                                         ? SizedBox()
                                         : Container(

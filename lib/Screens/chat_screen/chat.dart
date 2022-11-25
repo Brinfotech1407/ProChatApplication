@@ -182,6 +182,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   bool isMuted = false;
 
+  bool isFlightModeOn = false;
+
   void setStateIfMounted(f) {
     if (mounted) setState(f);
   }
@@ -4683,6 +4685,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   bool empty = true;
 
+
   loadMessagesAndListen() async {
     await FirebaseFirestore.instance
         .collection(DbPaths.collectionmessages)
@@ -5783,17 +5786,24 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                   }),
                                 ),
                                 actions: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: RotatedBox(
-                                        quarterTurns: 1,
-                                        child: Icon(Icons.airplanemode_on)),
-                                    color: DESIGN_TYPE ==
-                                        Themetype.whatsapp
-                                        ? fiberchatWhite
-                                        : fiberchatBlack,
-                                    padding: EdgeInsets.zero,
-                                    constraints: BoxConstraints(),
+                                  InkWell(
+                                    onTap: () {
+                                      setState((){
+                                        isFlightModeOn =!isFlightModeOn;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 20,
+                                      height: 23,
+                                      child: Image.asset(
+                                        isFlightModeOn ? 'assets/images/flight.png' : 'assets/images/flight_outline.png',
+                                        fit: BoxFit.contain,
+                                        color: DESIGN_TYPE ==
+                                            Themetype.whatsapp
+                                            ? fiberchatWhite
+                                            : fiberchatBlack,
+                                      ),
+                                    ),
                                   ),
                                   observer.isCallFeatureTotallyHide == true ||
                                           observer.isOngoingCall
