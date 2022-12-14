@@ -1812,8 +1812,8 @@ class HomepageState extends State<Homepage>
         .collection(DbPaths.collectionLinksAccount)
         .doc(deviceID)
         .get()
-        .then((DocumentSnapshot<Map<String, dynamic>>? value) {
-      if (value != null) {
+        .then((DocumentSnapshot<Map<String, dynamic>> value) {
+      if (value.data() != null) {
         final Map<String, dynamic> data = value.data() as Map<String, dynamic>;
         debugPrint('Datas::::$data');
 

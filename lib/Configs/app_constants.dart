@@ -64,7 +64,7 @@ const Admob_RewardedAdUnitID_Ios =
 
 //*--Agora Configurations---
 const Agora_APP_IDD =
-    'bcb03df82cc84bbc82397847457c7e46'; // Grab it from: https://www.agora.io/en/
+    '6246df8dd64f4c5db7d6b858f468f80b'; // Grab it from: https://www.agora.io/en/
 const dynamic Agora_TOKEN =
     null; // not required until you have planned to setup high level of authentication of users in Agora.
 
