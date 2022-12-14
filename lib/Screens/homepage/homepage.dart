@@ -271,31 +271,32 @@ class HomepageState extends State<Homepage>
                                   actions: <Widget>[
                                     IconButton(
                                       onPressed: () {},
-                                    icon: Icon(Icons.search),
-                                      color: DESIGN_TYPE ==
-                                          Themetype.whatsapp
+                                      icon: Icon(Icons.search),
+                                      color: DESIGN_TYPE == Themetype.whatsapp
                                           ? fiberchatWhite
                                           : fiberchatBlack,
                                     ),
-                            InkWell(
-                              onTap: () {
-                                setState((){
-                                  isFlightModeOn =!isFlightModeOn;
-                                });
-                              },
-                              child: Container(
-                                width: 20,
-                                height: 23,
-                                child: Image.asset(
-                                  isFlightModeOn ? 'assets/images/flight.png' : 'assets/images/flight_outline.png',
-                                  fit: BoxFit.contain,
-                                  color: DESIGN_TYPE ==
-                                    Themetype.whatsapp
-                                    ? fiberchatWhite
-                                    : fiberchatBlack,
-                                ),
-                              ),
-                            ),
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          isFlightModeOn = !isFlightModeOn;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 20,
+                                        height: 23,
+                                        child: Image.asset(
+                                          isFlightModeOn
+                                              ? 'assets/images/flight.png'
+                                              : 'assets/images/flight_outline.png',
+                                          fit: BoxFit.contain,
+                                          color:
+                                              DESIGN_TYPE == Themetype.whatsapp
+                                                  ? fiberchatWhite
+                                                  : fiberchatBlack,
+                                        ),
+                                      ),
+                                    ),
                                     Language.languageList().length < 2
                                         ? SizedBox()
                                         : Container(
@@ -1785,7 +1786,6 @@ class HomepageState extends State<Homepage>
   }
 
   void linkNewUser(BuildContext context) {
-
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     firebaseAuth.signOut();
 
@@ -1796,7 +1796,7 @@ class HomepageState extends State<Homepage>
         MaterialPageRoute(
           builder: (BuildContext context) => FiberchatWrapper(),
         ),
-            (Route route) => false,
+        (Route route) => false,
       ),
     );
   }
@@ -1812,17 +1812,20 @@ class HomepageState extends State<Homepage>
         .collection(DbPaths.collectionLinksAccount)
         .doc(deviceID)
         .get()
-        .then((DocumentSnapshot<Map<String, dynamic>> value) {
-      final Map<String, dynamic> data = value.data() as Map<String, dynamic>;
-      debugPrint('Datas::::$data');
+        .then((DocumentSnapshot<Map<String, dynamic>>? value) {
+      if (value != null) {
+        final Map<String, dynamic> data = value.data() as Map<String, dynamic>;
+        debugPrint('Datas::::$data');
 
-      data.forEach((String key, dynamic value) {
-        if (widget.currentUserNo != key) {
-          arrMultiAccount.add(MultiAccount(phoneNo: key, uid: value as String));
-        }
-      });
+        data.forEach((String key, dynamic value) {
+          if (widget.currentUserNo != key) {
+            arrMultiAccount
+                .add(MultiAccount(phoneNo: key, uid: value as String));
+          }
+        });
 
-      debugPrint('arrMultiAccount::::$arrMultiAccount');
+        debugPrint('arrMultiAccount::::$arrMultiAccount');
+      }
     });
   }
 
@@ -1867,7 +1870,7 @@ class HomepageState extends State<Homepage>
                   MaterialPageRoute(
                     builder: (BuildContext context) => FiberchatWrapper(),
                   ),
-                      (Route route) => false,
+                  (Route route) => false,
                 ),
               );
             },

@@ -1,6 +1,5 @@
 //*************   © Copyrighted by Thinkcreative_Technologies. An Exclusive item of Envato market. Make sure you have purchased a Regular License OR Extended license for the Source Code from Envato to use this product. See the License Defination attached with source code. *********************
 
-
 import 'package:flutter/material.dart';
 
 import 'Enum.dart';
@@ -65,7 +64,7 @@ const Admob_RewardedAdUnitID_Ios =
 
 //*--Agora Configurations---
 const Agora_APP_IDD =
-    'PASTE YOUR AGORA APP ID HERE'; // Grab it from: https://www.agora.io/en/
+    'bcb03df82cc84bbc82397847457c7e46'; // Grab it from: https://www.agora.io/en/
 const dynamic Agora_TOKEN =
     null; // not required until you have planned to setup high level of authentication of users in Agora.
 
