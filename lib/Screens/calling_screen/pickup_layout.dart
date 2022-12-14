@@ -1,14 +1,14 @@
 //*************   © Copyrighted by Thinkcreative_Technologies. An Exclusive item of Envato market. Make sure you have purchased a Regular License OR Extended license for the Source Code from Envato to use this product. See the License Defination attached with source code. *********************
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:prochat/Screens/splash_screen/splash_screen.dart';
-import 'package:prochat/Services/Providers/Observer.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:prochat/Configs/Dbkeys.dart';
 import 'package:prochat/Models/call.dart';
-import 'package:prochat/Services/Providers/user_provider.dart';
 import 'package:prochat/Models/call_methods.dart';
 import 'package:prochat/Screens/calling_screen/pickup_screen.dart';
+import 'package:prochat/Services/Providers/Observer.dart';
+import 'package:prochat/Services/Providers/user_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PickupLayout extends StatelessWidget {
@@ -27,29 +27,29 @@ class PickupLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final Observer observer = Provider.of<Observer>(context);
-
+    final String? phoneNo = prefs.getString(Dbkeys.phone);
     return observer.isOngoingCall == true
         ? scaffold
         : /*(userProvider.getUser != null)
-            ?*/ StreamBuilder<DocumentSnapshot>(
-                stream:
-                    callMethods.callStream(phone:currentUserNo),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.data() != null) {
-                    Call call = Call.fromMap(
-                        snapshot.data!.data() as Map<dynamic, dynamic>);
+            ?*/
+        StreamBuilder<DocumentSnapshot>(
+            stream: callMethods.callStream(phone: currentUserNo),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.data() != null) {
+                Call call = Call.fromMap(
+                    snapshot.data!.data() as Map<dynamic, dynamic>);
 
-                    if (!call.hasDialled!) {
-                      return PickupScreen(
-                        prefs: prefs,
-                        call: call,
-                        currentuseruid: userProvider.getUser!.phone,
-                      );
-                    }
-                  }
-                  return scaffold;
-                },
-              );
-            //: Splashscreen();
+                if (!call.hasDialled! && phoneNo != null) {
+                  return PickupScreen(
+                    prefs: prefs,
+                    call: call,
+                    currentuseruid: phoneNo,
+                  );
+                }
+              }
+              return scaffold;
+            },
+          );
+    //: Splashscreen();
   }
 }
